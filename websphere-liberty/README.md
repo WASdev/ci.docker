@@ -11,19 +11,19 @@ The image is designed to support a number of different usage patterns:
 1. The image contains a default server configuration that specifies the `webProfile-6.0` feature and exposes ports 9080 and 9443 for HTTP and HTTPs respectively. A WAR file can therefore be mounted in to the `dropins` directory of this server and run. The following example starts a container in the background running a WAR file from the host file system with the HTTP and HTTPS ports mapped to 80 and 443 respectively.
 
     ```
-    docker run -e LICENSE=accept -d -p 80:9080 -p 443:9443 -v /tmp/myApp.war:/opt/ibm/wlp/usr/servers/defaultServer/dropins/myApp.war websphere-liberty
+    docker run -e LICENSE=accept -d -p 80:9080 -p 443:9443 -v /tmp/myApp.war:/opt/ibm/wlp/usr/servers/defaultServer/dropins/myApp.war wasdev/websphere-liberty
     ```
     
 2. For greater flexibility over configuration, it is possible to mount an entire server configuration directory from the host and then specify the server name as a parameter to the run command. The following example uses the server configuration from the `myServer` directory on the host. Note that this non-default server name is also passed as a parameter to the image.
 
     ```
-    docker run -e LICENSE=accept -p 80:9080 -p 443:9443 -v /tmp/myServer:/opt/ibm/wlp/usr/servers/myServer websphere-liberty myServer
+    docker run -e LICENSE=accept -p 80:9080 -p 443:9443 -v /tmp/myServer:/opt/ibm/wlp/usr/servers/myServer wasdev/websphere-liberty myServer
     ```
     
 3. It is also possible to build an application layer on top of this image using either the default server configuration or a new server configuration and, optionally, accept the license as part of that build.
 
     ```
-    FROM websphere-liberty
+    FROM wasdev/websphere-liberty
     ADD myApp.war /opt/ibm/wlp/usr/servers/defaultServer/dropins/
     ENV LICENSE accept
     ```
@@ -45,7 +45,7 @@ The image is designed to support a number of different usage patterns:
     Run the WebSphere Liberty image with the volumes from the data volume container mounted:
 
     ```
-    docker run -e LICENSE=accept -d --volumes-from app websphere-liberty myServer
+    docker run -e LICENSE=accept -d --volumes-from app wasdev/websphere-liberty myServer
     ```
 
 # Issues and contributions
