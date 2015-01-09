@@ -15,7 +15,7 @@
 FROM ubuntu:14.04
 
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -yq wget \
+    && apt-get install -y wget \
     && rm -rf /var/lib/apt/lists/*
 
 # Install JRE
