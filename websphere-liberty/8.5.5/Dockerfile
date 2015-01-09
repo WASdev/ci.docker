@@ -16,7 +16,7 @@ FROM ubuntu:14.04
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq wget \
-    && apt-get clean
+    && rm -rf /var/lib/apt/lists/*
 
 # Install JRE
 ENV JRE_VERSION 1.7.1.1
@@ -53,3 +53,4 @@ EXPOSE 9080
 EXPOSE 9443
 
 ENTRYPOINT ["liberty-run"]
+CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]

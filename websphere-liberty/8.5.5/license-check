@@ -15,13 +15,14 @@
 # limitations under the License.
 
 if [ "$LICENSE" = "accept" ]; then
-  exec "$@"
+  exit 0
 elif [ "$LICENSE" = "view" ]; then
   for f in /opt/ibm/docker/licenses/*
   do
     $f
     echo -e "\n\n====\n"
   done
+  exit 1
 else
   echo -e "Set environment variable LICENSE=accept to indicate acceptance of license terms and conditions.\n\nLicense agreements and information can be viewed by running this image with the environment variable LICENSE=view."
   exit 1
