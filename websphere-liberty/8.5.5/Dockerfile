@@ -14,6 +14,8 @@
 
 FROM ubuntu:14.04
 
+MAINTAINER David Currie <david_currie@uk.ibm.com> (@dcurrie)
+
 RUN apt-get update \
     && apt-get install -y wget \
     && rm -rf /var/lib/apt/lists/*
