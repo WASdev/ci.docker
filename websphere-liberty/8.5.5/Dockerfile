@@ -20,7 +20,7 @@ RUN apt-get update \
 
 # Install JRE
 ENV JRE_VERSION 1.7.1.1
-RUN JRE_URL=$(wget -q -O - http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/jre/index.yml | sed -n '/'$JRE_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p') \
+RUN JRE_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/jre/index.yml | sed -n '/'$JRE_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p') \
     && wget -q $JRE_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/ibm-java.bin \
     && chmod +x /tmp/ibm-java.bin \
     && echo "INSTALLER_UI=silent" > /tmp/response.properties \
@@ -37,7 +37,7 @@ COPY view-jre-license /opt/ibm/docker/licenses/
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 8.5.5.4
-RUN LIBERTY_URL=$(wget -q -O - http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | sed -n '/'$LIBERTY_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p') \
+RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | sed -n '/'$LIBERTY_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p') \
     && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-developers-runtime.jar \
     && java -jar /tmp/wlp-developers-runtime.jar --acceptLicense /opt/ibm \
     && rm /tmp/wlp-developers-runtime.jar 
