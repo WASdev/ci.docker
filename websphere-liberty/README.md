@@ -1,6 +1,6 @@
 # Overview 
 
-This image contains IBM WebSphere Application Server for Developers V8.5.5 Liberty Profile and the IBM Java Runtime Environment 7.1 SR1. For more information on WebSphere Application Server Liberty Profile, see [WASdev](https://developer.ibm.com/wasdev/docs/category/getting-started/). The Dockerfile for this image can be found on [WASdev GitHub](https://github.com/WASdev/ci.docker/blob/master/websphere-liberty/8.5.5/Dockerfile).
+This image contains IBM WebSphere Application Server for Developers Liberty Profile and the IBM Java Runtime Environment. For more information on WebSphere Application Server Liberty Profile, see [WASdev](https://developer.ibm.com/wasdev/docs/category/getting-started/). The Dockerfile for this image can be found on [WASdev GitHub](https://github.com/WASdev/ci.docker/blob/master/websphere-liberty/8.5.5/Dockerfile).
 
 # Usage
 
@@ -8,16 +8,16 @@ In order to use the image, it is necessary to accept the terms of the WebSphere 
 
 The image is designed to support a number of different usage patterns:
 
-1. The image contains a default server configuration that specifies the `webProfile-6.0` feature and exposes ports 9080 and 9443 for HTTP and HTTPs respectively. A WAR file can therefore be mounted in to the `dropins` directory of this server and run. The following example starts a container in the background running a WAR file from the host file system with the HTTP and HTTPS ports mapped to 80 and 443 respectively.
+1. The image contains a default server configuration that specifies the `webProfile-6.0` feature and exposes ports 9080 and 9443 for HTTP and HTTPS respectively. A WAR file can therefore be mounted in to the `dropins` directory of this server and run. The following example starts a container in the background running a WAR file from the host file system with the HTTP and HTTPS ports mapped to 80 and 443 respectively.
 
     ```
     docker run -e LICENSE=accept -d -p 80:9080 -p 443:9443 -v /tmp/myApp.war:/opt/ibm/wlp/usr/servers/defaultServer/dropins/myApp.war wasdev/websphere-liberty
     ```
     
-2. For greater flexibility over configuration, it is possible to mount an entire server configuration directory from the host and then specify the server name as a parameter to the run command. The following example uses the server configuration from the `myServer` directory on the host. Note that this non-default server name is also passed as a parameter to the image.
+2. For greater flexibility over configuration, it is possible to mount an entire server configuration directory from the host and then specify the server name as a parameter to the run command. The following example uses the server configuration from the `myServer` directory on the host.
 
     ```
-    docker run -e LICENSE=accept -p 80:9080 -p 443:9443 -v /tmp/myServer:/opt/ibm/wlp/usr/servers/myServer wasdev/websphere-liberty myServer
+    docker run -e LICENSE=accept -p 80:9080 -p 443:9443 -v /tmp/myServer:/opt/ibm/wlp/usr/servers/myServer wasdev/websphere-liberty /opt/ibm/wlp/bin/server run myServer
     ```
     
 3. It is also possible to build an application layer on top of this image using either the default server configuration or a new server configuration and, optionally, accept the license as part of that build.
@@ -45,7 +45,7 @@ The image is designed to support a number of different usage patterns:
     Run the WebSphere Liberty image with the volumes from the data volume container mounted:
 
     ```
-    docker run -e LICENSE=accept -d --volumes-from app wasdev/websphere-liberty myServer
+    docker run -e LICENSE=accept -d --volumes-from app wasdev/websphere-liberty /opt/ibm/wlp/bin/server run myServer
     ```
 
 # Issues and contributions
