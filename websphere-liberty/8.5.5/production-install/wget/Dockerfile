@@ -22,7 +22,7 @@ RUN apt-get update \
 
 # Install JRE
 RUN wget  -q  <User Credentials> \
-   <URL>//home/test/jre/ibm-java*archive.bin -O /tmp/java.bin \
+   <URL>/ibm-java*archive.bin -O /tmp/java.bin \
    && chmod +x /tmp/java.bin \
    && /tmp/java.bin -i silent -DUSER_INSTALL_DIR=/opt/ibm/java \
    && rm /tmp/java.bin
@@ -32,7 +32,7 @@ ENV PATH $JAVA_HOME/jre/bin:$PATH
 
 # Install Liberty
 RUN  wget -q  <User Credential> \
-   <URL>//home/test/LibertyCore/855*-wlp*runtime-archive.jar  -O /tmp/855*-wlp*runtime-archive.jar \
+   <URL>/855*-wlp*runtime-archive.jar  -O /tmp/855*-wlp*runtime-archive.jar \
    && java -jar /tmp/855*-wlp*runtime-archive.jar \
    --acceptLicense /opt/ibm \
    && rm /tmp/855*-wlp*runtime-archive.jar
