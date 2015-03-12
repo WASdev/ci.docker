@@ -18,7 +18,7 @@ The plug-in generation script generates plugin-cfg.xml which is used in configur
 
    ```bash
    docker run -d -t <image-name> 
-   docker exec <image-name> /opt/ibm/wlp/bin/GenPluginCfg.sh --installDir=<PATH_TO_WLP> --userDir=<PATH_TO_USR> --serverName=<SERVERNAME>
+   docker exec <container-name> /opt/ibm/wlp/bin/GenPluginCfg.sh --installDir=<PATH_TO_WLP> --userDir=<PATH_TO_USR> --serverName=<SERVERNAME>
    
    Plugin configuration file written to <PATH_TO_USR>/servers/<SERVERNAME>/plugin-cfg.xml
    
