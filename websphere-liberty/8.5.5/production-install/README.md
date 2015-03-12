@@ -1,7 +1,7 @@
 # Building a IBM WebSphere Application Server Liberty Profile production images from binaries
 
 A IBM WebSphere Application Server Liberty Profile production image can be built by obtaining the following binaries:
-* WebSphere Application Server Liberty Runtime Archive from Passport Advantage / Fix Central
+* WebSphere Application Server Liberty Runtime Archive from [Passport Advantage](http://www-01.ibm.com/software/passportadvantage/pao_customer.html) / [Fix Central](http://www-933.ibm.com/support/fixcentral/)
 * IBM JRE from [developerWorks](https://www.ibm.com/developerworks/java/jdk/linux/download.html)
 
 Dockerfiles are provided for two approaches to building the image:
@@ -17,6 +17,7 @@ The first option is simpler and will build quicker but results in a larger Docke
 3. Place the downloaded Liberty Runtime Archive and IBM JRE in to this directory.
 3. Review the Dockerfile and modify the filenames if required,
 5. Build the image using:
+
     ```bash
     docker build -t <image-name> .
     ```
@@ -25,9 +26,10 @@ The first option is simpler and will build quicker but results in a larger Docke
 
 1. Place the downloaded Liberty Runtime Archive and IBM JRE on the FTP or HTTP server.
 2. Clone this repository.
-3. Move to the directory `websphere-liberty/8.5.5/production-install/add`.
+3. Move to the directory `websphere-liberty/8.5.5/production-install/wget`.
 4. Review the Dockerfile and update the user credentials and URL of the server hosting the binaries.
 5. Build the image using:
+
     ```bash
     docker build -t <image-name> .
     ```
