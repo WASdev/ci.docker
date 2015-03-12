@@ -1,6 +1,7 @@
 # Plug-in Generation Script 
 
 The plug-in generation script generates plugin-cfg.xml which is used in configuring webserver.
+
 ###### Syntax
 
 ```bash
@@ -8,8 +9,11 @@ The plug-in generation script generates plugin-cfg.xml which is used in configur
 ```
 where
  --installDir is the path of liberty installation
+ 
  --outputDir is the path where plugin-cfg.xml will be generated
+ 
  --userDir is the path of liberty user directory
+ 
  --serverName is the name of server for which plugin-cfg.xml needs to be generated
 
 for example
