@@ -30,6 +30,10 @@ using the following command:
   
 The plug-in configuration file is written to `<PATH_TO_USR>/servers/<SERVERNAME>/plugin-cfg.xml`.
 
+Note that the hostname and ports in the generated file will reflect those inside
+the container. These may need updating to reflect the values exposed externally
+and accessible by the web server.
+
 For the `websphere-liberty` image on Docker Hub, the command would be as follows:
 
    ```bash
