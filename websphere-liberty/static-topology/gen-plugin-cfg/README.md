@@ -8,9 +8,9 @@ A IBM WebSphere Application Server Liberty Profile image with plug-in generation
 
 3.Build the image using:
 
-    ```bash
+
     docker build -t <image-name> .
-    ```
+  
 
 The plug-in generation script generates plugin-cfg.xml which is used in configuring webserver.
 
