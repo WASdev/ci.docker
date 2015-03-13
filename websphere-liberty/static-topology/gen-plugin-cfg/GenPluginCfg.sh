@@ -15,22 +15,40 @@
 # limitations under the License.
 
 HELP="--help"
-if [ "$JAVA_HOME" != "" ]
+if [[ $1 == --installDir* ]]
 then
- if [ -n "$1" ]  
- then
-  if [ $1 = $HELP ]
-  then
-   echo "Usage of GenPluginCfg.sh ./GenPluginCfg.sh --installDir=<PATH_TO_WLP> --outputDir=<PATH_TO_OUTPUT> --userDir=<PATH_TO_USR> --serverName=<SERVERNAME>" 
-  else
-   JAVA_CMD=${JAVA_HOME}/bin/java
-   CWD=$(pwd)
-   JAVAPROGRAM=$CWD/tools/com.ibm.ws.docker.jar
-   $JAVA_CMD -jar $JAVAPROGRAM $1 $2 $3 $4 
-  fi
- else
- echo "Usage of GenPluginCfg.sh ./GenPluginCfg.sh --installDir=<PATH_TO_WLP> --outputDir=<PATH_TO_OUTPUT> --userDir=<PATH_TO_USR> --serverName=<SERVERNAME>"
- fi
+  CUTDIR=$(echo $1 | cut -c14-)
 else
- echo Please set your JAVA_HOME environment variable
+ if [[ $2 == --installDir* ]]
+  then
+   CUTDIR=$(echo $2 | cut -c14-)
+  else
+   if [[ $3 == --installDir* ]]
+    then
+     CUTDIR=$(echo $3 | cut -c14-) 
+   fi
+ fi
+fi
+if [[ "$CUTDIR" == "" ]]
+ then
+  echo "Usage of GenPluginCfg.sh ./GenPluginCfg.sh --installDir=<PATH_TO_WLP> --userDir=<PATH_TO_USR> --serverName=<SERVERNAME>"
+ else
+  if [ "$JAVA_HOME" != "" ]
+   then
+    if [ -n "$1" ]  
+     then
+      if [ $1 = $HELP ]
+       then
+        echo "Usage of GenPluginCfg.sh ./GenPluginCfg.sh --installDir=<PATH_TO_WLP> --userDir=<PATH_TO_USR> --serverName=<SERVERNAME>" 
+      else
+       JAVA_CMD=${JAVA_HOME}/jre/bin/java
+       JAVAPROGRAM=$CUTDIR/bin/tools/com.ibm.ws.docker.jar
+       $JAVA_CMD -jar $JAVAPROGRAM $1 $2 $3 $4 
+      fi
+     else
+      echo "Usage of GenPluginCfg.sh ./GenPluginCfg.sh --installDir=<PATH_TO_WLP> --userDir=<PATH_TO_USR> --serverName=<SERVERNAME>"
+    fi
+   else
+    echo Please set your JAVA_HOME environment variable
+  fi
 fi
