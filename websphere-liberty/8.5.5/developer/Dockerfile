@@ -38,7 +38,7 @@ COPY license-check /opt/ibm/docker/
 COPY view-jre-license /opt/ibm/docker/licenses/
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 8.5.5_04
+ENV LIBERTY_VERSION 8.5.5_05
 RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | sed -n '/'$LIBERTY_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p') \
     && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-developers-runtime.jar \
     && java -jar /tmp/wlp-developers-runtime.jar --acceptLicense /opt/ibm \
