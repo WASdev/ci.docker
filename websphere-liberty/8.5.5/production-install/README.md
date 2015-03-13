@@ -1,6 +1,6 @@
 # Building a IBM WebSphere Application Server Liberty Profile production images from binaries
 
-A IBM WebSphere Application Server Liberty Profile production image can be built by obtaining the following binaries:
+An IBM WebSphere Application Server Liberty Profile production image can be built by obtaining the following binaries:
 * WebSphere Application Server Liberty Runtime Archive from [Passport Advantage](http://www-01.ibm.com/software/passportadvantage/pao_customer.html) / [Fix Central](http://www-933.ibm.com/support/fixcentral/)
 * IBM JRE from [developerWorks](https://www.ibm.com/developerworks/java/jdk/linux/download.html)
 
@@ -33,4 +33,3 @@ The first option is simpler and will build quicker but results in a larger Docke
     ```bash
     docker build -t <image-name> .
     ```
-

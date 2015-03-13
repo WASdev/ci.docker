@@ -1,18 +1,18 @@
 # Generating a web server plug-in configuration
 
 The files in this directory can be used to extend an IBM WebSphere Application
-Server Liberty Profile image so that, once running, a web server plug-in
-configuration file (plugin-cfg.xml) can be generated.
+Server Liberty profile image. Using the extended image you can generate a web
+server plug-in configuration file (plugin-cfg.xml).
 
-To build an image with this capability follow these steps:
+To build an extended image follow these steps:
 
 1. Clone this repository.
 2. Change to the directory `websphere-liberty/static-topology/gen-plugin-cfg`.
-3. Review the `Dockerfile` to ensure that the `FROM` command reflects in the
-image in your registry that you want to extend and that the paths reflect the
-location of your WebSphere Liberty install. The default values in the file are
+3. Review the `Dockerfile` to ensure that the `FROM` command specifies the
+image that you want to extend and the paths contain the location of your 
+WebSphere Liberty profile install. The default values in the file are
 configured to work with the `websphere-liberty` image on Docker Hub.
-3. Build the image using:
+4. Build the image using the following command:
 
     ```bash
     docker build -t <image-name> .
@@ -20,21 +20,23 @@ configured to work with the `websphere-liberty` image on Docker Hub.
 
 ## Usage
 
-Once the extended image is running, the plug-in configuration can be generated
-using the following command:
+To generate the plug-in configuration file by using the extended image that you
+create, use the following command when the image is running.
 
    ```bash
    docker exec <container-name> /opt/ibm/wlp/bin/GenPluginCfg.sh \
      --installDir=<PATH_TO_WLP> --userDir=<PATH_TO_USR> --serverName=<SERVERNAME>
    ```
   
-The plug-in configuration file is written to `<PATH_TO_USR>/servers/<SERVERNAME>/plugin-cfg.xml`.
+The plug-in configuration file is written to the following path: 
+`<PATH_TO_USR>/servers/<SERVERNAME>/plugin-cfg.xml`.
 
 Note that the hostname and ports in the generated file will reflect those inside
 the container. These may need updating to reflect the values exposed externally
 and accessible by the web server.
 
-For the `websphere-liberty` image on Docker Hub, the command would be as follows:
+To generate the plug-in configuration file having extended the image on Docker Hub,
+use the following command:
 
    ```bash
    docker exec <container-name> /opt/ibm/wlp/bin/GenPluginCfg.sh \
