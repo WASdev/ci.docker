@@ -31,11 +31,10 @@ ENV JAVA_HOME /opt/ibm/java
 ENV PATH $JAVA_HOME/jre/bin:$PATH
 
 # Install Liberty
-ADD 855*-wlp*runtime-archive.jar /tmp/855*-wlp*runtime-archive.jar
+ADD wlp-*-runtime-8.5.5.*.jar /tmp/wlp-runtime.jar
 
-RUN java -jar /tmp/855*-wlp*runtime-archive.jar \
-    --acceptLicense /opt/ibm \
-    && rm /tmp/855*-wlp*runtime-archive.jar
+RUN java -jar /tmp/wlp-runtime.jar --acceptLicense /opt/ibm \
+    && rm /tmp/wlp-runtime.jar
 
 ENV PATH /opt/ibm/wlp/bin:$PATH
 

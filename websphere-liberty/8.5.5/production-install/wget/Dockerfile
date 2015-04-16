@@ -32,10 +32,9 @@ ENV PATH $JAVA_HOME/jre/bin:$PATH
 
 # Install Liberty
 RUN  wget -q  <User Credential> \
-   <URL>/855*-wlp*runtime-archive.jar  -O /tmp/855*-wlp*runtime-archive.jar \
-   && java -jar /tmp/855*-wlp*runtime-archive.jar \
-   --acceptLicense /opt/ibm \
-   && rm /tmp/855*-wlp*runtime-archive.jar
+   <URL>/wlp-*-runtime-8.5.5.*.jar -O /tmp/wlp-runtime.jar \
+   && java -jar /tmp/wlp-runtime.jar --acceptLicense /opt/ibm \
+   && rm /tmp/wlp-runtime.jar
 
 ENV PATH /opt/ibm/wlp/bin:$PATH
 
