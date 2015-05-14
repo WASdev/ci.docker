@@ -21,7 +21,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install JRE
-ENV JRE_VERSION 1.7.1.1
+ENV JRE_VERSION 1.7.1_sr2fp10
 RUN JRE_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/jre/index.yml | sed -n '/'$JRE_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p') \
     && wget -q $JRE_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/ibm-java.bin \
     && chmod +x /tmp/ibm-java.bin \
@@ -29,7 +29,6 @@ RUN JRE_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/
     && echo "USER_INSTALL_DIR=/opt/ibm/java" >> /tmp/response.properties \
     && mkdir /opt/ibm \
     && /tmp/ibm-java.bin -i silent -f /tmp/response.properties \
-    && mv /tmp/ibm-java-x86_64-* /opt/ibm/java \
     && rm /tmp/response.properties \
     && rm /tmp/ibm-java.bin
 ENV JAVA_HOME /opt/ibm/java
