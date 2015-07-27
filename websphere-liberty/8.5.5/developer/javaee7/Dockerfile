@@ -14,7 +14,8 @@
 
 FROM websphere-liberty:webProfile7
 
-MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com> (@kavisuresh)
+MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com> (@kavi2002suresh)
 
 COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/ 
-RUN installUtility install --acceptLicense defaultServer 
+RUN installUtility install --acceptLicense defaultServer \
+    && rm -rf /opt/ibm/wlp/usr/servers/defaultServer/workarea

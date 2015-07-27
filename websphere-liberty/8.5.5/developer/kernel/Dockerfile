@@ -14,7 +14,7 @@
 
 FROM ubuntu:14.04
 
-MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com> (@kavisuresh)
+MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com> (@kavi2002suresh)
 
 RUN apt-get update \
     && apt-get install -y wget unzip \
@@ -46,6 +46,8 @@ RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/softw
 COPY view-wlp-license /opt/ibm/docker/licenses/	
 COPY liberty-run /opt/ibm/wlp/bin/
 ENV PATH /opt/ibm/wlp/bin:$PATH
+
+VOLUME /opt/ibm/wlp/usr
 
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
