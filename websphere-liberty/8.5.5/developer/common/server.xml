@@ -1,0 +1,24 @@
+<server description="Default Server">
+
+    <featureManager>
+	<feature>collectiveMember-1.0</feature> 
+	<feature>monitor-1.0</feature> 
+	<feature>webCache-1.0</feature>
+	<feature>ldapRegistry-3.0</feature> 
+	<feature>appSecurity-2.0</feature> 
+	<feature>localConnector-1.0</feature> 
+	<feature>restConnector-1.0</feature> 
+	<feature>ssl-1.0</feature> 
+	<feature>requestTiming-1.0</feature>  
+	<feature>sessionDatabase-1.0</feature>
+    </featureManager>
+
+    <httpEndpoint id="defaultHttpEndpoint"
+		  host="*"
+                  httpPort="9080"
+                  httpsPort="9443" />
+
+    <keyStore id="defaultKeyStore"
+              password="Liberty" />
+
+</server>
