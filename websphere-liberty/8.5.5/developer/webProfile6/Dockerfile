@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2015.
+# (C) Copyright IBM Corporation 2014.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:common
+FROM java:jre	
 
-MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com> (@kavi2002suresh)
+MAINTAINER David Currie <david_currie@uk.ibm.com> (@dcurrie)
 
+RUN apt-get update \
+    && apt-get install -y wget \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+ENV PATH $JAVA_HOME/jre/bin:$PATH
+COPY license-check /opt/ibm/docker/
+COPY view-jre-license /opt/ibm/docker/licenses/
+
+# Install WebSphere Liberty
+ENV LIBERTY_VERSION 8.5.5_06
+RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | sed -n '/'$LIBERTY_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p' | tr -d '\r') \
+    && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-developers-runtime.jar \
+    && java -jar /tmp/wlp-developers-runtime.jar --acceptLicense /opt/ibm \
+    && rm /tmp/wlp-developers-runtime.jar 
+COPY view-wlp-license /opt/ibm/docker/licenses/
+COPY liberty-run /opt/ibm/wlp/bin/
+ENV PATH /opt/ibm/wlp/bin:$PATH
+
+VOLUME /opt/ibm/wlp/usr
+
+# Configure WebSphere Liberty
+RUN /opt/ibm/wlp/bin/server create \
+    && rm -rf /opt/ibm/wlp/usr/servers/.classCache
 COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/
-RUN installUtility install --acceptLicense defaultServer \
-    && rm -rf /opt/ibm/wlp/usr/servers/defaultServer/workarea
+EXPOSE 9080
+EXPOSE 9443
+
+ENTRYPOINT ["liberty-run"]
+CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
