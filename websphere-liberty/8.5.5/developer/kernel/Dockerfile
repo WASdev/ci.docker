@@ -47,8 +47,6 @@ COPY view-wlp-license /opt/ibm/docker/licenses/
 COPY liberty-run /opt/ibm/wlp/bin/
 ENV PATH /opt/ibm/wlp/bin:$PATH
 
-VOLUME /opt/ibm/wlp/usr
-
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
     && rm -rf /opt/ibm/wlp/usr/servers/.classCache
