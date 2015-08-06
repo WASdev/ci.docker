@@ -1,6 +1,6 @@
 # WebSphere Application Server Developer Edition V8.5.5 Liberty Profile image for Docker
 
-The [Dockerfile](Dockerfile) in this directory is used to build the `websphere-liberty:webProfile6` image on [Docker Hub](https://registry.hub.docker.com/_/websphere-liberty/). The image contains IBM WebSphere Application Server Developer Edition V8.5.5 with Java EE 6 Web Profile features and an IBM Java Runtime Environment.
+The [Dockerfile](Dockerfile) in this directory is used to build the `websphere-liberty:webProfile6` image on [Docker Hub](https://registry.hub.docker.com/_/websphere-liberty/). The image contains IBM WebSphere Application Server Developer Edition V8.5.5 with Java EE 6 Web Profile features and builds on the `java:jre` OpenJRE image.
 
 # Usage
 
