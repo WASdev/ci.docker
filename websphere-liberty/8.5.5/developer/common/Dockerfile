@@ -14,6 +14,4 @@
 
 FROM websphere-liberty:kernel
 
-COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/
-RUN installUtility install --acceptLicense defaultServer \
-    && rm -rf /opt/ibm/wlp/usr/servers/defaultServer/workarea
+RUN installUtility install --acceptLicense collectiveMember-1.0 monitor-1.0 webCache-1.0 ldapRegistry-3.0 appSecurity-2.0 localConnector-1.0 restConnector-1.0 ssl-1.0 requestTiming-1.0 sessionDatabase-1.0 
