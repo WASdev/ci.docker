@@ -14,7 +14,7 @@
 
 FROM ubuntu:14.04
 
-MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com> (@kavisuresh)
+MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com> (@kavi2002suresh)
 
 RUN apt-get update \
     && apt-get install -y wget unzip \
