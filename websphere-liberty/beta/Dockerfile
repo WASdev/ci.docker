@@ -21,7 +21,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 2015.7.0_0
+ENV LIBERTY_VERSION 2015.8.0_0
 RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | sed -n '/'$LIBERTY_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p' | tr -d '\r') \
     && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-developers-runtime.jar \
     && java -jar /tmp/wlp-developers-runtime.jar --acceptLicense /opt/ibm \
@@ -35,8 +35,7 @@ ENV PATH /opt/ibm/wlp/bin:$PATH
 RUN /opt/ibm/wlp/bin/server create \
     && rm -rf /opt/ibm/wlp/usr/servers/.classCache
 COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/
-EXPOSE 9080
-EXPOSE 9443
+EXPOSE 9080 9443
 
 ENTRYPOINT ["liberty-run"]
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]

@@ -12,30 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ubuntu:14.04
+FROM java:jre
 
-MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com> (@kavisuresh)
+MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com> (@kavi2002suresh)
 
 RUN apt-get update \
     && apt-get install -y wget unzip \
     && rm -rf /var/lib/apt/lists/*
-
-# Install JRE
-ENV JRE_VERSION 1.8.0_sr1fp01
-RUN JRE_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/jre/index.yml | sed -n '/'$JRE_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p' | tr -d '\r') \
-    && wget -q $JRE_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/ibm-java.bin \
-    && chmod +x /tmp/ibm-java.bin \
-    && echo "INSTALLER_UI=silent" > /tmp/response.properties \
-    && echo "USER_INSTALL_DIR=/opt/ibm/java" >> /tmp/response.properties \
-    && echo "LICENSE_ACCEPTED=TRUE" >> /tmp/response.properties \
-    && mkdir /opt/ibm \
-    && /tmp/ibm-java.bin -i silent -f /tmp/response.properties \
-    && rm /tmp/response.properties \
-    && rm /tmp/ibm-java.bin
-ENV JAVA_HOME /opt/ibm/java
-ENV PATH $JAVA_HOME/jre/bin:$PATH
-COPY license-check /opt/ibm/docker/
-COPY view-jre-license /opt/ibm/docker/licenses/
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 8.5.5_06
@@ -44,6 +27,7 @@ RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/softw
     && unzip -q /tmp/wlp.zip -d /opt/ibm \
     && rm /tmp/wlp.zip 	
 COPY view-wlp-license /opt/ibm/docker/licenses/	
+COPY license-check /opt/ibm/docker/
 COPY liberty-run /opt/ibm/wlp/bin/
 ENV PATH /opt/ibm/wlp/bin:$PATH
 

@@ -12,31 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM java:jre
+FROM websphere-liberty:common
 
-MAINTAINER David Currie <david_currie@uk.ibm.com> (@dcurrie)
-
-RUN apt-get update \
-    && apt-get install -y wget \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install WebSphere Liberty
-ENV LIBERTY_VERSION 8.5.5_06
-RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | sed -n '/'$LIBERTY_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p' | tr -d '\r') \
-    && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-developers-runtime.jar \
-    && java -jar /tmp/wlp-developers-runtime.jar --acceptLicense /opt/ibm \
-    && rm /tmp/wlp-developers-runtime.jar 
-COPY license-check /opt/ibm/docker/
-COPY view-wlp-license /opt/ibm/docker/licenses/
-COPY liberty-run /opt/ibm/wlp/bin/
-ENV PATH /opt/ibm/wlp/bin:$PATH
-
-# Configure WebSphere Liberty
-RUN /opt/ibm/wlp/bin/server create \
-    && rm -rf /opt/ibm/wlp/usr/servers/.classCache
 COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/
-EXPOSE 9080
-EXPOSE 9443
+RUN installUtility install --acceptLicense appSecurity-1.0 blueprint-1.0 concurrent-1.0 oauth-2.0 osgiConsole-1.0 serverStatus-1.0 wab-1.0 timedOperations-1.0 \
+    && installUtility install --acceptLicense defaultServer \
+    && rm -rf /opt/ibm/wlp/usr/servers/defaultServer/workarea 
 
-ENTRYPOINT ["liberty-run"]
-CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]

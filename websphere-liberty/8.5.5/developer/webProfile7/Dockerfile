@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:kernel
-
-MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com> (@kavisuresh)
+FROM websphere-liberty:common
 
 COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/
-RUN installUtility install --acceptLicense defaultServer 
+RUN installUtility install --acceptLicense defaultServer \
+    && rm -rf /opt/ibm/wlp/usr/servers/defaultServer/workarea
