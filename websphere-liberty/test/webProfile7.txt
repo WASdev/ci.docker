@@ -5,7 +5,6 @@ collectiveMember-1.0
 distributedMap-1.0
 ejbLite-3.2
 el-3.0
-javaMail-1.5
 jaxrs-1.1
 jaxrs-2.0
 jaxrsClient-2.0
