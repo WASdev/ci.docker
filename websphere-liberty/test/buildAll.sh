@@ -5,6 +5,12 @@ while read -r line
 do
     image=`echo $line | cut -d " " -f1`
     location=`echo $line  | cut -d " " -f2`
-    ./buildAndVerify.sh $image $location
+    sh buildAndVerify.sh $image $location
+   
+    if [ $? != 0 ]
+    then
+        echo " No point in continuing, exiting ........"
+        exit 1
+    fi
     
 done < "$filename"
