@@ -34,7 +34,7 @@ echo "**************************************************************************
 echo "           Starting docker build for $image                                   "
 echo "******************************************************************************"
 
-docker build --no-cache=true -t $image $dloc
+docker build --no-cache=true -t $image $dloc  > build_$tag.log
 
 cleanup()
 {
@@ -55,7 +55,7 @@ test1()
    echo "******************************************************************************"
 
    docker ps -a | grep -i $cname
-   if [ $? == 0 ]
+   if [ $? = 0 ]
    then
         cleanup
    fi
@@ -66,10 +66,10 @@ test1()
         echo "Container $cname created "
         echo "Reviewing Container logs" 
         docker logs $cname | grep -i "Set environment variable LICENSE=accept to indicate acceptance of license terms and conditions."
-   	if [ $? == 0 ]
+   	if [ $? = 0 ]
    	then 
                 docker ps -q | grep -i $cname
-                if [ $? == 0 ]
+                if [ $? = 0 ]
                 then
                         echo "Container expecting license acceptance  "
                 	cleanup
@@ -98,7 +98,7 @@ test2()
    echo "******************************************************************************"
 
    docker ps -a | grep -i $cname
-   if [ $? == 0 ]
+   if [ $? = 0 ]
    then
         cleanup
    fi
@@ -114,7 +114,7 @@ test2()
                sleep 20
                docker logs $cname | grep -i CWWKF0011I 
 
-               if [ $? == 0 ]
+               if [ $? = 0 ]
                then
       			echo "Product version is"
                         docker exec $cname /opt/ibm/wlp/bin/productInfo version
@@ -144,7 +144,7 @@ test3()
    echo "******************************************************************************"
 
    docker ps -a | grep -i $cname
-   if [ $? == 0 ]
+   if [ $? = 0 ]
    then
         cleanup
    fi
@@ -152,7 +152,7 @@ test3()
    docker run --name $cname -e LICENSE=accept -t $image /opt/ibm/wlp/bin/productInfo featureInfo | cut -d " " -f1 > features_$tag.txt
    diff -u features_$tag.txt $tag.txt > diff.txt
 
-   if [ $? == 0 ]
+   if [ $? = 0 ]
    then 
    	echo "$tag features are installed"
    else
@@ -166,13 +166,16 @@ test3()
 
 }
 
-if [ $? == 0 ]
+
+grep -i "Successfully built" build_$tag.log
+
+if [ $? = 0 ]
 then
     echo "******************************************************************************"
     echo "              $image built successfully                                       "
     echo "******************************************************************************"
     test1
-    if [ $? == 0 ]
+    if [ $? = 0 ]
     then
     	echo "******************************************************************************"
     	echo "                       Test1 Completed Successfully                           "
@@ -180,7 +183,7 @@ then
     fi
     test2
     
-    if [ $? == 0 ]
+    if [ $? = 0 ]
     then
         echo "******************************************************************************"
         echo "                       Test2 Completed Successfully                           "
@@ -190,7 +193,7 @@ then
     if [ $tag != "kernel" ]
     then
     	test3
-        if [ $? == 0 ]
+        if [ $? = 0 ]
     	then
         	echo "******************************************************************************"
         	echo "                      Test3 Completed Successfully                            "
@@ -198,4 +201,7 @@ then
     	fi
 
     fi
+else
+    echo " Build failed , exiting.........."
+    exit 1
 fi
