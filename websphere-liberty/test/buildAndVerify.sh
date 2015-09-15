@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #####################################################################################
 #                                                                                   #
 #  Script to build docker image and verify the image                                #
@@ -42,7 +42,7 @@ cleanup()
    echo "------------------------------------------------------------------------------" 
    echo "Starting Cleanup  "
    echo "Stopping Container $cname"
-   docker stop $cname
+   docker kill $cname
    echo "Removing Container $cname"
    docker rm $cname
    echo "Cleanup Completed "
@@ -76,7 +76,7 @@ test1()
                 else
                         echo "Container test exited , expecting license acceptance  "
                         echo "Removing container $cname"
-                        docker rm $cname
+                        cleanup
                 fi
         else
                 echo "Test failed no license acceptance statement in the logs"
@@ -103,7 +103,7 @@ test2()
         cleanup
    fi
 
-   cid=`docker run --name $cname -e LICENSE=accept -d -t $image `
+   cid=`docker run --name $cname -d -t -e LICENSE=accept $image `
    scid=${cid:0:12}
    sleep 10
    if [ $scid != "" ]
