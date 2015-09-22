@@ -1,4 +1,4 @@
-# WebSphere Application Server and Docker
+# WebSphere Application Server and Docker [![Build Status](https://travis-ci.org/WASdev/ci.docker.svg?branch=master)](https://travis-ci.org/WASdev/ci.docker)
 
 This project contains build scripts for Docker images (Dockerfiles) and Docker related utilities for WebSphere Application Server. Currently resources are available for:
 
