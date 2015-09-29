@@ -41,6 +41,7 @@ osgiAppConsole-1.0
 osgiConsole-1.0
 restConnector-1.0
 samlWeb-2.0
+scim-1.0
 serverStatus-1.0
 servlet-3.0
 servlet-3.1
