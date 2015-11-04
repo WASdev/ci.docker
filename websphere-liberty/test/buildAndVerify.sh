@@ -34,7 +34,8 @@ echo "**************************************************************************
 echo "           Starting docker build for $image                                   "
 echo "******************************************************************************"
 
-docker build --no-cache=true -t $image $dloc  > build_$tag.log
+#docker build --no-cache=true -t $image $dloc  > build_$tag.log
+docker build -t $image $dloc  > build_$tag.log
 
 cleanup()
 {
@@ -111,7 +112,7 @@ test2()
          rcid=`docker ps -q | grep -i $scid `
          if [ rcid != " " ]
          then
-               sleep 20
+               sleep 60
                docker logs $cname | grep -i CWWKF0011I 
 
                if [ $? = 0 ]
