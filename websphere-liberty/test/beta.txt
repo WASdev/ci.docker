@@ -42,6 +42,7 @@ openidConnectClient-1.0
 openidConnectServer-1.0
 osgi.jpa-1.0
 osgiAppConsole-1.0
+osgiBundle-1.0
 osgiConsole-1.0
 restConnector-1.0
 samlWeb-2.0
