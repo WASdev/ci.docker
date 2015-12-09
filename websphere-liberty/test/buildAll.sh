@@ -1,5 +1,14 @@
 #!/bin/bash
 
+#####################################################################################
+#                                                                                   #
+#  Script to build docker image and test all images                              	#
+#                                                                                   #
+#                                                                                   #
+#  Usage : buildAll.sh input.txt                									# 
+#                                                                                   #
+#####################################################################################
+
 filename="$1"
 while read -r line
 do
