@@ -48,10 +48,11 @@ cleanup()
    echo "Cleanup Completed "
    echo "------------------------------------------------------------------------------"
 } 
+
 test1()
 {
    echo "******************************************************************************"
-   echo "                Executing  test1  - Without License Acceptance                "
+   echo "                  Executing  test1  - Container Runs                 "
    echo "******************************************************************************"
 
    docker ps -a | grep -i $cname
@@ -61,49 +62,6 @@ test1()
    fi
 
    cid=`docker run --name $cname -d -t $image `
-   if [ $cid != "" ]
-   then
-        echo "Container $cname created "
-        echo "Reviewing Container logs" 
-        docker logs $cname | grep -i "Set environment variable LICENSE=accept to indicate acceptance of license terms and conditions."
-   	if [ $? = 0 ]
-   	then 
-                docker ps -q | grep -i $cname
-                if [ $? = 0 ]
-                then
-                        echo "Container expecting license acceptance  "
-                	cleanup
-                else
-                        echo "Container test exited , expecting license acceptance  "
-                        echo "Removing container $cname"
-                        cleanup
-                fi
-        else
-                echo "Test failed no license acceptance statement in the logs"
-                cleanup
-                exit 1
-        fi
-   else
-        echo "Container not created successfully, staring cleanup "
-        cleanup
-        exit 1
-   fi
-   
-}
-
-test2()
-{
-   echo "******************************************************************************"
-   echo "                  Executing  test2  - With License Acceptance                 "
-   echo "******************************************************************************"
-
-   docker ps -a | grep -i $cname
-   if [ $? = 0 ]
-   then
-        cleanup
-   fi
-
-   cid=`docker run --name $cname -d -t -e LICENSE=accept $image `
    scid=${cid:0:12}
    sleep 10
    if [ $scid != "" ]
@@ -137,10 +95,10 @@ test2()
    
 }
 
-test3()
+test2()
 {
    echo "******************************************************************************"
-   echo "                     Executing  test3  - feature check                        "
+   echo "                     Executing  test2  - feature check                        "
    echo "******************************************************************************"
 
    docker ps -a | grep -i $cname
@@ -149,7 +107,7 @@ test3()
         cleanup
    fi
 
-   docker run --name $cname -e LICENSE=accept -t $image /opt/ibm/wlp/bin/productInfo featureInfo | cut -d " " -f1 > features_$tag.txt
+   docker run --name $cname -t $image /opt/ibm/wlp/bin/productInfo featureInfo | cut -d " " -f1 > features_$tag.txt
    diff -u features_$tag.txt $tag.txt > diff.txt
 
    if [ $? = 0 ]
@@ -181,22 +139,14 @@ then
     	echo "                       Test1 Completed Successfully                           "
     	echo "******************************************************************************"
     fi
-    test2
-    
-    if [ $? = 0 ]
-    then
-        echo "******************************************************************************"
-        echo "                       Test2 Completed Successfully                           "
-        echo "******************************************************************************"
-    fi
 
     if [ $tag != "kernel" ]
     then
-    	test3
+    	test2
         if [ $? = 0 ]
     	then
         	echo "******************************************************************************"
-        	echo "                      Test3 Completed Successfully                            "
+        	echo "                      Test2 Completed Successfully                            "
         	echo "******************************************************************************"
     	fi
 

@@ -34,8 +34,6 @@ RUN JRE_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/
     && rm /tmp/ibm-java.bin
 ENV JAVA_HOME /opt/ibm/java
 ENV PATH $JAVA_HOME/jre/bin:$PATH
-COPY license-check /opt/ibm/docker/
-COPY view-jre-license /opt/ibm/docker/licenses/
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 2015.11.0_0
@@ -43,8 +41,6 @@ RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/softw
     && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-developers-runtime.jar \
     && java -jar /tmp/wlp-developers-runtime.jar --acceptLicense /opt/ibm \
     && rm /tmp/wlp-developers-runtime.jar 
-COPY view-wlp-license /opt/ibm/docker/licenses/
-COPY liberty-run /opt/ibm/wlp/bin/
 ENV PATH /opt/ibm/wlp/bin:$PATH
 
 # Configure WebSphere Liberty
@@ -53,5 +49,4 @@ RUN /opt/ibm/wlp/bin/server create \
 COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/
 EXPOSE 9080 9443
 
-ENTRYPOINT ["liberty-run"]
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
