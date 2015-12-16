@@ -12,6 +12,7 @@ ejbLite-3.2
 ejbPersistentTimer-3.2
 ejbRemote-3.2
 el-3.0
+federatedRegistry-1.0
 j2eeManagement-1.1
 jacc-1.5
 jaspic-1.1

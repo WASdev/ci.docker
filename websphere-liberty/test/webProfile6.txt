@@ -7,6 +7,7 @@ collectiveMember-1.0
 concurrent-1.0
 distributedMap-1.0
 ejbLite-3.1
+federatedRegistry-1.0
 jaxrs-1.1
 jdbc-4.0
 jndi-1.0

@@ -1,6 +1,7 @@
 appSecurity-2.0
 collectiveMember-1.0
 distributedMap-1.0
+federatedRegistry-1.0
 jaxrs-1.1
 jdbc-4.0
 jndi-1.0
