@@ -23,9 +23,9 @@ Dockerfile takes the values for the following variables during build time
 
 Dockerfile.install does the following:
                                                                                                            
-1. Extracts the tar file created by Dockerfile.prereq.
-2. Copies the profile creation and startup script to the image.
-3. When the container is started , profile is created and the server is started.
+1. Extracts the tar file created by Dockerfile.prereq
+2. Copies the profile creation and startup script to the image
+3. When the container is started , profile is created and the server is started
 
 ## Building the IBM WebSphere Application Server Classic Base image
 

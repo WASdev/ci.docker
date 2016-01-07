@@ -10,11 +10,11 @@
 #                                                                                   #
 #####################################################################################
 
-if [ $UPDATE_HOST = "true" ]
+if [ "$UPDATE_HOST" = "true" ]
 then
     host=`hostname`
     
-    if [ $NODE_NAME = "" ]
+    if [ "$NODE_NAME" = "" ]
     then
        NODE_NAME="DefaultNode01" 
     fi
@@ -24,11 +24,12 @@ then
 
 fi
 
-if [ $PROFILE_NAME = "" ]
+if [ "$PROFILE_NAME" = "" ]
 then
     PROFILE_NAME="AppSrv01"
 fi
 
+echo "Starting server......................."
 /opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/bin/startServer.sh server1
 
 if [ $? != 0 ]
@@ -40,7 +41,7 @@ fi
 sleep 10
 
 #Check the existence of server proces
-while [ -f "/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/server1/server1.pid" ]
+while [ -f "/opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/logs/server1/server1.pid" ]
 do
     sleep 5
 done

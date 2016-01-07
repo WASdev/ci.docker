@@ -11,10 +11,10 @@ IBM WebSphere Application Server Classic Base profile image is created in two st
 
 Dockerfile.prereq does the following:
  
-1. Installs IBM Installation Manager.
-2. Installs IBM WebSphere Application Server. 
-3. Updates IBM WebSphere Application Server with the Fixpack.
-4. When the container is started a tar file of the IBM WebSphere Application Server Classic Base installation is created.
+1. Installs IBM Installation Manager
+2. Installs IBM WebSphere Application Server 
+3. Updates IBM WebSphere Application Server with the Fixpack
+4. When the container is started a tar file of the IBM WebSphere Application Server Classic Base installation is created
 
 Dockerfile.prereq takes the values for the following variables during build time 
 * user[default 'was'](optional) - user used for installation
@@ -23,9 +23,9 @@ Dockerfile.prereq takes the values for the following variables during build time
 
 Dockerfile.profile does the following:
                                                                                                            
-1. Extracts the tar file created by Dockerfile.prereq.
-2. Copies the server startup script to the image.
-3. When the container is started the server is started.
+1. Extracts the tar file created by Dockerfile.prereq
+2. Copies the server startup script to the image
+3. When the container is started the server is started
 
 Dockerfile.profile takes the values for the following variables during build time                                         
 * user[default 'was'](optional) - user used for installation                                                               
@@ -45,11 +45,13 @@ Dockerfile.profile takes the values for the following variables during build tim
     ```bash
     docker build --build-arg user=<user> --build-arg group=<group> --build-arg URL=<URL> -t <prereq-image-name> -f Dockerfile.prereq .
     ```
+
 5. Run a container using the prereq image to get the tar file to the current folder using:
 
     ```bash
     docker run -v <path>/websphere-classic/base/profile:/tmp -d -t <prereq-image-name>
     ```
+
 6. Build the base profile image using:       
 
     ```bash

@@ -1,30 +1,31 @@
-# Building a IBM WebSphere Application Server Classic Developer image from binaries
+# Building an IBM WebSphere Application Server Classic Developer install image from binaries
 
 An IBM WebSphere Application Server Classic Developer image can be built by obtaining the following binaries:
-* IBM Installation Manager binaries from [Developer Works](http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/)
-* IBM WebSphere Application Server Classic Developer binaries from [Developer Works](http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/) / [Fix Central](http://www-933.ibm.com/support/fixcentral/)
+* IBM Installation Manager binaries from [developerWorks](http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/)
+* IBM WebSphere Application Server Classic Developer binaries from [developerWorks](http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/) / [Fix Central](http://www-933.ibm.com/support/fixcentral/)
 
 IBM WebSphere Application Server Classic Developer install image is created in two steps using the following two Dockerfiles
+
 1. Dockerfile.prereq
 2. Dockerfile.install
 
-Dockerfile.prereq does the following 
-1. Installs IBM Installation Manager.
-2. Installs IBM WebSphere Application Server. 
-3. Updates IBM WebSphere Application Server with the Fixpack.
-4. When the container is started a tar file of the IBM WebSphere Application Server Classic Developer installation is created.
+Dockerfile.prereq does the following: 
+
+1. Installs IBM Installation Manager
+2. Installs IBM WebSphere Application Server 
+3. Updates IBM WebSphere Application Server with the Fixpack
+4. When the container is started a tar file of the IBM WebSphere Application Server Classic Developer installation is created
 
 Dockerfile takes the values for the following variables during build time 
-user[default 'was'](optional) - user used for installation
-group[default 'was'](optional) - group the user belongs to
-username(required) - username to download the binaries from the FTP or HTTP Server
-password(required) - password for the username to download the binaries
-URL(required) - URL from where the binaries are downloaded
+* user[default 'was'](optional) - user used for installation
+* group[default 'was'](optional) - group the user belongs to
+* URL(required) - URL from where the binaries are downloaded
 
-Dockerfile.install does the following                                                                                                           
-1. Extracts the tar file created by Dockerfile.prereq.
-2. Copies the profile creation and startup script to the image.
-3. When the container is started , profile is created and server started.
+Dockerfile.install does the following:
+                                                                                                           
+1. Extracts the tar file created by Dockerfile.prereq
+2. Copies the profile creation and startup script to the image
+3. When the container is started , profile is created and the server is started
 
 ## Building the IBM WebSphere Application Server Classic Developer image
 
@@ -35,17 +36,19 @@ Dockerfile.install does the following
 5. Build the prereq image using:
 
     ```bash
-    docker build --build-arg user=<user> --build-arg group=<group> --build-arg username=<user-name> --build-arg password=<password> --build-arg URL=<URL> -t <prereq-image-name> -f Dockerfile.prereq .
+    docker build --build-arg user=<user> --build-arg group=<group> --build-arg URL=<URL> -t <prereq-image-name> -f Dockerfile.prereq .
     ```
-6. Run a container using the prereq image to get the tar file to the current folder using
+
+6. Run a container using the prereq image to get the tar file to the current folder using:
 
     ```bash
     docker run -v <path>/websphere-classic/developer/install:/tmp -d -t <prereq-image-name>
-    ```bash
-7. Build the base image using       
+    ```
+
+7. Build the base image using:       
 
     ```bash
     docker build --build-arg user=<user> --build-arg group=<group> -t <install-image-name> -f Dockerfile.install .
-    ```bash
+    ```
 
 

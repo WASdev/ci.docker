@@ -24,67 +24,54 @@ ARG user=was
 
 ARG group=was
 
-RUN groupadd $group && useradd $user -g $group -m
-
-RUN chown -R $user:$group /var /opt /tmp /home/$user
+RUN groupadd $group && useradd $user -g $group -m \
+    && chown -R $user:$group /var /opt /tmp /home/$user
 
 USER $user
-
-ARG username
-
-ARG password
 
 ARG URL
 
 ################## Installation Manager #######################
 
 # Install Installation Manager
-RUN  wget -q  --user=$username --password=$password \
-   $URL/agent.installer.linux.gtk.x86_64_1.6.2000.20130301_2248.zip -O /tmp/IM.zip \
-   && mkdir /tmp/im &&  unzip -qd /tmp/im /tmp/IM.zip \
-   && /tmp/im/installc -acceptLicense -accessRights nonAdmin \
-   -installationDirectory "/opt/IBM/InstallationManager"  \
-   -dataLocation "/var/ibm/InstallationManager" -showProgress \
-     && rm -fr /tmp/IM.zip /tmp/im
+RUN wget -q $URL/agent.installer.linux.gtk.x86_64_1.6.2000.20130301_2248.zip -O /tmp/IM.zip \
+    && mkdir /tmp/im &&  unzip -qd /tmp/im /tmp/IM.zip \
+    && /tmp/im/installc -acceptLicense -accessRights nonAdmin \
+      -installationDirectory "/opt/IBM/InstallationManager"  \
+      -dataLocation "/var/ibm/InstallationManager" -showProgress \
+    && rm -fr /tmp/IM.zip /tmp/im
 
 ##############WebSphere Application Server #####################
 
 
 # Install IBM WebSphere Application Server v855
-RUN wget -q  --user=$username --password=$password \
-    $URL/was.repo.8550.developers.ilan_part1.zip  -O /tmp/was1.zip \
-    && wget -q  --user=$username --password=$password \
-    $URL/was.repo.8550.developers.ilan_part2.zip  -O /tmp/was2.zip \
-    && wget -q  --user=$username --password=$password \
-    $URL/was.repo.8550.developers.ilan_part3.zip  -O /tmp/was3.zip \ 
+RUN wget -q $URL/was.repo.8550.developers.ilan_part1.zip  -O /tmp/was1.zip \
+    && wget -q $URL/was.repo.8550.developers.ilan_part2.zip  -O /tmp/was2.zip \
+    && wget -q $URL/was.repo.8550.developers.ilan_part3.zip  -O /tmp/was3.zip \ 
     && mkdir /tmp/was  && unzip  -qd /tmp/was /tmp/was1.zip \
     && unzip  -qd /tmp/was /tmp/was2.zip \
     && unzip  -qd /tmp/was /tmp/was3.zip \
     && /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
-    -acceptLicense  install com.ibm.websphere.DEVELOPERSILAN.v85 \
-    -repositories /tmp/was/repository.config  \
-    -installationDirectory /opt/IBM/WebSphere/AppServer \
+      -acceptLicense  install com.ibm.websphere.DEVELOPERSILAN.v85 \
+      -repositories /tmp/was/repository.config  \
+      -installationDirectory /opt/IBM/WebSphere/AppServer \
     && rm -fr /tmp/was /tmp/was1.zip  /tmp/was2.zip   /tmp/was3.zip 
 
 ##############WebSphere Application Server Fixpack #####################
 
 # Install IBM WebSphere Application Server Fixpack v8558
-RUN wget -q --user=$username --password=$password \
-    $URL/8.5.5-WS-WAS-FP0000008-part1.zip -O /tmp/wasfp1.zip \
-    &&  wget -q --user=$username --password=$password \
-    $URL/8.5.5-WS-WAS-FP0000008-part2.zip -O /tmp/wasfp2.zip \
-    &&  mkdir /tmp/wasfp \
+RUN wget -q $URL/8.5.5-WS-WAS-FP0000008-part1.zip -O /tmp/wasfp1.zip \
+    && wget -q $URL/8.5.5-WS-WAS-FP0000008-part2.zip -O /tmp/wasfp2.zip \
+    && mkdir /tmp/wasfp \
     && unzip  -qd /tmp/wasfp /tmp/wasfp1.zip  \
-    && rm -fr /tmp/wasfp1.zip \
     && unzip -qd /tmp/wasfp /tmp/wasfp2.zip \
-    && rm -fr /tmp/wasfp2.zip \
     && /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
-    -acceptLicense  install com.ibm.websphere.DEVELOPERSILAN.v85 \
-    -repositories /tmp/wasfp/repository.config  \
-    -installationDirectory /opt/IBM/WebSphere/AppServer \
-    && rm -fr /tmp/wasfp 
+      -acceptLicense  install com.ibm.websphere.DEVELOPERSILAN.v85 \
+      -repositories /tmp/wasfp/repository.config  \
+      -installationDirectory /opt/IBM/WebSphere/AppServer \
+    && rm -fr /tmp/wasfp /tmp/wasfp1.zip /tmp/wasfp2.zip
 
 
-CMD tar cvf /tmp/was.tar  /opt/IBM/WebSphere/AppServer
+CMD tar cvf /tmp/was.tar /opt/IBM/WebSphere/AppServer
 
 

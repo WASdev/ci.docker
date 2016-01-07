@@ -34,8 +34,10 @@ fi
 #if profile already created just start the server
 if [ -d /opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/logs/server1 ]
 then
+     echo "Starting server ....................."
      /opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/bin/startServer.sh server1
 else
+     echo "Creating profile ...................."
      /opt/IBM/WebSphere/AppServer/bin/manageprofiles.sh -create -templatePath /opt/IBM/WebSphere/AppServer/profileTemplates/default/ \
      -profileName $PROFILE_NAME -profilePath /opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME  \
      -templatePath /opt/IBM/WebSphere/AppServer/profileTemplates/default -nodeName $NODE_NAME -cellName $CELL_NAME \
@@ -43,6 +45,7 @@ else
 
      if [ $? = 0 ]
      then
+        echo "Starting server ..................."
      	/opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/bin/startServer.sh server1
      else
         echo " Profile creation failed , exiting ........"
@@ -58,7 +61,7 @@ fi
 
 sleep 10
 
-#Check the existence of server proces
+#Check the existence of server process
 while [ -f "/opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/logs/server1/server1.pid" ]
 do
     sleep 5

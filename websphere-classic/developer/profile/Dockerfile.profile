@@ -23,15 +23,11 @@ ARG user=was
 
 ARG group=was
 
-RUN groupadd $group && useradd $user -g $group -m
+COPY start.sh update*.py /work/
 
-RUN mkdir /work && chown -R $user:$group /var /opt /tmp /work 
-
-COPY start.sh /work/
-
-COPY update*.py /work/
-
-RUN chmod +x /work/*.*
+RUN groupadd $group && useradd $user -g $group -m \
+    && chown -R $user:$group /work \
+    && chmod +x /work/*.*
 
 USER $user
 

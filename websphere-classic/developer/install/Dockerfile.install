@@ -23,13 +23,11 @@ ARG user=was
 
 ARG group=was
 
-RUN groupadd $group && useradd $user -g $group -m
+ADD create*.sh /work/
 
-RUN mkdir /work && chown -R $user:$group /var /opt /tmp /work
-
-COPY create*.sh /work/
-
-RUN chmod +x /work/create*sh
+RUN groupadd $group && useradd $user -g $group -m \
+    && chown -R $user:$group /work \
+    && chmod +x /work/create*sh
 
 USER $user
 
