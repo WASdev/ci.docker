@@ -21,12 +21,10 @@ MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com>
 
 ADD ihs_plg_wct.tar /
 
-RUN mkdir /work \
-    && ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Plugins/java \
-    && ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Toolbox/java
+COPY ihsstart.sh /work/  
 
-COPY ihsstart.sh /work/                         
-
-RUN chmod +x /work/ihsstart.sh
+RUN ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Plugins/java \
+    && ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Toolbox/java \
+    && chmod +x /work/ihsstart.sh
 
 CMD ["/work/ihsstart.sh"]
