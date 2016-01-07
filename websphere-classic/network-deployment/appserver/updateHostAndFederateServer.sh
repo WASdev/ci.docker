@@ -4,7 +4,7 @@
 #  Script to update HostName  and Federate AppServer profile                        #
 #                                                                                   #
 #                                                                                   #
-#  Usage : updateHostAndFederateServer.sh                                              # 
+#  Usage : updateHostAndFederateServer.sh                                           # 
 #                                                                                   #
 #  Author : Kavitha                                                                 #
 #                                                                                   #
@@ -35,7 +35,7 @@ host=`hostname`
 # check if nodeagent already created
 if [ -d /opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/logs/nodeagent ]
 then
-
+        echo "Starting nodeagent..............."
 	/opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/bin/startNode.sh
 else
 	# Update the hostname
@@ -50,7 +50,8 @@ else
 	then
 	        # rename the node
         	/opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/bin/renameNode.sh $DMGR_HOST $DMGR_PORT $NODE_NAME
-
+      
+                echo "Starting nodeagent................"
 	        /opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/bin/startNode.sh
         fi
 fi
@@ -59,6 +60,7 @@ fi
 #if nodeagent started successfully , start the server
 if [ $? = 0 ]
 then
+        echo "Starting server......................."
 	/opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/bin/startServer.sh server1
 else
         echo " Nodeagent startup failed , exiting....... "

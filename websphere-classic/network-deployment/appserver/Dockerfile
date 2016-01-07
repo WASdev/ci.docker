@@ -28,8 +28,8 @@ ARG HOST_NAME=localhost
 
 # Create default AppServer profile
 RUN /opt/IBM/WebSphere/AppServer/bin/manageprofiles.sh -create -templatePath \
-    /opt/IBM/WebSphere/AppServer/profileTemplates/default -profileName AppSrv01 -profilePath \
-    /opt/IBM/WebSphere/AppServer/profiles/AppSrv01 -cellName ServerCell -nodeName ServerNode -hostName localhost
+    /opt/IBM/WebSphere/AppServer/profileTemplates/default -profileName $PROFILE_NAME -profilePath \
+    /opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME -cellName $CELL_NAME -nodeName $NODE_NAME -hostName $HOST_NAME
 
 #Expose the ports 
 EXPOSE 9060 9043 9080 9443 2809 5060 5061 8880 9633 9401 9403 9402 9100 9353 7276 7286 5558 5578 11003 11004

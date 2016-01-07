@@ -17,8 +17,8 @@ Dockerfile.prereq does the following:
 4. When the container is started a tar file of the IBM WebSphere Application Server Classic Base installation is created
 
 Dockerfile.prereq takes the values for the following variables during build time 
-* user[default 'was'](optional) - user used for installation
-* group[default 'was'](optional) - group the user belongs to
+* user(optional)[default 'was'] - user used for installation
+* group(optional)[default 'was'] - group the user belongs to
 * URL(required) - URL from where the binaries are downloaded
 
 Dockerfile.profile does the following:
@@ -28,12 +28,12 @@ Dockerfile.profile does the following:
 3. When the container is started the server is started
 
 Dockerfile.profile takes the values for the following variables during build time                                         
-* user[default 'was'](optional) - user used for installation                                                               
-* group[default 'was'](optional) - group the user belongs to
-* CELL_NAME[default 'DefaultCell01'](optional) - cell name
-* NODE_NAME[default 'DefaultNode01'](optional) - node name
-* PROFILE_NAME[default 'AppSrv01'](optional) - profile name
-* HOST_NAME[default 'localhost'](optional) - host name
+* user(optional)[default 'was'] - user used for installation                                                               
+* group(optional)[default 'was'] - group the user belongs to
+* CELL_NAME(optional)[default 'DefaultCell01'] - cell name
+* NODE_NAME(optional)[default 'DefaultNode01'] - node name
+* PROFILE_NAME(optional)[default 'AppSrv01'] - profile name
+* HOST_NAME(optional)[default 'localhost'] - host name
 
 ## Building the IBM WebSphere Application Server Classic Base image
 

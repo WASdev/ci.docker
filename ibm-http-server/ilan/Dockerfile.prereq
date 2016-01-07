@@ -113,9 +113,9 @@ RUN mkdir /tmp/wct \
     && unzip  -qd /tmp/wct /tmp/wct2.zip \                                                                                                                                         
     && rm /tmp/wct1.zip /tmp/wct2.zip \                                                                                                                                            
     && /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \                                                                                                             
-    -acceptLicense  install com.ibm.websphere.WCTILAN.v85 \                                                                                                                        
-    -repositories /tmp/wct/repository.config  \                                                                                                                                    
-    -installationDirectory /opt/IBM/WebSphere/Toolbox \                                                                                                                            
+      -acceptLicense  install com.ibm.websphere.WCTILAN.v85 \                                                                                                                        
+      -repositories /tmp/wct/repository.config  \                                                                                                                                    
+      -installationDirectory /opt/IBM/WebSphere/Toolbox \                                                                                                                            
     && rm -fr /tmp/wct  
 
 

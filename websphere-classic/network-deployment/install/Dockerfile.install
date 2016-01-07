@@ -23,9 +23,8 @@ ARG user=was
 
 ARG group=was
 
-RUN groupadd $group && useradd $user -g $group -m
-
-RUN mkdir /work && chown -R $user:$group /var /opt /tmp /work 
+RUN groupadd $group && useradd $user -g $group -m \
+    && mkdir /work && chown -R $user:$group /work
 
 USER $user
 

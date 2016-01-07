@@ -4,7 +4,7 @@
 #  Script to update the Hostname and add the node to deployment manager             #
 #                                                                                   #
 #                                                                                   #
-#  Usage : updateHostAndAddNode.sh                                           # 
+#  Usage : updateHostAndAddNode.sh                                                  # 
 #                                                                                   #
 #  Author : Kavitha                                                                 #
 #                                                                                   #
@@ -35,6 +35,7 @@ host=`hostname`
 if [ -d /opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/logs/nodeagent ]
 then
         # Start the node
+        echo "Starting nodeagent.................."
 	/opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/bin/startNode.sh
 else
         # Add the node
@@ -49,7 +50,8 @@ else
         then
                 # rename the node
                 /opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/bin/renameNode.sh $DMGR_HOST $DMGR_PORT $NODE_NAME
-
+                
+                echo "Starting nodeagent ........................"
                 /opt/IBM/WebSphere/AppServer/profiles/$PROFILE_NAME/bin/startNode.sh
         fi
 

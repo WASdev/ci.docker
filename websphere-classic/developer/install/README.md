@@ -17,8 +17,8 @@ Dockerfile.prereq does the following:
 4. When the container is started a tar file of the IBM WebSphere Application Server Classic Developer installation is created
 
 Dockerfile takes the values for the following variables during build time 
-* user[default 'was'](optional) - user used for installation
-* group[default 'was'](optional) - group the user belongs to
+* user(optional)[default 'was'] - user used for installation
+* group(optional)[default 'was'] - group the user belongs to
 * URL(required) - URL from where the binaries are downloaded
 
 Dockerfile.install does the following:
