@@ -1,0 +1,17 @@
+configType=remote
+enableAdminServerSupport=true
+enableUserAndPass=true
+enableWinService=false
+ihsAdminCreateUserAndGroup=true
+ihsAdminPassword=ihspasswd
+ihsAdminPort=8008
+ihsAdminUnixUserGroup=grp101
+ihsAdminUnixUserID=ihsadmin
+mapWebServerToApplications=true
+wasMachineHostname=test
+webServerConfigFile1=/opt/IBM/HTTPServer/conf/httpd.conf
+webServerDefinition=webserver1
+webServerHostName=ihs
+webServerOS=Linux
+webServerPortNumber=80
+webServerSelected=ihs
