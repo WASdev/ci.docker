@@ -21,20 +21,12 @@ MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com>
 
 ADD ihs_plg_wct.tar /
 
-RUN ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Plugins/java
+RUN mkdir /work \
+    && ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Plugins/java \
+    && ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Toolbox/java
 
-RUN ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Toolbox/java
+COPY ihsstart.sh /work/                         
 
-COPY ihsstart.sh /opt/IBM/HTTPServer/bin/                         
+RUN chmod +x /work/ihsstart.sh
 
-COPY responsefile.txt /opt/IBM/WebSphere/Toolbox/WCT/
-
-RUN /opt/IBM/WebSphere/Toolbox/WCT/wctcmd.sh -tool pct -defLocPathname \ 
-    /opt/IBM/WebSphere/Plugins -defLocName loc1 -createDefinition \ 
-    -response /opt/IBM/WebSphere/Toolbox/WCT/responsefile.txt
-
-RUN /opt/IBM/HTTPServer/bin/htpasswd -cb /opt/IBM/HTTPServer/conf/admin.passwd ihsadmin ihspasswd
-
-RUN chmod +x /opt/IBM/HTTPServer/bin/ihsstart.sh
-
-CMD ["/opt/IBM/HTTPServer/bin/ihsstart.sh"]
+CMD ["/work/ihsstart.sh"]
