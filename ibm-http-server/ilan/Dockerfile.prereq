@@ -1,0 +1,126 @@
+############################################################################
+# (C) Copyright IBM Corporation 2015.                                      #
+#                                                                          #
+# Licensed under the Apache License, Version 2.0 (the "License");          #
+# you may not use this file except in compliance with the License.         #
+# You may obtain a copy of the License at                                  #
+#                                                                          #
+#      http://www.apache.org/licenses/LICENSE-2.0                          #
+#                                                                          #
+# Unless required by applicable law or agreed to in writing, software      #
+# distributed under the License is distributed on an "AS IS" BASIS,        #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. #
+# See the License for the specific language governing permissions and      #
+# limitations under the License.                                           #
+#                                                                          #
+############################################################################
+
+FROM ubuntu:14.04
+
+MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com>
+
+RUN apt-get install -y  unzip wget
+
+ARG URL
+
+################## Installation Manager #######################
+
+# Install Installation Manager
+RUN wget -q $URL/agent.installer.linux.gtk.x86_64_1.6.2000.20130301_2248.zip -O /tmp/IM.zip \
+    && mkdir /tmp/im &&  unzip -qd /tmp/im /tmp/IM.zip \
+    && /tmp/im/installc -acceptLicense -accessRights admin \
+      -installationDirectory "/opt/IBM/InstallationManager"  \
+      -dataLocation "/var/ibm/InstallationManager" -showProgress \
+    && rm -fr /tmp/IM.zip /tmp/im
+
+########################### IBM HTTPServer ##################################
+
+# Install IBM HttpServer
+RUN mkdir /tmp/ihs \
+    && wget -q $URL/was.repo.8550.ihs.ilan_part1.zip -O /tmp/ihs1.zip \
+    && wget -q $URL/was.repo.8550.ihs.ilan_part2.zip -O /tmp/ihs2.zip \
+    && unzip  -qd /tmp/ihs /tmp/ihs1.zip \
+    && unzip  -qd /tmp/ihs /tmp/ihs2.zip \
+    && rm /tmp/ihs1.zip /tmp/ihs2.zip \
+    && /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
+      -acceptLicense  install com.ibm.websphere.IHSILAN.v85 \
+      -repositories /tmp/ihs/repository.config  \
+      -installationDirectory /opt/IBM/HTTPServer \
+      -properties "user.ihs.httpPort=80,user.ihs.allowNonRootSilentInstall=true" \
+    && rm -fr /tmp/ihs
+
+######################## IBM HTTPServer Fixpack ###############################
+
+# Install IBM HttpServer
+RUN mkdir /tmp/supp \
+    && wget -q $URL/8.5.5-WS-WASSupplements-FP0000008-part1.zip -O /tmp/spart1.zip \
+    && wget -q $URL/8.5.5-WS-WASSupplements-FP0000008-part2.zip -O /tmp/spart2.zip \
+    && unzip  -qd /tmp/supp /tmp/spart1.zip \
+    && unzip  -qd /tmp/supp /tmp/spart2.zip \
+    && rm /tmp/spart1.zip /tmp/spart2.zip \
+    && /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
+      -acceptLicense  install com.ibm.websphere.IHSILAN.v85 \
+      -repositories /tmp/supp/repository.config  \
+      -installationDirectory /opt/IBM/HTTPServer \
+      -properties "user.ihs.httpPort=80,user.ihs.allowNonRootSilentInstall=true"
+
+######################### WebServer Plugins  ##################################
+
+# Install WebServer Plugins
+RUN mkdir /tmp/plg \
+    && wget -q $URL/was.repo.8550.plg.ilan_part1.zip -O /tmp/plg1.zip \
+    && wget -q $URL/was.repo.8550.plg.ilan_part2.zip -O /tmp/plg2.zip \
+    && unzip  -qd /tmp/plg /tmp/plg1.zip \
+    && unzip  -qd /tmp/plg /tmp/plg2.zip \
+    && rm /tmp/plg1.zip /tmp/plg2.zip \
+    && /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
+      -acceptLicense  install com.ibm.websphere.PLGILAN.v85 \
+      -repositories /tmp/plg/repository.config  \
+      -installationDirectory /opt/IBM/WebSphere/Plugins \
+    && rm -fr /tmp/plg
+
+######################## WebServer Plugins Fixpack ###########################
+
+# Install WebServer Plugins Fixpack
+RUN /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
+      -acceptLicense  install com.ibm.websphere.PLGILAN.v85 \
+      -repositories /tmp/supp/repository.config  \
+      -installationDirectory /opt/IBM/WebSphere/Plugins \
+    && rm -fr /tmp/supp  /opt/IBM/WebSphere/Plugins/java
+
+####################### WebSphere Customization Tools #######################
+
+# Install WebSphere Customization Tools
+RUN mkdir /tmp/wct \
+    && wget -q $URL/was.repo.8550.wct.ilan_part1.zip -O /tmp/wct1.zip \
+    && wget -q $URL/was.repo.8550.wct.ilan_part2.zip -O /tmp/wct2.zip \
+    && unzip  -qd /tmp/wct /tmp/wct1.zip \
+    && unzip  -qd /tmp/wct /tmp/wct2.zip \
+    && rm /tmp/wct1.zip /tmp/wct2.zip \
+    && /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
+      -acceptLicense  install com.ibm.websphere.WCTILAN.v85 \
+      -repositories /tmp/wct/repository.config  \
+      -installationDirectory /opt/IBM/WebSphere/Toolbox \
+    && rm -fr /tmp/wct
+
+################### WebSphere Customization Tools Fixpack ###################
+
+# Install WebSphere Customization Tools Fixpack
+RUN mkdir /tmp/wct \                                                                                                                                                               
+    && wget -q $URL/8.5.5-WS-WCT-FP0000008-part1.zip -O /tmp/wct1.zip \                                                                                          
+    && wget -q $URL/8.5.5-WS-WCT-FP0000008-part2.zip -O /tmp/wct2.zip \                                                                                          
+    && unzip  -qd /tmp/wct /tmp/wct1.zip \                                                                                                                                         
+    && unzip  -qd /tmp/wct /tmp/wct2.zip \                                                                                                                                         
+    && rm /tmp/wct1.zip /tmp/wct2.zip \                                                                                                                                            
+    && /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \                                                                                                             
+      -acceptLicense  install com.ibm.websphere.WCTILAN.v85 \                                                                                                                        
+      -repositories /tmp/wct/repository.config  \                                                                                                                                    
+      -installationDirectory /opt/IBM/WebSphere/Toolbox \                                                                                                                            
+    && rm -fr /tmp/wct  
+
+
+CMD tar -cvf /tmp/ihs_plg_wct.tar /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
+
+
+
+

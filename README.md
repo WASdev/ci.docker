@@ -3,6 +3,8 @@
 This project contains build scripts for Docker images (Dockerfiles) and Docker related utilities for WebSphere Application Server. Currently resources are available for:
 
 * [WebSphere Application Server Liberty Profile](websphere-liberty)
+* [WebSphere Application Server Classic](websphere-classic)
+* [IBM HTTP Server](ibm-http-server)
 
 # Issues and contributions
 
