@@ -46,7 +46,7 @@ Complete the following steps to build the image
 5. Run a container using the prereq image to get the tar file to the current folder using:
 
     ```bash
-    docker run -v <path>/ibm-http-server/ilan:/tmp -d -t <prereq-image-name>
+    docker run --rm -v $PWD:/tmp <prereq-image-name>
     ```
 
 6. Build the install image using:       

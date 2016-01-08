@@ -42,7 +42,7 @@ Dockerfile.install does the following:
 6. Run a container using the prereq image to get the tar file to the current folder using:
 
     ```bash
-    docker run -v <path>/websphere-classic/developer/install:/tmp -d -t <prereq-image-name>
+    docker run --rm -v $PWD:/tmp <prereq-image-name>
     ```
 
 7. Build the base image using:       

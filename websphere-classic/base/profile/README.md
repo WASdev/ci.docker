@@ -49,7 +49,7 @@ Dockerfile.profile takes the values for the following variables during build tim
 5. Run a container using the prereq image to get the tar file to the current folder using:
 
     ```bash
-    docker run -v <path>/websphere-classic/base/profile:/tmp -d -t <prereq-image-name>
+    docker run --rm -v $PWD:/tmp <prereq-image-name>
     ```
 
 6. Build the base profile image using:       
