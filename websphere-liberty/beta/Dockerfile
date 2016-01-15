@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2014,2015.
+# (C) Copyright IBM Corporation 2014,2016.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ FROM ubuntu:14.04
 MAINTAINER David Currie <david_currie@uk.ibm.com> (@dcurrie)
 
 RUN apt-get update \
-    && apt-get install -y wget \
+    && apt-get install -y wget unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Install JRE
@@ -36,11 +36,11 @@ ENV JAVA_HOME /opt/ibm/java
 ENV PATH $JAVA_HOME/jre/bin:$PATH
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 2015.11.0_0
-RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | sed -n '/'$LIBERTY_VERSION'/{n;p}' | sed -n 's/\s*uri:\s//p' | tr -d '\r') \
-    && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-developers-runtime.jar \
-    && java -jar /tmp/wlp-developers-runtime.jar --acceptLicense /opt/ibm \
-    && rm /tmp/wlp-developers-runtime.jar 
+ENV LIBERTY_VERSION 2016.1.0_0
+RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*webProfile7:\s//p' | tr -d '\r')  \
+    && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-beta.zip \
+    && unzip -q /tmp/wlp-beta.zip -d /opt/ibm \
+    && rm /tmp/wlp-beta.zip
 ENV PATH /opt/ibm/wlp/bin:$PATH
 
 # Set Path Shortcuts

@@ -1,6 +1,6 @@
-# WebSphere Application Server Liberty v9 Beta with Java EE7 image for Docker
+# WebSphere Application Server Liberty Beta image for Docker
 
-The [Dockerfile](Dockerfile) in this directory is used to build the `websphere-liberty:beta` image on [Docker Hub](https://registry.hub.docker.com/_/websphere-liberty/). The resultant image contains IBM WebSphere Application Server Liberty v9 Beta with Java EE7 and an IBM Java Runtime Environment.
+The [Dockerfile](Dockerfile) in this directory is used to build the `websphere-liberty:beta` image on [Docker Hub](https://registry.hub.docker.com/_/websphere-liberty/). The resultant image contains IBM WebSphere Application Server Liberty Beta and an IBM Java Runtime Environment.
 
 # Usage
 
