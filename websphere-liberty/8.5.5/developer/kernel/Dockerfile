@@ -51,7 +51,7 @@ RUN ln -s $WLP_OUTPUT_DIR/defaultServer /output \
 
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
-    && rm -rf /opt/ibm/wlp/output/.classCache
+    && rm -rf $WLP_OUTPUT_DIR/.classCache
 EXPOSE 9080 9443
 
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
