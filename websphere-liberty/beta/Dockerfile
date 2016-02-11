@@ -43,7 +43,7 @@ RUN TARGET_ARCH=$(uname -i) \
     && rm -f /tmp/response.properties \
     && rm -f /tmp/ibm-java.bin
 ENV JAVA_HOME=/opt/ibm/java \
-    PATH=$JAVA_HOME/jre/bin:$PATH
+    PATH=/opt/ibm/java/jre/bin:$PATH
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 2016.1.0_0

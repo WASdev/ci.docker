@@ -6,8 +6,6 @@
 #                                                                                   #
 #  Usage : buildAndVerify.sh <Image name> <Dockerfile location>                     # 
 #                                                                                   #
-#  Author : Kavitha                                                                 #
-#                                                                                   #
 #####################################################################################
 
 image=$1
@@ -17,18 +15,25 @@ tag=`echo $image | cut -d ":" -f2`
 
 test=test
 cname=$tag$test
+arch=`uname -p`
 
 if [ $# != 2 ]
 then
    if [ $# != 1 ]
    then  
-      echo "Usage : buildAndVerify.sh <Image name> <Dockerfile location> "
+      echo "Usage : buildAndVerify.sh <Image name> <Dockerfile location>"
       exit 1
    else
-      echo "Dockerfile location not provided, using . "
+      echo "Dockerfile location not provided, using ."
       dloc="."
    fi
 fi  
+
+if [[ $arch == *"ppc"* ]]
+then
+   sed -i -e "s|^\(FROM\s*\)|\1ppc64le/|" $dloc/Dockerfile
+   image="ppc64le/$image"
+fi
 
 echo "******************************************************************************"
 echo "           Starting docker build for $image                                   "
