@@ -17,7 +17,7 @@
 # Check arguments
 if [ $# -ne 2 ]
   then
-    echo "Parameters are incorrect. Format should be: <Full ContainerID> <Hostname>"
+    echo "Parameters are incorrect. Format should be: <ContainerID> <Hostname>"
 	exit 1
 fi
 
@@ -36,5 +36,5 @@ P3=`echo "${array[5]##*:}" | tr -d '\n'`
 # Substitute in port and host information
 sed -i -e "s/Port=\"$P0\"/Port=\"$P1\"/g" plugin-cfg.xml
 sed -i -e "s/Port=\"$P2\"/Port=\"$P3\"/g" plugin-cfg.xml
-sed -i -e "s/Hostname=\"$1\"/Hostname=\"$2\"/g" plugin-cfg.xml
+sed -i -e "s/Hostname=\"[^\"]*\"/Hostname=\"$2\"/g" plugin-cfg.xml
 echo "Plugin configuration file modified to reflect host information"
