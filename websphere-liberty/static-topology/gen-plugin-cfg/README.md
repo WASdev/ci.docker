@@ -29,7 +29,7 @@ create, use the following command when the image is running.
    ```
   
 The plug-in configuration file is written to the following path: 
-`<PATH_TO_USR>/servers/<SERVERNAME>/plugin-cfg.xml`.
+`<WLP_OUTPUT_DIR>/<SERVERNAME>/plugin-cfg.xml`.
 
 Note that the hostname and ports in the generated file will reflect those inside
 the container. These may need updating to reflect the values exposed externally
