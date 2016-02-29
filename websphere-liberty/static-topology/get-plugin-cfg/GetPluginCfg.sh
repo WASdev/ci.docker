@@ -17,13 +17,13 @@
 # Check arguments
 if [ $# -ne 2 ]
   then
-    echo "Parameters are incorrect. Format should be: <ContainerID> <Hostname>"
+    echo "Parameters are incorrect. Format should be: <Full ContainerID> <Hostname>"
 	exit 1
 fi
 
 # Copy config file to local directory
-docker exec $1 bash -c "/opt/ibm/wlp/bin/GenPluginCfg.sh --installDir=/opt/ibm/wlp --userDir=/opt/ibm/wlp/usr --serverName=defaultServer"
-docker cp $1:/opt/ibm/wlp/usr/servers/defaultServer/plugin-cfg.xml .
+docker exec $1 /opt/ibm/wlp/bin/GenPluginCfg.sh --installDir=/opt/ibm/wlp --userDir=/opt/ibm/wlp/usr --serverName=defaultServer
+docker cp $1:/opt/ibm/wlp/output/defaultServer/plugin-cfg.xml .
 echo "Plugin configuration file copied to local directory"
 
 # Get port information
@@ -38,5 +38,3 @@ sed -i -e "s/Port=\"$P0\"/Port=\"$P1\"/g" plugin-cfg.xml
 sed -i -e "s/Port=\"$P2\"/Port=\"$P3\"/g" plugin-cfg.xml
 sed -i -e "s/Hostname=\"$1\"/Hostname=\"$2\"/g" plugin-cfg.xml
 echo "Plugin configuration file modified to reflect host information"
-
-
