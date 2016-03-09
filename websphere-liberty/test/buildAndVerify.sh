@@ -33,6 +33,14 @@ if [[ $arch == *"ppc"* ]]
 then
    sed -i -e "s|^\(FROM\s*\)|\1ppc64le/|" $dloc/Dockerfile
    image="ppc64le/$image"
+elif [[ $arch == *"s390x"* ]]
+then
+   sed -i -e "s|^\(FROM\s*\)|\1s390x/|" $dloc/Dockerfile
+   image="s390x/$image"
+   
+   # Switch to Debian
+   sed -i -e "s|^\(FROM\s*s390x/\)ubuntu:14.04|\1debian|" $dloc/Dockerfile
+   sed -i -e "s|\(apt-get install.*wget unzip\)|\1 ca-certificates|" $dloc/Dockerfile
 fi
 
 echo "******************************************************************************"
