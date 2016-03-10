@@ -24,7 +24,7 @@ RUN apt-get update \
 ENV JAVA_VER=8 \
     JAVA_REL=0 \
     JAVA_MF=2.10
-RUN TARGET_ARCH=$(uname -i) \
+RUN TARGET_ARCH=$(uname -m) \
     && JAVA_VRMF=$JAVA_VER.$JAVA_REL-$JAVA_MF \
     && YML_FILENAME=ibm-java-jre-$JAVA_VRMF-linux-$TARGET_ARCH-javase.yml \
     && BASE_URL="https://public.dhe.ibm.com/ibmdl/export/pub/systems/cloud/runtimes/java/meta" \
