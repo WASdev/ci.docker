@@ -1,8 +1,5 @@
-# Creating a static topology of Liberty profile servers under Docker
+# Creating a static topology of Liberty servers under Docker
 
-It is possible to create a static topology consisting of WebSphere
-Application Server Liberty Profile servers running within Docker
-containers with an external web server load balancing across them. A
-[script](gen-plugin-cfg) is provided that assists in obtaining the web
-server plug-in configuration for a Liberty profile server running
-under Docker.
+The files under this directory assist in the configuration of a static topology consisting of Docker containers running WebSphere Application Server Liberty with IBM HTTP Server and the WebSphere Plugin load-balancing across them.
+
+The [gen-plugin-cfg](gen-plugin-cfg) directory contains a script to embed in to the containers that assists in the generation of the plugin-cfg.xml via the MBean. The directory [get-plugin-cfg](get-plugin-cfg) contains a script that can be directed at a container that packages the first script in order to generate and retrieve the plugin-cfg.xml. This script also manipulates the hostname and ports specified in the file so that they reflect those external to the container rather than those used inside the container. The directory [merge-plugin-cfg](merge-plugin-cfg) then contains a script that can be used to merge together multiple plugin-cfg.xml files in to one file. The [test](test) directory contains a script for testing these scripts in combination that also provides an example of their use.
