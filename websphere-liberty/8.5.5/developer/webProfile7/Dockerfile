@@ -18,6 +18,6 @@ COPY server.xml /config/
 COPY docker-server /opt/ibm/docker/
 
 RUN installUtility install --acceptLicense defaultServer \
-   && rm -rf /output/workarea
+   && rm -rf /config/workarea
 
 CMD ["/opt/ibm/docker/docker-server", "run", "defaultServer"]

@@ -2,7 +2,7 @@
 
 # Generate the keystore.xml
 PASSWORD=$(openssl rand -base64 32)
-XML="<server description=\"Default Server\"><keyStore id=\"defaultKeyStore\" password="$PASSWORD" /></server>"
+XML="<server description=\"Default Server\"><keyStore id=\"defaultKeyStore\" password=\"$PASSWORD\" /></server>"
 
 # Create the keystore.xml file and place in dropins
 mkdir -p /config/configDropins/defaults/
