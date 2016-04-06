@@ -4,7 +4,7 @@
 #  Script to build docker image and verify the image                                #
 #                                                                                   #
 #                                                                                   #
-#  Usage : buildAndVerify.sh <Image name> <Dockerfile location>                     # 
+#  Usage : buildAndVerify.sh <Image name> <Dockerfile location>                     #
 #                                                                                   #
 #####################################################################################
 
@@ -20,14 +20,14 @@ arch=`uname -p`
 if [ $# != 2 ]
 then
    if [ $# != 1 ]
-   then  
+   then
       echo "Usage : buildAndVerify.sh <Image name> <Dockerfile location>"
       exit 1
    else
       echo "Dockerfile location not provided, using ."
       dloc="."
    fi
-fi  
+fi
 
 if [[ $arch == *"ppc"* ]]
 then
@@ -37,7 +37,7 @@ elif [[ $arch == *"s390x"* ]]
 then
    sed -i -e "s|^\(FROM\s*\)|\1s390x/|" $dloc/Dockerfile
    image="s390x/$image"
-   
+
    # Switch to Debian
    sed -i -e "s|^\(FROM\s*s390x/\)ubuntu:14.04|\1debian|" $dloc/Dockerfile
    sed -i -e "s|\(apt-get install.*wget unzip\)|\1 ca-certificates|" $dloc/Dockerfile
@@ -52,15 +52,28 @@ docker build --no-cache=true -t $image $dloc  > build_$tag.log
 cleanup()
 {
 
-   echo "------------------------------------------------------------------------------" 
+   echo "------------------------------------------------------------------------------"
    echo "Starting Cleanup  "
-   echo "Stopping Container $cname"
-   docker kill $cname
+
+   docker ps | grep --quiet $cname
+   if [ $? = 0 ]
+   then
+        echo "Stopping Container $cname"
+        docker stop $cname
+        sleep 12
+        docker logs $cname | grep -i CWWKE0036I
+        if ! [ $? = 0 ]
+        then
+             echo "Container didn't stop cleanly. Check stop_$tag.log for details."
+             docker logs $cname > stop_$tag.log
+        fi
+   fi
+
    echo "Removing Container $cname"
    docker rm $cname
    echo "Cleanup Completed "
    echo "------------------------------------------------------------------------------"
-} 
+}
 
 test1()
 {
@@ -83,13 +96,22 @@ test1()
          if [ rcid != " " ]
          then
                sleep 60
-               docker logs $cname | grep -i CWWKF0011I 
+               docker logs $cname | grep -i CWWKF0011I
 
                if [ $? = 0 ]
                then
-      			echo "Product version is"
-                        docker exec $cname /opt/ibm/wlp/bin/productInfo version
-                        cleanup
+                    echo "Product version is"
+                    docker exec $cname /opt/ibm/wlp/bin/productInfo version
+                    docker logs $cname | grep --quiet ERROR
+                    if [ $? = 0 ]
+                    then
+                         echo "The container has started successfully but there are errors:"
+                         docker logs $cname | grep ERROR
+                         echo "Exiting"
+                         cleanup
+                         exit 1
+                    fi
+                    cleanup
                else
                         echo " Server not started , exiting "
                         cleanup
@@ -105,7 +127,7 @@ test1()
          cleanup
          exit 1
    fi
-   
+
 }
 
 test2()
@@ -124,7 +146,7 @@ test2()
    diff -u features_$tag.txt $tag.txt > diff.txt
 
    if [ $? = 0 ]
-   then 
+   then
    	echo "$tag features are installed"
    else
         echo "$tag feature info doesn't match, exiting"
