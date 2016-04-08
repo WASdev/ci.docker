@@ -4,9 +4,12 @@
 PASSWORD=$(openssl rand -base64 32)
 XML="<server description=\"Default Server\"><keyStore id=\"defaultKeyStore\" password=\"$PASSWORD\" /></server>"
 
-# Create the keystore.xml file and place in dropins
-mkdir -p /config/configDropins/defaults/
-echo $XML > /config/configDropins/defaults/keystore.xml
+# Create the keystore.xml file (if it doesn't already exist) and place in dropins
+if [ ! -f /config/configDropins/defaults/keystore.xml ]
+    then
+    mkdir -p /config/configDropins/defaults/
+    echo $XML > /config/configDropins/defaults/keystore.xml
+fi
 
 # Pass on to the real server run
 exec /opt/ibm/wlp/bin/server $@
