@@ -14,7 +14,7 @@ while read -r line
 do
     image=`echo $line | cut -d " " -f1`
     location=`echo $line  | cut -d " " -f2`
-    ./buildAndVerify.sh $image $location
+    ./build.sh $image $location && ./verify.sh $image
    
     if [ $? != 0 ]
     then
