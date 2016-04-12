@@ -16,7 +16,7 @@ waitForServerStart()
 {
    cid=$1
    count=${2:-1}
-   end=$((SECONDS+30))
+   end=$((SECONDS+60))
    while (( $SECONDS < $end && $(docker inspect -f {{.State.Running}} $cid) == "true" ))
    do
       result=$(docker logs $cid |& grep "CWWKF0011I" | wc -l)
