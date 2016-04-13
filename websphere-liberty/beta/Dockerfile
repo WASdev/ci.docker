@@ -56,7 +56,8 @@ ENV PATH=/opt/ibm/wlp/bin:$PATH
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output
-RUN ln -s $WLP_OUTPUT_DIR/defaultServer /output \
+RUN mkdir /logs \
+    && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config
 
 # Configure WebSphere Liberty

@@ -19,6 +19,6 @@ COPY docker-server /opt/ibm/docker/
 
 RUN installUtility install --acceptLicense appSecurity-1.0 blueprint-1.0 concurrent-1.0 oauth-2.0 osgiConsole-1.0 serverStatus-1.0 wab-1.0 timedOperations-1.0 \
     && installUtility install --acceptLicense defaultServer \
-    && rm -rf /config/workarea
+    && rm -rf /config/workarea /config/logs
 
 CMD ["/opt/ibm/docker/docker-server", "run", "defaultServer"]
