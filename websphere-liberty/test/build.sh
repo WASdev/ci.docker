@@ -4,7 +4,7 @@
 #  Script to build a docker image                                                   #
 #                                                                                   #
 #                                                                                   #
-#  Usage : build.sh <Image name> <Dockerfile location         >                     #
+#  Usage : build.sh <Image name> <Dockerfile location>                              #
 #                                                                                   #
 #####################################################################################
 
@@ -21,7 +21,7 @@ if [ $# != 2 ]
 then
    if [ $# != 1 ]
    then
-      echo "Usage : buildAndVerify.sh <Image name> <Dockerfile location>"
+      echo "Usage : build.sh <Image name> <Dockerfile location>"
       exit 1
    else
       echo "Dockerfile location not provided, using ."
