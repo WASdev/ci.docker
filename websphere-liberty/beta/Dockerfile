@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 MAINTAINER David Currie <david_currie@uk.ibm.com> (@dcurrie)
 
@@ -23,7 +23,7 @@ RUN apt-get update \
 # Install JRE
 ENV JAVA_VER=8 \
     JAVA_REL=0 \
-    JAVA_MF=2.10
+    JAVA_MF=3.0
 RUN TARGET_ARCH=$(uname -m) \
     && JAVA_VRMF=$JAVA_VER.$JAVA_REL-$JAVA_MF \
     && YML_FILENAME=ibm-java-jre-$JAVA_VRMF-linux-$TARGET_ARCH-javase.yml \

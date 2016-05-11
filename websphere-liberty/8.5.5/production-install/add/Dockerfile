@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com>
 
