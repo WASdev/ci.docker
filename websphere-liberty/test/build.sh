@@ -15,7 +15,6 @@ tag=`echo $image | cut -d ":" -f2`
 
 test=test
 cname=$tag$test
-arch=`uname -p`
 
 if [ $# != 2 ]
 then
@@ -27,16 +26,6 @@ then
       echo "Dockerfile location not provided, using ."
       dloc="."
    fi
-fi
-
-if [[ $arch == *"ppc"* ]]
-then
-   sed -i -e "s|^\(FROM\s*\)|\1ppc64le/|" $dloc/Dockerfile
-   image="ppc64le/$image"
-elif [[ $arch == *"s390x"* ]]
-then
-   sed -i -e "s|^\(FROM\s*\)|\1s390x/|" $dloc/Dockerfile
-   image="s390x/$image"
 fi
 
 echo "******************************************************************************"
