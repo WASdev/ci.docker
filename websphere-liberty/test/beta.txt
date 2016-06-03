@@ -1,5 +1,7 @@
 adminCenter-1.0
 appSecurity-2.0
+batch-1.0
+batchManagement-1.0
 beanValidation-1.1
 bluemixLogCollector-1.1
 bluemixUtility-1.0
