@@ -1,6 +1,0 @@
-websphere-liberty:kernel       ../8.5.5/developer/kernel
-websphere-liberty:common       ../8.5.5/developer/common
-websphere-liberty:webProfile6  ../8.5.5/developer/webProfile6
-websphere-liberty:webProfile7  ../8.5.5/developer/webProfile7
-websphere-liberty:javaee7      ../8.5.5/developer/javaee7
-websphere-liberty:beta         ../beta
