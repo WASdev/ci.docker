@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2015.
+# (C) Copyright IBM Corporation 2015, 2016.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ ENV PATH $JAVA_HOME/jre/bin:$PATH
 
 # Install Liberty
 RUN  wget -q  <User Credential> \
-   <URL>/wlp-*-runtime-8.5.5.*.jar -O /tmp/wlp-runtime.jar \
+   <URL>/wlp-*-runtime-*.jar -O /tmp/wlp-runtime.jar \
    && java -jar /tmp/wlp-runtime.jar --acceptLicense /opt/ibm \
    && rm /tmp/wlp-runtime.jar
 
@@ -54,5 +54,3 @@ COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/
 EXPOSE 9080 9443
 
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
-
-
