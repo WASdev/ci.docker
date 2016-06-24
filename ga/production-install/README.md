@@ -13,7 +13,7 @@ The first option is simpler and will build quicker but results in a larger Docke
 ## Add binaries from local file system
 
 1. Clone this repository.
-2. Move to the directory `websphere-liberty/8.5.5/production-install/add`.
+2. Move to the directory `websphere-liberty/ga/production-install/add`.
 3. Place the downloaded Liberty Runtime Archive and IBM JRE in to this directory.
 3. Review the Dockerfile and modify the filenames if required,
 5. Build the image using:
@@ -26,7 +26,7 @@ The first option is simpler and will build quicker but results in a larger Docke
 
 1. Place the downloaded Liberty Runtime Archive and IBM JRE on the FTP or HTTP server.
 2. Clone this repository.
-3. Move to the directory `websphere-liberty/8.5.5/production-install/wget`.
+3. Move to the directory `websphere-liberty/ga/production-install/wget`.
 4. Review the Dockerfile and update the user credentials and URL of the server hosting the binaries.
 5. Build the image using:
 
