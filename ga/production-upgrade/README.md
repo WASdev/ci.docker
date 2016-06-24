@@ -1,6 +1,6 @@
 # Upgrading the image from Docker Hub to a production image
 
-If entitled, you can upgrade the `websphere-liberty:8.5.5` Developer Edition image from Docker Hub to an IBM WebSphere Application Server Liberty Profile production image using the license JAR files from [Passport Advantage](http://www-01.ibm.com/software/passportadvantage/pao_customer.html) / [Fix Central](http://www-933.ibm.com/support/fixcentral/). The steps to use the license JAR as follows:
+If entitled, you can upgrade the `websphere-liberty` Developer Edition image from Docker Hub to an IBM WebSphere Application Server Liberty production image using the license JAR files from [Passport Advantage](http://www-01.ibm.com/software/passportadvantage/pao_customer.html) / [Fix Central](http://www-933.ibm.com/support/fixcentral/). The steps to use the license JAR as follows:
 
 1. Clone this repository.
 2. Go to the `ga/production-upgrade` directory.
