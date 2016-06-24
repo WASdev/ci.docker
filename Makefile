@@ -1,4 +1,4 @@
 .PHONY: all test clean
 
 test:
-	cd websphere-liberty/test && ./buildAll.sh
+	cd test/ && ./buildAll.sh
