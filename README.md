@@ -6,7 +6,6 @@ In this project you can find build scripts for Docker images (Dockerfiles) and D
 
 * [WebSphere Application Server Liberty](ga)
 * [WebSphere Application Server Liberty Beta](beta)
-* Building a [static topology](static-topology) of Liberty servers running under Docker
 
 # Issues and contributions
 
