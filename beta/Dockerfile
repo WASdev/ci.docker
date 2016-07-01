@@ -46,7 +46,7 @@ ENV JAVA_HOME=/opt/ibm/java \
     PATH=/opt/ibm/java/jre/bin:$PATH
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 2016.6.0_0
+ENV LIBERTY_VERSION 2016.7.0_0
 RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 3 | sed -n 's/\s*webProfile7:\s//p' | tr -d '\r')  \
     && echo $LIBERTY_URL \
     && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-beta.zip \

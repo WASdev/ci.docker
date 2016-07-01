@@ -23,6 +23,7 @@ localConnector-1.0
 logstashCollector-1.1
 managedBeans-1.0
 restConnector-1.0
+restConnector-2.0
 servlet-3.1
 ssl-1.0
 webProfile-7.0
