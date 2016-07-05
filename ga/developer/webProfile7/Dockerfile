@@ -17,8 +17,7 @@ FROM websphere-liberty:common
 COPY server.xml /config/
 COPY docker-server /opt/ibm/docker/
 
-RUN touch /config/server.xml \
-   && installUtility install --acceptLicense defaultServer \
-   && rm -rf /config/workarea /config/logs
+RUN installUtility install --acceptLicense defaultServer \
+   && rm -rf /output/workarea /output/logs
 
 CMD ["/opt/ibm/docker/docker-server", "run", "defaultServer"]

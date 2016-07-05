@@ -16,7 +16,7 @@ waitForServerStart()
 {
    cid=$1
    count=${2:-1}
-   end=$((SECONDS+60))
+   end=$((SECONDS+120))
    while (( $SECONDS < $end && $(docker inspect -f {{.State.Running}} $cid) == "true" ))
    do
       result=$(docker logs $cid |& grep "CWWKF0011I" | wc -l)
@@ -128,6 +128,17 @@ testFeatureList()
    then
       echo "Incorrect features installed, exiting"
       echo "$comparison"
+      exit 1
+   fi
+}
+
+testWorkareaRemoved()
+{
+   numberOfOccurences=$(docker run --rm $image find . -type d -name workarea | wc -l)
+
+   if [ $numberOfOccurences != 0 ]
+   then
+      echo "Image $image contains workarea"
       exit 1
    fi
 }
