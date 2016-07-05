@@ -63,7 +63,7 @@ RUN mkdir /logs \
 
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
-    && rm -rf $WLP_OUTPUT_DIR/.classCache
+    && rm -rf $WLP_OUTPUT_DIR/.classCache /output/workarea
 COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/
 EXPOSE 9080 9443
 
