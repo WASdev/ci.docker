@@ -15,6 +15,5 @@
 FROM websphere-liberty:webProfile7
 
 COPY server.xml /config/
-RUN touch /config/server.xml \
-    && installUtility install --acceptLicense defaultServer \
-    && rm -rf /config/workarea /config/logs
+RUN installUtility install --acceptLicense defaultServer \
+    && rm -rf /output/workarea /output/logs
