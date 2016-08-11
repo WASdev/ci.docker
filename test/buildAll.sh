@@ -11,8 +11,8 @@
 
 arch=$(uname -p)
 if [[ $arch == "ppc64le" || $arch == "s390x" ]]; then
-  docker pull $arch/ubuntu:16.04
-  docker tag $arch/ubuntu:16.04 ubuntu:16.04
+  docker pull $arch/ibmjava:8-jre
+  docker tag $arch/ibmjava:8-jre ibmjava:8-jre
 fi
 
 while read -r imageName buildContextDirectory
