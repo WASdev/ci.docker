@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:common
+FROM websphere-liberty:kernel
 
 COPY server.xml /config/
 COPY docker-server /opt/ibm/docker/
 
-RUN installUtility install --acceptLicense defaultServer \
-   && rm -rf /output/workarea /output/logs
+RUN installUtility install --acceptLicense \
+    collectiveMember-1.0 monitor-1.0 webCache-1.0 ldapRegistry-3.0 appSecurity-2.0 localConnector-1.0 restConnector-1.0 ssl-1.0 requestTiming-1.0 sessionDatabase-1.0 \
+    webProfile-7.0 \
+  && rm -rf /output/workarea /output/logs
 
 CMD ["/opt/ibm/docker/docker-server", "run", "defaultServer"]
