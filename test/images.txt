@@ -1,5 +1,4 @@
 websphere-liberty:kernel       ../ga/developer/kernel
-websphere-liberty:common       ../ga/developer/common
 websphere-liberty:webProfile6  ../ga/developer/webProfile6
 websphere-liberty:webProfile7  ../ga/developer/webProfile7
 websphere-liberty:javaee7      ../ga/developer/javaee7
