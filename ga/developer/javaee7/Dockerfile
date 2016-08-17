@@ -14,6 +14,14 @@
 
 FROM websphere-liberty:webProfile7
 
+ARG CUSTOM_REPO=false
+ARG CUSTOM_REPO_HOSTNAME=lars
+
 COPY server.xml /config/
-RUN installUtility install --acceptLicense defaultServer \
+
+RUN if [ "$CUSTOM_REPO" = true ] ; then echo "useDefaultRepository=false\nLARS.url=http://$CUSTOM_REPO_HOSTNAME:9080/ma/v1\nLARS.user=admin\nLARS.password=adminPwd" > /opt/ibm/wlp/etc/repositories.properties; fi \
+    && installUtility install --acceptLicense defaultServer \
+    && if [ "$CUSTOM_REPO" = true ] ; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
     && rm -rf /output/workarea /output/logs
+
+CMD ["/opt/ibm/docker/docker-server", "run", "defaultServer"]
