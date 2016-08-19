@@ -23,10 +23,8 @@ RUN apt-get update \
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 16.0.0_2
 ARG LIBERTY_URL
-ARG DOWNLOAD_OPTIONS
+ARG DOWNLOAD_OPTIONS=""
 RUN LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
-    && echo "Downloading Liberty from $LIBERTY_URL" \
-    && DOWNLOAD_OPTIONS=${DOWNLOAD_OPTIONS:-""} \
     && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
     && unzip -q /tmp/wlp.zip -d /opt/ibm \
     && rm /tmp/wlp.zip
