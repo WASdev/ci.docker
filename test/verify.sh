@@ -122,7 +122,8 @@ testFeatureList()
    fi
 
    features=$(docker run --rm $image /opt/ibm/wlp/bin/productInfo featureInfo | cut -d " " -f1)
-   comparison=$(comm -3 -2 "$tag.txt" <(echo "$features"))
+   scriptDir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+   comparison=$(comm -3 -2 "$scriptDir/$tag.txt" <(echo "$features"))
 
    if [ "$comparison" != "" ]
    then
