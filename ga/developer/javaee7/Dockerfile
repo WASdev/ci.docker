@@ -15,5 +15,9 @@
 FROM websphere-liberty:webProfile7
 
 COPY server.xml /config/
-RUN installUtility install --acceptLicense defaultServer \
+ARG REPOSITORIES_PROPERTIES=""
+
+RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
+    && installUtility install --acceptLicense defaultServer \
+    && if [ ! -z $REPOSITORIES_PROPERTIES ] ; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
     && rm -rf /output/workarea /output/logs

@@ -14,12 +14,17 @@
 
 FROM websphere-liberty:kernel
 
+ARG REPOSITORIES_PROPERTIES=""
+
 COPY server.xml /config/
 COPY docker-server /opt/ibm/docker/
 
-RUN installUtility install --acceptLicense \
+RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
+    && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
+    && installUtility install --acceptLicense \
     collectiveMember-1.0 monitor-1.0 webCache-1.0 ldapRegistry-3.0 appSecurity-2.0 localConnector-1.0 restConnector-1.0 ssl-1.0 requestTiming-1.0 sessionDatabase-1.0 \
     webProfile-7.0 \
-  && rm -rf /output/workarea /output/logs
+    && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
+    && rm -rf /output/workarea /output/logs
 
 CMD ["/opt/ibm/docker/docker-server", "run", "defaultServer"]

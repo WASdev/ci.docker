@@ -27,7 +27,7 @@ waitForServerStart()
    done
 
    echo "Liberty failed to start the expected number of times"
-   return 1 
+   return 1
 }
 
 testLibertyStarts()
@@ -87,14 +87,14 @@ testLibertyStopsAndRestarts()
    cid=$(docker run -d $image)
    waitForServerStart $cid
    docker stop $cid >/dev/null
-   
+
    docker start $cid >/dev/null
    if [ $? != 0 ]
    then
       echo "Failed to run container; exiting"
       exit 1
    fi
-   
+
    waitForServerStart $cid 2
    if [ $? != 0 ]
    then
@@ -122,9 +122,9 @@ testFeatureList()
    fi
 
    features=$(docker run --rm $image /opt/ibm/wlp/bin/productInfo featureInfo | cut -d " " -f1)
-   comparison=$(diff -u <(echo "$features") "$tag.txt")
+   comparison=$(comm -3 -2 "$tag.txt" <(echo "$features"))
 
-   if [ $? != 0 ]
+   if [ "$comparison" != "" ]
    then
       echo "Incorrect features installed, exiting"
       echo "$comparison"
