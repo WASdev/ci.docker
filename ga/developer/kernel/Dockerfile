@@ -40,6 +40,7 @@ RUN mkdir /logs \
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
     && rm -rf $WLP_OUTPUT_DIR/.classCache /output/workarea
+COPY docker-server /opt/ibm/docker/
 EXPOSE 9080 9443
 
-CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
+CMD ["/opt/ibm/docker/docker-server", "run", "defaultServer"]
