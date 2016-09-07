@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2015.
+# (C) Copyright IBM Corporation 2016.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,6 @@ COPY server.xml /config/
 RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
     && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
     && installUtility install --acceptLicense \
-    appSecurity-2.0 cdi-1.2 distributedMap-1.0 jaxrs-2.0 jaxrsClient-2.0 jndi-1.0 json-1.0 jsonp-1.0 localConnector-1.0 microProfile-1.0 servlet-3.1 ssl-1.0 \
+    appSecurity-2.0 cdi-1.2 distributedMap-1.0 jaxrs-2.0 jaxrsClient-2.0 jndi-1.0 json-1.0 jsonp-1.0 localConnector-1.0 servlet-3.1 ssl-1.0 \
     && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
     && rm -rf /output/workarea /output/logs

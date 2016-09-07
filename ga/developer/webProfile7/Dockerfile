@@ -25,5 +25,3 @@ RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
     webProfile-7.0 \
     && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
     && rm -rf /output/workarea /output/logs
-
-CMD ["/opt/ibm/docker/docker-server", "run", "defaultServer"]
