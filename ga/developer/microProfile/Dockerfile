@@ -17,13 +17,11 @@ FROM websphere-liberty:kernel
 ARG REPOSITORIES_PROPERTIES=""
 
 COPY server.xml /config/
+COPY docker-server /opt/ibm/docker/
 
 RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
     && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
     && installUtility install --acceptLicense \
-    collectiveMember-1.0 monitor-1.0 webCache-1.0 ldapRegistry-3.0 appSecurity-2.0 localConnector-1.0 restConnector-1.0 ssl-1.0 requestTiming-1.0 sessionDatabase-1.0 \
-    webProfile-7.0 \
+    appSecurity-2.0 cdi-1.2 distributedMap-1.0 jaxrs-2.0 jaxrsClient-2.0 jndi-1.0 json-1.0 jsonp-1.0 localConnector-1.0 microProfile-1.0 servlet-3.1 ssl-1.0 \
     && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
     && rm -rf /output/workarea /output/logs
-
-CMD ["/opt/ibm/docker/docker-server", "run", "defaultServer"]
