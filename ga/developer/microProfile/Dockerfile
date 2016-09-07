@@ -17,7 +17,6 @@ FROM websphere-liberty:kernel
 ARG REPOSITORIES_PROPERTIES=""
 
 COPY server.xml /config/
-COPY docker-server /opt/ibm/docker/
 
 RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
     && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
