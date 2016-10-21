@@ -3,7 +3,7 @@
 # Update the Dockerfile and generate the new feature lists
 
 # Get most recent version
-version=$(wget -qO- https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | egrep '[0-9]{4}\.[0-9]{1,2}\.0_0*' | sed 's/://' | sort -r | head -1)
+version=$(wget -qO- https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | egrep '[0-9]{4}\.[0-9]{1,2}\.0_0*' | sed 's/://' | sort -rV | head -1)
 
 # Check if the beta Liberty version is up to date
 count=$(cat ../beta/Dockerfile | grep "ENV LIBERTY_VERSION $version" | wc -l)

@@ -6,7 +6,6 @@ beanValidation-1.1
 bluemixLogCollector-1.1
 bluemixUtility-1.0
 cdi-1.2
-cloudant-1.0
 distributedMap-1.0
 ejbLite-3.2
 el-3.0
@@ -22,7 +21,6 @@ jsp-2.3
 localConnector-1.0
 logstashCollector-1.1
 managedBeans-1.0
-microProfile-1.0
 restConnector-1.0
 restConnector-2.0
 servlet-3.1
