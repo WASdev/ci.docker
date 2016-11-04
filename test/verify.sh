@@ -116,20 +116,51 @@ testLibertyStopsAndRestarts()
 
 testFeatureList()
 {
-   if [ $tag = "kernel" ]
-   then
-      return
+   version=$(docker run --rm $image sh -c 'echo $LIBERTY_VERSION')
+   echo "Checking features for $image against version $version"
+   
+   case $tag in
+     webProfile6)
+       YAML_KEY='uri'
+       ;;
+     beta)
+       YAML_KEY='webProfile7'
+       ;;
+     *)
+       YAML_KEY=$tag
+   esac
+   
+   LIBERTY_URL=$(wget -qO- https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | grep $version -A 6 | sed -n "s/\s*$YAML_KEY:\s//p" | tr -d '\r' | head -n 1)
+   if [ -z $LIBERTY_URL ]; then
+     echo "WARNING: download not found - unable to verify features"
+     return 
    fi
-
-   features=$(docker run --rm $image /opt/ibm/wlp/bin/productInfo featureInfo | cut -d " " -f1)
-   scriptDir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
-   comparison=$(comm -3 -2 "$scriptDir/$tag.txt" <(echo "$features"))
-
-   if [ "$comparison" != "" ]
-   then
-      echo "Incorrect features installed, exiting"
-      echo "$comparison"
-      exit 1
+   
+   if [[ $LIBERTY_URL == *jar ]]; then
+     required_features=$(docker run --rm ibmjava:8-jre-alpine sh -c \
+       "wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.jar
+java -jar /tmp/wlp.jar --acceptLicense /opt/ibm > /dev/null
+/opt/ibm/wlp/bin/productInfo featureInfo" | cut -d ' ' -f1 | sort)
+   else
+     required_features=$(docker run --rm ibmjava:8-jre-alpine sh -c \
+       "wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip
+unzip -q /tmp/wlp.zip -d /opt/ibm
+/opt/ibm/wlp/bin/productInfo featureInfo" | cut -d ' ' -f1 | sort)
+   fi
+   
+   actual_features=$(docker run --rm $image productInfo featureInfo | cut -d " " -f1 | sort)
+   
+   additional_features=$(comm -1 -3 <(echo "$required_features") <(echo "$actual_features"))
+   if [ "$additional_features" != "" ]; then
+     echo "Additional features installed"
+     echo "$additional_features"
+   fi
+   
+   missing_features=$(comm -2 -3 <(echo "$required_features") <(echo "$actual_features"))
+   if [ "$missing_features" != "" ]; then
+     echo "Missing features, exiting"
+     echo "$missing_features"
+     exit 1
    fi
 }
 
@@ -151,3 +182,4 @@ do
    eval $name
    echo "*** $name - Completed successfully"
 done
+
