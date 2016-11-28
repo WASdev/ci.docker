@@ -120,6 +120,9 @@ testFeatureList()
    echo "Checking features for $image against version $version"
    
    case $tag in
+     microProfile)
+       YAML_KEY='microProfile1'
+       ;;
      webProfile6)
        YAML_KEY='uri'
        ;;
@@ -130,7 +133,7 @@ testFeatureList()
        YAML_KEY=$tag
    esac
    
-   LIBERTY_URL=$(wget -qO- https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | grep $version -A 6 | sed -n "s/\s*$YAML_KEY:\s//p" | tr -d '\r' | head -n 1)
+   LIBERTY_URL=$(wget -qO- https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | grep $version -A 7 | sed -n "s/\s*$YAML_KEY:\s//p" | tr -d '\r' | head -n 1)
    if [ -z $LIBERTY_URL ]; then
      echo "WARNING: download not found - unable to verify features"
      return 
