@@ -14,8 +14,6 @@
 
 FROM ubuntu:16.04
 
-MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com>
-
 RUN apt-get update \
     && apt-get install -y wget \
     && rm -rf /var/lib/apt/lists/*
