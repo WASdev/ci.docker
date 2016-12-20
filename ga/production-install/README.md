@@ -33,3 +33,14 @@ The first option is simpler and will build quicker but results in a larger Docke
     ```bash
     docker build -t <image-name> .
     ```
+
+## Changing locale
+
+The base Ubuntu image does not include additional language packs. To use an alternative locale, modify the Dockerfile to install the required language pack and then set the `LANG` environment variable. For example, for Portuguese make the following modifications:
+
+```
+RUN apt-get update \
+  && apt-get install -y language-pack-pt-base wget \
+  && rm -rf /var/lib/apt/lists/*
+ENV LANG pt_BR.UTF-8
+```
