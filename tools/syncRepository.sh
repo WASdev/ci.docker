@@ -46,7 +46,7 @@ pullAndSync()
     then
         echo "Syncing websphere-liberty:$tag image......"
         docker rmi $target/websphere-liberty:$tag
-        docker tag -f websphere-liberty:$tag $target/websphere-liberty:$tag
+        docker tag websphere-liberty:$tag $target/websphere-liberty:$tag
         docker push $target/websphere-liberty:$tag
         if [ $?  = 0 ]
         then
