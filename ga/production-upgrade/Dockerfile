@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2015, 2016.
+# (C) Copyright IBM Corporation 2015, 2017.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,6 @@
 # limitations under the License.
 
 FROM websphere-liberty
-
-MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com>
-
-# Upgrade License
-ADD wlp-*-license.jar /tmp/
-
+COPY wlp-*-license.jar /tmp/
 RUN java -jar /tmp/wlp-*-license.jar --acceptLicense /opt/ibm \
     && rm /tmp/wlp-*-license.jar
