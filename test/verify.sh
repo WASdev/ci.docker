@@ -46,7 +46,7 @@ testLibertyStarts()
       exit 1
    fi
 
-   docker logs $cid |& grep "ERROR"
+   docker logs $cid 2>&1 | grep "ERROR"
    if [ $? = 0 ]
    then
       echo "Errors found in logs for container; exiting"
@@ -102,7 +102,7 @@ testLibertyStopsAndRestarts()
       exit 1
    fi
 
-   docker logs $cid |& grep "ERROR"
+   docker logs $cid 2>&1 | grep "ERROR"
    if [ $? = 0 ]
    then
       echo "Errors found in logs for container; exiting"
