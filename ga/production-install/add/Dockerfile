@@ -22,7 +22,7 @@ RUN apt-get update \
 ADD ibm-java*archive.bin /tmp/java.bin
 
 RUN chmod +x /tmp/java.bin \
-   && /tmp/java.bin -i silent -DUSER_INSTALL_DIR=/opt/ibm/java \
+   && /tmp/java.bin -i silent -DLICENSE_ACCEPTED=TRUE -DUSER_INSTALL_DIR=/opt/ibm/java \
    && rm /tmp/java.bin
 
 ENV JAVA_HOME /opt/ibm/java
