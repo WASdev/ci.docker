@@ -30,6 +30,11 @@ RUN LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/e
     && rm /tmp/wlp.zip
 ENV PATH=/opt/ibm/wlp/bin:$PATH
 
+# Add labels for consumption by IBM Product Insights
+LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
+      "ProductName"="WebSphere Application Server Liberty" \
+      "ProductVersion"="17.0.0.3"
+
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output
