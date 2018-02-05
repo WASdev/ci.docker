@@ -14,7 +14,7 @@
 
 FROM ibmjava:8-jre
 
-MAINTAINER David Currie <david_currie@uk.ibm.com> (@davidcurrie)
+LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)"
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends unzip \
