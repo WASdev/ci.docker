@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2015.
+# (C) Copyright IBM Corporation 2015,2018.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,4 +48,5 @@ RUN /opt/ibm/wlp/bin/server create \
 COPY docker-server /opt/ibm/docker/
 EXPOSE 9080 9443
 
-CMD ["/opt/ibm/docker/docker-server", "run", "defaultServer"]
+ENTRYPOINT ["/opt/ibm/docker/docker-server"]
+CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
