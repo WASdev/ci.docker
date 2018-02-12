@@ -1,6 +1,6 @@
 # WebSphere Application Server Developer Edition Liberty image for Docker
 
-The [Dockerfile](Dockerfile) in this directory is used to build the `websphere-liberty:microserviceBase` image on [Docker Hub](https://registry.hub.docker.com/_/websphere-liberty/). The image contains IBM WebSphere Application Server Developer Edition Liberty with Java EE 7 Web Profile and MicroProfile 1.2 features and an IBM Java Runtime Environment V8.  
+The [Dockerfile](Dockerfile) in this directory is used to build the `websphere-liberty:common` image on [Docker Hub](https://registry.hub.docker.com/_/websphere-liberty/). The image contains IBM WebSphere Application Server Developer Edition Liberty with Java EE 7 Web Profile and MicroProfile 1.2 features and an IBM Java Runtime Environment V8.  
 
 # Usage
 
