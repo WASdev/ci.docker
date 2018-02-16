@@ -127,7 +127,7 @@ testFeatureList()
        YAML_KEY='uri'
        ;;
      beta)
-       YAML_KEY='webProfile7'
+       YAML_KEY='webProfile8'
        ;;
      *)
        YAML_KEY=$tag
