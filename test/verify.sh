@@ -30,6 +30,23 @@ waitForServerStart()
    return 1
 }
 
+waitForServerStop()
+{
+   cid=$1
+   end=$((SECONDS+120))
+   while (( $SECONDS < $end ))
+   do
+      result=$(docker logs $cid 2>&1 | grep "CWWKE0036I" | wc -l)
+      if [ $result = 1 ]
+      then
+         return 0
+      fi
+   done
+
+   echo "Liberty failed to stop within a reasonable time"
+   return 1
+}
+
 testLibertyStarts()
 {
    cid=$(docker run -d $image)
@@ -70,6 +87,7 @@ testLibertyStops()
       exit 1
    fi
 
+   waitForServerStop $cid
    docker logs $cid | grep -iq "CWWKE0036I"
    if [ $? != 0 ]
    then
