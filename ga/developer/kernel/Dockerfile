@@ -48,5 +48,14 @@ RUN /opt/ibm/wlp/bin/server create \
 COPY docker-server /opt/ibm/docker/
 EXPOSE 9080 9443
 
+# These instructions will be run in images built FROM this image
+ONBUILD COPY server.xml /config/
+ONBUILD ARG REPOSITORIES_PROPERTIES=""
+ONBUILD RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
+  && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
+  && installUtility install --acceptLicense defaultServer \
+  && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
+  && server start && server stop && rm -rf /output/logs
+
 ENTRYPOINT ["/opt/ibm/docker/docker-server"]
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
