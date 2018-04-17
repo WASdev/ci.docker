@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2014,2015.
+# (C) Copyright IBM Corporation 2014,2018.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@ FROM websphere-liberty:kernel
 
 ARG REPOSITORIES_PROPERTIES=""
 
-COPY server.xml /config/
-
 RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
     && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
     && installUtility install --acceptLicense \
@@ -26,3 +24,7 @@ RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
     webProfile-6.0 \
     && if [ ! -z $REPOSITORIES_PROPERTIES ] ; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
     && rm -rf /output/workarea /output/logs
+
+COPY server.xml /config/
+
+RUN server start && server stop && rm -rf /output/resources/security/
