@@ -185,17 +185,6 @@ unzip -q /tmp/wlp.zip -d /opt/ibm
    fi
 }
 
-testWorkareaRemoved()
-{
-   numberOfOccurences=$(docker run --rm $image find . -type d -name workarea | wc -l)
-
-   if [ $numberOfOccurences != 0 ]
-   then
-      echo "Image $image contains workarea"
-      exit 1
-   fi
-}
-
 tests=$(declare -F | cut -d" " -f3 | grep "test")
 for name in $tests
 do
