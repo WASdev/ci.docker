@@ -53,8 +53,11 @@ RUN mkdir /logs \
     && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config
 
-RUN mkdir /config/configDropins && \
-    chmod 777 /output /config /config/configDropins /logs
+RUN mkdir /config/configDropins \
+    && chown -R  wlp /output \
+    && chown -R  wlp /config \
+    && chown -R  wlp /config/configDropins \
+    && chown -R  wlp /logs
 
 USER wlp
 
