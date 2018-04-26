@@ -56,7 +56,6 @@ RUN mkdir /logs \
 RUN mkdir /config/configDropins \
     && chown -R  wlp /output \
     && chown -R  wlp /config \
-    && chown -R  wlp /config/configDropins \
     && chown -R  wlp /logs
 
 USER wlp
