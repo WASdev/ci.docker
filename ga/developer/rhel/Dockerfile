@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM centos:latest
+FROM registry.access.redhat.com/rhel7
 
 LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)"
 
@@ -28,22 +28,18 @@ RUN yum makecache fast \
 
 # Create a non-root user
 RUN useradd -m wlp \
-    && mkdir /opt/ibm \
-    && chown -R wlp /opt/ibm
+    && mkdir /opt/ibm
 
 # Create directories we'll copy artifacts into
 RUN mkdir -p /opt/ibm/java && mkdir -p /opt/ibm/wlp && mkdir -p /opt/ibm/docker
     
-# Copy IBM Java from external image
-COPY --from=websphere-liberty --chown=wlp /opt/ibm/java /opt/ibm/java
-ENV JAVA_HOME=/opt/ibm/java
+# Copy IBM Java, WebSphere Liberty and docker-server into the image
+ADD ibm /opt/ibm
+RUN chmod -R 777 /opt/ibm
 
-# Copy WebSphere Liberty from external image
-COPY --from=websphere-liberty --chown=wlp /opt/ibm/wlp /opt/ibm/wlp
+ENV JAVA_HOME=/opt/ibm/java
 ENV PATH=/opt/ibm/wlp/bin:$PATH
 
-# Copy the starting script from external image
-COPY --from=websphere-liberty --chown=wlp /opt/ibm/docker /opt/ibm/docker
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
@@ -51,12 +47,11 @@ ENV LOG_DIR=/logs \
 
 RUN mkdir /logs \
     && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
-    && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config
-
-RUN mkdir /config/configDropins \
-    && chown -R  wlp /output \
-    && chown -R  wlp /config \
-    && chown -R  wlp /logs
+    && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config  \
+    && mkdir /config/configDropins \ 
+    && chmod -R 777 /output \
+    && chmod -R 777 /config/configDropins \
+    && chmod -R 777 /logs
 
 USER wlp
 
