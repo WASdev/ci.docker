@@ -1,5 +1,0 @@
-FROM websphere-liberty
-RUN useradd -m wlp
-USER wlp
-ADD ibm /opt/ibm
-RUN /opt/ibm ls -l
