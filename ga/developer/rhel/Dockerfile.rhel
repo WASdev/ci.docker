@@ -41,6 +41,12 @@ ENV JAVA_HOME=/opt/ibm/java \
     RANDFILE=/tmp/.rnd \
     JVM_ARGS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/"
 
+
+# Install MicroProfile features
+RUN installUtility install --acceptLicense microProfile-1.3 \
+    && rm -rf /output/workarea /output/logs
+
+
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
     && mkdir /config/configDropins \

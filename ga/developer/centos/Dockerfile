@@ -27,9 +27,10 @@ RUN yum makecache fast \
     && rm -rf /var/tmp/yum-*
     
 # Copy IBM Java, WebSphere Liberty and docker-server into the image
-COPY --from=websphere-liberty /opt/ibm/java /opt/ibm/java
-COPY --from=websphere-liberty /opt/ibm/wlp /opt/ibm/wlp
-COPY --from=websphere-liberty /opt/ibm/docker /opt/ibm/docker
+COPY --from=websphere-liberty:kernel /opt/ibm/java /opt/ibm/java
+COPY --from=websphere-liberty:kernel /opt/ibm/wlp /opt/ibm/wlp
+COPY --from=websphere-liberty:kernel /opt/ibm/docker /opt/ibm/docker
+
 
 # Set environment vars and shorcuts
 ENV JAVA_HOME=/opt/ibm/java \
@@ -38,6 +39,10 @@ ENV JAVA_HOME=/opt/ibm/java \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
     RANDFILE=/tmp/.rnd \
     JVM_ARGS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/"
+
+# Install MicroProfile features
+RUN installUtility install --acceptLicense microProfile-1.3 \
+    && rm -rf /output/workarea /output/logs
 
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
