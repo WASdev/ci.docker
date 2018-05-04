@@ -12,24 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM centos:latest
+FROM registry.access.redhat.com/rhel7-atomic
 
 LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)"
 
 # Operating System update
-RUN yum makecache fast \
-    && yum update \
-    && yum -y install openssl \
-    && yum clean packages \
-    && yum clean headers \
-    && yum clean all \
-    && rm -rf /var/cache/yum \
-    && rm -rf /var/tmp/yum-*
+RUN microdnf --enablerepo=rhel-7-server-rpms install openssl shadow-utils \
+    && microdnf clean all
     
 # Copy IBM Java, WebSphere Liberty and docker-server into the image
-COPY --from=websphere-liberty /opt/ibm/java /opt/ibm/java
-COPY --from=websphere-liberty /opt/ibm/wlp /opt/ibm/wlp
-COPY --from=websphere-liberty /opt/ibm/docker /opt/ibm/docker
+ADD ibm /opt/ibm
 
 # Set environment vars and shorcuts
 ENV JAVA_HOME=/opt/ibm/java \
@@ -41,9 +33,9 @@ ENV JAVA_HOME=/opt/ibm/java \
 
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
+    && mkdir /config/configDropins \
     && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config  \
-    && mkdir /config/configDropins \
     && useradd -u 1001 -r -g 0 -s /sbin/nologin default \
     && chown -R 1001:0 /config \
     && chmod -R g+rw /config \
