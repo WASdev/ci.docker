@@ -63,6 +63,9 @@ RUN mkdir /logs \
 
 USER 1001
 
+# Add server.xml
+COPY server.xml /config/
+
 EXPOSE 9080 9443
 ENTRYPOINT ["/opt/ibm/docker/docker-server"]
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
