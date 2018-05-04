@@ -10,7 +10,7 @@ If you wish to use Docker EE instead of RHEL's docker, you can follow [Docker's 
 
 # Usage
 
-## Pull files from base image.
+## Pull files from base image
 `docker create --name wlp websphere-liberty:kernel`
 
 `docker cp wlp:/opt/ibm .`
