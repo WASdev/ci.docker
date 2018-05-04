@@ -6,6 +6,8 @@ The instructions below assume you are building from a RHEL (or RHEL-atomic) oper
 
 Due to RHEL's version of docker being behind the latest docker versions we cannot use multi-stage builds (i.e. can't use `--from`) nor the integrated `chown` support for `ADD` or `COPY` instructions.
 
+If you wish to use Docker EE instead of RHEL's docker, you can follow [Docker's instructions](https://docs.docker.com/install/linux/docker-ee/rhel/), which will allow you to use a much newer version of the docker daemon but please be aware there's currently an [issue](https://serverfault.com/questions/809544/redhat-container-on-pure-docker-engine/) where the RHEL subscription from the docker host is not propagated into the docker image.  The suggested workaround is to mount the RHEL license from the docker host into the docker container.
+
 # Usage
 
 ## Pull files from base image
@@ -13,7 +15,7 @@ Due to RHEL's version of docker being behind the latest docker versions we canno
 `docker cp wlp:/opt/ibm .`
 
 ## Build RHEL-Liberty image
-`docker build -t rhel_wlp Dockerfile.rhel`
+`docker build -t rhel_wlp . -f Dockerfile.rhel`
 
 ## Build RHEL-atomic-Liberty image
-`docker build -t rhelatomic_wlp Dockerfile.rhelatomic`
+`docker build -t rhelatomic_wlp . -f Dockerfile.rhelatomic`
