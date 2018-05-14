@@ -79,6 +79,7 @@ testLibertyStops()
    cid=$(docker run -d $image)
    waitForServerStart $cid
 
+   sleep 20
    result=$(docker stop $cid)
    if [ $? != 0 ]
    then
