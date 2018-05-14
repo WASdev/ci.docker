@@ -1,6 +1,6 @@
 # WebSphere Application Server Liberty Profile and Docker [![Build Status](https://travis-ci.org/WASdev/ci.docker.svg?branch=master)](https://travis-ci.org/WASdev/ci.docker)
 
-This project contains build scripts for Docker images (Dockerfiles) and Docker related utilities for [WebSphere Application Server Liberty](websphere-liberty). There are separate projects containing resources for [WebSphere Application Server traditional](https://github.com/WASdev/ci.docker.websphere-traditional) and [IBM HTTP Server](https://github.com/WASdev/ci.docker.ibm-http-server).
+This project contains build scripts for Docker images (Dockerfiles) and Docker related utilities for [WebSphere Application Server Liberty](https://docs.docker.com/samples/library/websphere-liberty/). There are separate projects containing resources for [WebSphere Application Server traditional](https://github.com/WASdev/ci.docker.websphere-traditional) and [IBM HTTP Server](https://github.com/WASdev/ci.docker.ibm-http-server).
 
 In this project you can find build scripts for Docker images (Dockerfiles) and Docker related utilities for WebSphere Application Server Liberty Profile. Currently resources are available for:
 
