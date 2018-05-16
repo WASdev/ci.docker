@@ -48,5 +48,7 @@ RUN /opt/ibm/wlp/bin/server create \
 COPY docker-server /opt/ibm/docker/
 EXPOSE 9080 9443
 
+ENV KEYSTORE_REQUIRED true
+
 ENTRYPOINT ["/opt/ibm/docker/docker-server"]
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
