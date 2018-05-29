@@ -41,7 +41,8 @@ ENV LOG_DIR /logs
 ENV WLP_OUTPUT_DIR /opt/ibm/wlp/output
 RUN mkdir /logs \
     && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
-    && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config
+    && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config \
+    && ln -s /opt/ibm /liberty
 
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
