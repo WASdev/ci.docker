@@ -18,7 +18,7 @@ LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)"
 
 # Operating System update
 RUN yum makecache fast \
-    && yum update \
+    && yum update -y \
     && yum -y install openssl \
     && yum clean packages \
     && yum clean headers \
@@ -48,6 +48,7 @@ RUN installUtility install --acceptLicense microProfile-1.3 \
 RUN mkdir /logs \
     && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config  \
+    && ln -s /opt/ibm /liberty \
     && mkdir /config/configDropins \
     && useradd -u 1001 -r -g 0 -s /sbin/nologin default \
     && chown -R 1001:0 /config \
