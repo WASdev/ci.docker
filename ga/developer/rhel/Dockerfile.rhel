@@ -14,7 +14,13 @@
 
 FROM registry.access.redhat.com/rhel7
 
-LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)"
+LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)" \
+      name="WebSphere Liberty" \
+      vendor="IBM" \
+      version="1.0" \
+      release="18.0.0.1" \
+      summary="Image for WebSphere Liberty with IBM's JRE and RHEL" \
+      description="This image contains the WebSphere Liberty runtime with IBM's JRE and Red Hat Enterprise Linux as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker"
 
 # Operating System update
 RUN yum makecache fast \
@@ -40,11 +46,6 @@ ENV JAVA_HOME=/opt/ibm/java \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
     RANDFILE=/tmp/.rnd \
     JVM_ARGS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/"
-
-
-# Install MicroProfile features
-RUN installUtility install --acceptLicense microProfile-1.3 \
-    && rm -rf /output/workarea /output/logs
 
 
 # Create symlinks && set permissions for non-root user

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+docker rm -f wlp
+docker create --name wlp websphere-liberty:kernel
+docker cp wlp:/opt/ibm .
+docker rmi -f wlp-rhel:kernel
+docker build -t wlp-rhel:kernel -f Dockerfile.rhel .
+rm -rf ibm
