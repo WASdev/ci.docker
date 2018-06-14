@@ -11,8 +11,13 @@ If you wish to use Docker EE instead of RHEL's docker, you can follow [Docker's 
 # Usage
 
 ## Build RHEL-Liberty image
-`docker-build.sh <tag>` where `<tag>` can be one of: `kernel`, `webProfile7`, `microProfile`, `javaee7`
+`docker-build.sh <tag>`  
+
+...where `<tag>` can be one of: `kernel`, `webProfile7`, `microProfile`, `javaee7`
+
 
 ## Build RHEL-atomic-Liberty image
-`docker-build.sh <tag> Dockerfile.rhelatomic` where `<tag>` can be one of: `kernel`, `webProfile7`, `microProfile`, `javaee7`
+`docker-build.sh <tag> Dockerfile.rhelatomic` 
+
+...where `<tag>` can be one of: `kernel`, `webProfile7`, `microProfile`, `javaee7`
 
