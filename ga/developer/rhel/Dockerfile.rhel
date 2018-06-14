@@ -41,7 +41,8 @@ RUN mkdir -p /opt/ibm/java && mkdir -p /opt/ibm/wlp && mkdir -p /opt/ibm/docker
 ADD ibm /opt/ibm
 
 #Add license file for certification
-RUN mkdir /licenses && wget -q -O /licenses/en.html https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/license/base_ilan/ilan/18.0.0.1/lafiles/en.html
+RUN mkdir /licenses \
+    && curl -s https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/license/base_ilan/ilan/18.0.0.1/lafiles/en.html > /licenses/en.html
 
 
 # Set environment vars and shorcuts

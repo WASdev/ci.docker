@@ -1,8 +1,12 @@
 #!/bin/bash
+tag=$1
+if [ -z "$tag" ]; then
+   tag="kernel"
+fi
 
-docker rm -f wlp
-docker create --name wlp websphere-liberty:kernel
+docker rm -f wlp > /dev/null 2>&1 
+docker create --name wlp websphere-liberty:$tag
 docker cp wlp:/opt/ibm .
-docker rmi -f wlp-rhel:kernel
-docker build -t wlp-rhel:kernel -f Dockerfile.rhel .
+docker rmi -f wlp-rhel:$tag > /dev/null 2>&1 
+docker build -t wlp-rhel:$tag -f Dockerfile.rhel .
 rm -rf ibm
