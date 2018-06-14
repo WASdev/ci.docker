@@ -14,6 +14,7 @@
 
 FROM registry.access.redhat.com/rhel7
 
+#Add labels to the image
 LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)" \
       name="WebSphere Liberty" \
       vendor="IBM" \
@@ -38,6 +39,10 @@ RUN mkdir -p /opt/ibm/java && mkdir -p /opt/ibm/wlp && mkdir -p /opt/ibm/docker
     
 # Copy IBM Java, WebSphere Liberty and docker-server into the image
 ADD ibm /opt/ibm
+
+#Add license file for certification
+RUN mkdir /licenses && wget -q -O /licenses/en.html https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/license/base_ilan/ilan/18.0.0.1/lafiles/en.html
+
 
 # Set environment vars and shorcuts
 ENV JAVA_HOME=/opt/ibm/java \
