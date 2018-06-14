@@ -10,13 +10,9 @@ If you wish to use Docker EE instead of RHEL's docker, you can follow [Docker's 
 
 # Usage
 
-## Pull files from base image
-`docker create --name wlp websphere-liberty:kernel`
-
-`docker cp wlp:/opt/ibm .`
-
 ## Build RHEL-Liberty image
-`docker build -t rhel_wlp . -f Dockerfile.rhel`
+`docker-build.sh <tag>` where `<tag>` can be one of: `kernel`, `webProfile7`, `microProfile`, `javaee7`
 
 ## Build RHEL-atomic-Liberty image
-`docker build -t rhelatomic_wlp . -f Dockerfile.rhelatomic`
+`docker-build.sh <tag> Dockerfile.rhelatomic` where `<tag>` can be one of: `kernel`, `webProfile7`, `microProfile`, `javaee7`
+
