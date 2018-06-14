@@ -11,7 +11,7 @@ If you wish to use Docker EE instead of RHEL's docker, you can follow [Docker's 
 # Usage
 
 ## Clone this repo
-`git clone https://github.com/wasDev/ci.docker.git`
+`git clone https://github.com/WASdev/ci.docker.git`
 
 ## Navigate to this directory
 `cd ci.docker/ga/developer/rhel/`
