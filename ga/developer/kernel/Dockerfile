@@ -21,7 +21,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 18.0.0_01
+ENV LIBERTY_VERSION 18.0.0_02
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
 RUN LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
@@ -33,7 +33,7 @@ ENV PATH=/opt/ibm/wlp/bin:$PATH
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="18.0.0.1"
+      "ProductVersion"="18.0.0.2"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
