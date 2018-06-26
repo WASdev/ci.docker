@@ -67,7 +67,9 @@ then
     pullAndSync $target common
     pullAndSync $target webProfile6
     pullAndSync $target webProfile7
+    pullAndSync $target webProfile8
     pullAndSync $target javaee7
+    pullAndSync $target javaee8
     pullAndSync $target latest
 elif [ $tag = "beta" ]
 then
