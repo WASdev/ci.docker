@@ -180,9 +180,15 @@ unzip -q /tmp/wlp.zip -d /opt/ibm
 
    missing_features=$(comm -2 -3 <(echo "$required_features") <(echo "$actual_features"))
    if [ "$missing_features" != "" ]; then
-     echo "Missing features, exiting"
-     echo "$missing_features"
-     exit 1
+    if [[ $tag == "webProfile8" || $tag == "javaee8" ]]; then
+      # Ignore the missing features for EE8 tags
+      echo "Missing features, IGNORE"
+      echo "$missing_features"
+    else
+      echo "Missing features, exiting"
+      echo "$missing_features"
+      exit 1
+    fi
    fi
 }
 

@@ -19,7 +19,7 @@ LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)" \
       name="WebSphere Liberty" \
       vendor="IBM" \
       version="1.0" \
-      release="18.0.0.1" \
+      release="18.0.0.2" \
       summary="Image for WebSphere Liberty with IBM's JRE and RHEL" \
       description="This image contains the WebSphere Liberty runtime with IBM's JRE and Red Hat Enterprise Linux as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker"
 
