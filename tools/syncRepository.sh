@@ -65,6 +65,8 @@ if [ $tag = "kernel" ]
 then
     pullAndSync $target kernel
     pullAndSync $target common
+    pullAndSync $target springBoot1
+    pullAndSync $target springBoot2
     pullAndSync $target webProfile7
     pullAndSync $target webProfile8
     pullAndSync $target javaee7

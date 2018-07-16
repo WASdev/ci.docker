@@ -164,10 +164,15 @@ testFeatureList()
 java -jar /tmp/wlp.jar --acceptLicense /opt/ibm > /dev/null
 /opt/ibm/wlp/bin/productInfo featureInfo" | cut -d ' ' -f1 | sort)
    else
-     required_features=$(docker run --rm ibmjava:8-jre-alpine sh -c \
+     if [[ $tag == "springBoot1" || $tag == "springBoot2" ]]; then
+       # Ignore missing archives for Spring Boot tags.
+       required_features="IGNORE"
+     else
+       required_features=$(docker run --rm ibmjava:8-jre-alpine sh -c \
        "wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip
 unzip -q /tmp/wlp.zip -d /opt/ibm
 /opt/ibm/wlp/bin/productInfo featureInfo" | cut -d ' ' -f1 | sort)
+     fi
    fi
 
    actual_features=$(docker run --rm $image productInfo featureInfo | cut -d " " -f1 | sort)
@@ -180,8 +185,8 @@ unzip -q /tmp/wlp.zip -d /opt/ibm
 
    missing_features=$(comm -2 -3 <(echo "$required_features") <(echo "$actual_features"))
    if [ "$missing_features" != "" ]; then
-    if [[ $tag == "webProfile8" || $tag == "javaee8" ]]; then
-      # Ignore the missing features for EE8 tags
+    if [[ $tag == "webProfile8" || $tag == "javaee8" || $tag == "springBoot1" || $tag == "springBoot2" ]]; then
+      # Ignore the missing features for EE8 and Spring Boot tags
       echo "Missing features, IGNORE"
       echo "$missing_features"
     else
