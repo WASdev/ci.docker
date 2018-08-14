@@ -14,7 +14,7 @@ If you wish to use Docker EE instead of RHEL's docker, you can follow [Docker's 
 `git clone https://github.com/WASdev/ci.docker.git`
 
 ## Navigate to this directory
-`cd ci.docker/ga/developer/rhel/`
+`cd ci.docker/ga/developer/rhel/atomic`
 
 ## Build RHEL-atomic-Liberty image
 `./docker-build.sh <tag> Dockerfile.rhelatomic` 
