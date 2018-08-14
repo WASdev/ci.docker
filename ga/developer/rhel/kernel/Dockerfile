@@ -67,6 +67,8 @@ COPY docker-server /opt/ibm/docker/
 
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
+    && mkdir /etc/wlp \
+    && mkdir /lib.index.cache \
     && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config  \
     && ln -s /opt/ibm /liberty \
@@ -78,7 +80,14 @@ RUN mkdir /logs \
     && chown -R 1001:0 /opt/ibm/wlp \
     && chmod -R g+rw /opt/ibm/wlp \
     && chown -R 1001:0 /logs \
-    && chmod -R g+rw /logs
+    && chmod -R g+rw /logs \
+    && chown -R 1001:0 /etc/wlp \
+    && chmod -R g+rw /etc/wlp \
+    && chown -R 1001:0 /lib.index.cache \
+    && chmod -R g+rw /lib.index.cache
+
+
+
 USER 1001
 
 EXPOSE 9080 9443
