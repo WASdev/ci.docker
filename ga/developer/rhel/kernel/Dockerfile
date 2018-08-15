@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2018.
+# (C) Copyright IBM Corporation 2015,2018.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM registry.access.redhat.com/rhel7
+FROM ibmjava:8-jre-rhel
 
 #Add labels to the image
 LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)" \
@@ -26,7 +26,7 @@ LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)" \
 # Operating System update
 RUN yum makecache fast \
     && yum update -y \
-    && yum -y install openssl \
+    && yum -y install unzip \
     && yum clean packages \
     && yum clean headers \
     && yum clean all \
@@ -34,49 +34,65 @@ RUN yum makecache fast \
     && rm -rf /var/tmp/yum-*
 
 
-# Create directories we'll copy artifacts into
-RUN mkdir -p /opt/ibm/java && mkdir -p /opt/ibm/wlp && mkdir -p /opt/ibm/docker
-    
-# Copy IBM Java, WebSphere Liberty and docker-server into the image
-ADD ibm /opt/ibm
-
 #Add license file for certification
 RUN mkdir /licenses \
     && curl -s https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/license/base_ilan/ilan/18.0.0.2/lafiles/en.html > /licenses/en.html
 
+# Install WebSphere Liberty
+ENV LIBERTY_VERSION 18.0.0_02
+ARG LIBERTY_URL
+ARG DOWNLOAD_OPTIONS=""
+RUN LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
+    && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
+    && unzip -q /tmp/wlp.zip -d /opt/ibm \
+    && rm /tmp/wlp.zip
+ENV PATH=/opt/ibm/wlp/bin:$PATH
 
-# Set environment vars and shorcuts
-ENV JAVA_HOME=/opt/ibm/java \
-    PATH=/opt/ibm/wlp/bin:$PATH \
-    LOG_DIR=/logs \
+# Add labels for consumption by IBM Product Insights
+LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
+      "ProductName"="WebSphere Application Server Liberty" \
+      "ProductVersion"="18.0.0.2"
+
+# Set Path Shortcuts
+ENV LOG_DIR=/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
     RANDFILE=/tmp/.rnd \
     JVM_ARGS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/"
 
+# Configure WebSphere Liberty
+RUN /opt/ibm/wlp/bin/server create \
+    && rm -rf $WLP_OUTPUT_DIR/.classCache /output/workarea
+
+COPY docker-server /opt/ibm/docker/
 
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
+    && mkdir /etc/wlp \
+    && mkdir /lib.index.cache \
     && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config  \
     && ln -s /opt/ibm /liberty \
-    && mkdir /config/configDropins \
     && useradd -u 1001 -r -g 0 -s /sbin/nologin default \
     && chown -R 1001:0 /config \
     && chmod -R g+rw /config \
     && chown -R 1001:0 /opt/ibm/docker/docker-server \
     && chmod -R g+rwx /opt/ibm/docker/docker-server \
-    && chown -R 1001:0 /opt/ibm/wlp/usr/servers/defaultServer \
-    && chmod -R g+rw /opt/ibm/wlp/usr/servers/defaultServer \
-    && chown -R 1001:0 /opt/ibm/wlp/output \
-    && chmod -R g+rw /opt/ibm/wlp/output \
+    && chown -R 1001:0 /opt/ibm/wlp \
+    && chmod -R g+rw /opt/ibm/wlp \
     && chown -R 1001:0 /logs \
-    && chmod -R g+rw /logs
+    && chmod -R g+rw /logs \
+    && chown -R 1001:0 /etc/wlp \
+    && chmod -R g+rw /etc/wlp \
+    && chown -R 1001:0 /lib.index.cache \
+    && chmod -R g+rw /lib.index.cache
+
+
 
 USER 1001
 
-# Add server.xml
-COPY server.xml /config/
-
 EXPOSE 9080 9443
+
+ENV KEYSTORE_REQUIRED true
+
 ENTRYPOINT ["/opt/ibm/docker/docker-server"]
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]

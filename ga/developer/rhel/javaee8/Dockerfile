@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:kernel
+FROM websphere-liberty:kernel-rhel
 
 ARG REPOSITORIES_PROPERTIES=""
 
@@ -27,5 +27,3 @@ RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
   && rm -rf /output/workarea /output/logs
 
 COPY server.xml /config/
-
-RUN server start && server stop && rm -rf /output/resources/security/ && rm -rf /output/messaging
