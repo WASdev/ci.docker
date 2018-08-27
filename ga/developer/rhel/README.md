@@ -17,13 +17,12 @@ If you wish to use Docker EE instead of RHEL's docker, you can follow [Docker's 
 `cd ci.docker/ibmjava/8/jre/rhel`
 `docker build -t ibmjava:8-jre-rhel .`
 
-## Clone this repo
-`git clone https://github.com/WASdev/ci.docker.git`
-
 ## Build the WebSphere Liberty RHEL image
+`git clone https://github.com/WASdev/ci.docker.git`
 `cd ci.docker/ga/developer/rhel/kernel`
 `docker build -t websphere-liberty:kernel-rhel .`
 
+## Build other tags
 You can then use the `websphere-liberty:kernel-rhel` image as the base of your own dockerfile, or build any of the other tags in the `ci.docker/ga/developer/rhel/` directory, such as `javaee8`, `springBoot2`, etc.  
 
 
