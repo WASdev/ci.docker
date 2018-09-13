@@ -36,7 +36,6 @@ then
     XML="<server description=\"Default Server\"><keyStore id=\"defaultKeyStore\" password=\"$PASSWORD\" /></server>"
 
     # Create the keystore.xml file and place in configDropins
-    mkdir -p $(dirname $keystorePath)
     echo $XML > $keystorePath
   fi
 fi
