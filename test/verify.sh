@@ -140,7 +140,7 @@ testFeatureList()
 
    case $tag in
      microProfile)
-       YAML_KEY='microProfile1'
+       YAML_KEY='microProfile2'
        ;;
      webProfile6)
        YAML_KEY='uri'
