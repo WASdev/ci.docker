@@ -19,6 +19,9 @@ LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)"
 RUN apt-get update \
     && apt-get install -y --no-install-recommends unzip \
     && rm -rf /var/lib/apt/lists/*
+    && mkdir /licenses/
+
+COPY *.html /licenses/
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 18.0.0_03
