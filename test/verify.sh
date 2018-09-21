@@ -139,9 +139,6 @@ testFeatureList()
    echo "Checking features for $image against version $version"
 
    case $tag in
-     microProfile)
-       YAML_KEY='microProfile2'
-       ;;
      webProfile6)
        YAML_KEY='uri'
        ;;
