@@ -18,7 +18,8 @@ LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)"
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends unzip \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd -u 1001 -r -g 0 -s /sbin/nologin default
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 2018.9.0_0
@@ -26,21 +27,47 @@ RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/softw
     && echo $LIBERTY_URL \
     && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-beta.zip \
     && unzip -q /tmp/wlp-beta.zip -d /opt/ibm \
-    && rm /tmp/wlp-beta.zip
+    && rm /tmp/wlp-beta.zip \
+    && chown -R 1001:0 /opt/ibm/wlp \
+    && chmod -R g+rw /opt/ibm/wlp
 ENV PATH=/opt/ibm/wlp/bin:$PATH
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output
-RUN mkdir /logs \
-    && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
-    && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config \
-    && ln -s /opt/ibm /liberty
 
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
     && rm -rf $WLP_OUTPUT_DIR/.classCache /output/workarea
 COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/
+
+# Create symlinks && set permissions for non-root user
+RUN mkdir /logs \
+    && mkdir /etc/wlp \
+    && mkdir /lib.index.cache \
+    && mkdir -p /home/default \
+    && mkdir /output \
+    && chmod -t /output \
+    && rm -rf /output \
+    && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
+    && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config \
+    && ln -s /opt/ibm /liberty \
+    && mkdir -p /config/configDropins/defaults \
+    && chown -R 1001:0 /config \
+    && chmod -R g+rw /config \
+    && chown -R 1001:0 /opt/ibm/wlp \
+    && chmod -R g+rw /opt/ibm/wlp \
+    && chown -R 1001:0 /logs \
+    && chmod -R g+rw /logs \
+    && chown -R 1001:0 /etc/wlp \
+    && chmod -R g+rw /etc/wlp \
+    && chown -R 1001:0 /lib.index.cache \
+    && chmod -R g+rw /lib.index.cache \
+    && chown -R 1001:0 /home/default \
+    && chmod -R g+rw /home/default
+
+USER 1001
+
 EXPOSE 9080 9443
 
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
