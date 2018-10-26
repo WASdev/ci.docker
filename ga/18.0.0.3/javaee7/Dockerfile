@@ -28,4 +28,4 @@ RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
 
 COPY server.xml /config/
 
-RUN server start && server stop && rm -rf /output/resources/security/ && rm -rf /output/messaging
+RUN server start && server stop && rm -rf /output/resources/security/ /output/messaging /logs/*
