@@ -27,9 +27,9 @@ RUN yum makecache fast \
     && rm -rf /var/tmp/yum-*
     
 # Copy IBM Java, WebSphere Liberty and docker-server into the image
-COPY --from=websphere-liberty:kernel /opt/ibm/java /opt/ibm/java
-COPY --from=websphere-liberty:kernel /opt/ibm/wlp /opt/ibm/wlp
-COPY --from=websphere-liberty:kernel /opt/ibm/docker /opt/ibm/docker
+COPY --from=websphere-liberty:18.0.0.4-kernel /opt/ibm/java /opt/ibm/java
+COPY --from=websphere-liberty:18.0.0.4-kernel /opt/ibm/wlp /opt/ibm/wlp
+COPY --from=websphere-liberty:18.0.0.4-kernel /opt/ibm/docker /opt/ibm/docker
 
 
 # Set environment vars and shorcuts
