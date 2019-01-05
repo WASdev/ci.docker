@@ -22,8 +22,6 @@ RUN apt-get update \
     && mkdir /licenses/ \
     && useradd -u 1001 -r -g 0 -s /sbin/nologin default
 
-COPY *.html /licenses/
-
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 18.0.0_04
 ARG LIBERTY_URL
@@ -34,7 +32,7 @@ RUN LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/e
     && rm /tmp/wlp.zip \
     && chown -R 1001:0 /opt/ibm/wlp \
     && chmod -R g+rw /opt/ibm/wlp
-ENV PATH=/opt/ibm/wlp/bin:$PATH
+ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
@@ -49,7 +47,8 @@ ENV LOG_DIR=/logs \
 RUN /opt/ibm/wlp/bin/server create \
     && rm -rf $WLP_OUTPUT_DIR/.classCache /output/workarea
 
-COPY docker-server /opt/ibm/docker/
+COPY helpers/ /opt/ibm/helpers/
+COPY licenses/ /licenses/
 
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
@@ -65,8 +64,8 @@ RUN mkdir /logs \
     && mkdir -p /config/configDropins/defaults \
     && chown -R 1001:0 /config \
     && chmod -R g+rw /config \
-    && chown -R 1001:0 /opt/ibm/docker/docker-server \
-    && chmod -R g+rwx /opt/ibm/docker/docker-server \
+    && chown -R 1001:0 /opt/ibm/helpers \
+    && chmod -R g+rwx /opt/ibm/helpers \
     && chown -R 1001:0 /opt/ibm/wlp \
     && chmod -R g+rw /opt/ibm/wlp \
     && chown -R 1001:0 /logs \
@@ -84,5 +83,5 @@ EXPOSE 9080 9443
 
 ENV KEYSTORE_REQUIRED true
 
-ENTRYPOINT ["/opt/ibm/docker/docker-server"]
+ENTRYPOINT ["/opt/ibm/helpers/runtime/docker-server.sh"]
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
