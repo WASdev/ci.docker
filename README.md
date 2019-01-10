@@ -27,6 +27,19 @@ RUN /configure.sh
 
 This will result in a Docker image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
 
+## Enterprise Functionality
+
+This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular build-arguments (`ARG`) and calling `RUN /configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
+
+* `MP_MONITORING` 
+  *  Decription:
+  *  XML Snippet Location:  <link_to_GitHub_snippet>
+* `MP_HEALTH_CHECK` 
+  *  Decription:
+  *  XML Snippet Location:  <link_to_GitHub_snippet>
+* 
+*
+
 # Issues and Contributions
 
 For issues relating specifically to the Dockerfiles and scripts, please use the [GitHub issue tracker](https://github.com/WASdev/ci.docker/issues). For more general issue relating to IBM WebSphere Application Server Liberty you can [get help](https://developer.ibm.com/wasdev/help/) through the WASdev community or, if you have production licenses for WebSphere Application Server, via the usual support channels. We welcome contributions following [our guidelines](https://github.com/WASdev/wasdev.github.io/blob/master/CONTRIBUTING.md).
