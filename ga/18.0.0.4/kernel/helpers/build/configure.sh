@@ -8,12 +8,12 @@ SNIPPETS_TARGET=/config/configDropins/overrides
 
 # MicroProfile Health
 if [ "$MP_HEALTH_CHECK" == "true" ]; then
-  cp $SNIPPETS_SOURCE/mp_health_check.xml $SNIPPETS_TARGET/mp_health_check.xml
+  cp $SNIPPETS_SOURCE/mp-health-check.xml $SNIPPETS_TARGET/mp-health-check.xml
 fi
 
 # MicroProfile Monitoring
 if [ "$MP_MONITORING" == "true" ]; then
-  cp $SNIPPETS_SOURCE/mp_monitoring.xml $SNIPPETS_TARGET/mp_monitoring.xml
+  cp $SNIPPETS_SOURCE/mp-monitoring.xml $SNIPPETS_TARGET/mp-monitoring.xml
 fi
 
 # SSL
@@ -24,7 +24,7 @@ fi
 # HTTP Endpoint
 if [ "$HTTP_ENDPOINT" == "true" ]; then
   if [ "$SSL" == "true" ]; then
-    cp $SNIPPETS_SOURCE/https-http-endpoint.xml $SNIPPETS_TARGET/https-http-endpoint.xml
+    cp $SNIPPETS_SOURCE/http-ssl-endpoint.xml $SNIPPETS_TARGET/http-ssl-endpoint.xml
   else
     cp $SNIPPETS_SOURCE/http-endpoint.xml $SNIPPETS_TARGET/http-endpoint.xml
   fi
