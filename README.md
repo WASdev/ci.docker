@@ -19,7 +19,7 @@ COPY --chown=1001:0  server.xml /config/
 
 # Optional functionality
 ARG SESSION_CACHE=true
-ARG MONITORING=true
+ARG MP_MONITORING=true
 
 # This script will add the requested XML snippets and grow image to be fit-for-purpose
 RUN /configure.sh
@@ -31,14 +31,18 @@ This will result in a Docker image that has your application and configuration p
 
 This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular build-arguments (`ARG`) and calling `RUN /configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
 
+* `HTTP_ENDPOINT` 
+  *  Decription: Add configuration properties for an HTTP endpoint.
+  *  XML Snippet Location: [http-ssl-endpoint.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/http-ssl-endpoint.xml) when SSL is enabled. Otherwise [http-endpoint.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/http-endpoint.xml)
+* `MP_HEALTH_CHECK`
+  *  Decription: Check the health of the environment using Liberty feature `mpHealth-1.0` (implements [MicroProfile Health](https://microprofile.io/project/eclipse/microprofile-health)).
+  *  XML Snippet Location: [mp-health-check.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/mp-health-check.xml)
 * `MP_MONITORING` 
-  *  Decription:
-  *  XML Snippet Location:  <link_to_GitHub_snippet>
-* `MP_HEALTH_CHECK` 
-  *  Decription:
-  *  XML Snippet Location:  <link_to_GitHub_snippet>
-* 
-*
+  *  Decription: Monitor the server runtime environment and application metrics by using Liberty features `mpMetrics-1.1` (implements [Microprofile Metrics](https://microprofile.io/project/eclipse/microprofile-metrics)) and `monitor-1.0`.
+  *  XML Snippet Location: [mp-monitoring.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/mp-monitoring.xml)
+* `SSL` 
+  *  Decription: Enable SSL in Liberty by adding the `ssl-1.0` feature.
+  *  XML Snippet Location:  [ssl.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/ssl.xml)
 
 # Issues and Contributions
 

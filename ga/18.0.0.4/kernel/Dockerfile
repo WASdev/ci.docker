@@ -62,6 +62,7 @@ RUN mkdir /logs \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config \
     && ln -s /opt/ibm /liberty \
     && mkdir -p /config/configDropins/defaults \
+    && mkdir -p /config/configDropins/overrides \
     && chown -R 1001:0 /config \
     && chmod -R g+rw /config \
     && chown -R 1001:0 /opt/ibm/helpers \
