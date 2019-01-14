@@ -2,7 +2,7 @@
 
 This project contains the Dockerfiles for [WebSphere Application Server Liberty](https://hub.docker.com/_/websphere-liberty/). 
 
-## Building an application image (under construction)
+## Building an application image 
 
 According to Docker's best practices you should create a new image (FROM websphere-liberty) which adds a single application and the corresponding configuration. You should avoid configuring the image manually (after it started) via Admin Console or wsadmin (unless it is for debugging purposes) because such changes won't be present if you spawn a new container from the image.
 
@@ -18,7 +18,7 @@ COPY --chown=1001:0  Sample1.war /config/dropins/
 COPY --chown=1001:0  server.xml /config/
 
 # Optional functionality
-ARG SESSION_CACHE=true
+ARG HZ_SESSION_CACHE=true
 ARG MP_MONITORING=true
 
 # This script will add the requested XML snippets and grow image to be fit-for-purpose
@@ -27,7 +27,7 @@ RUN /configure.sh
 
 This will result in a Docker image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
 
-## Enterprise Functionality
+## Enterprise Functionality (under construction)
 
 This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular build-arguments (`ARG`) and calling `RUN /configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
 
