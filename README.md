@@ -45,7 +45,7 @@ This section describes the optional enterprise functionality that can be enabled
   *  XML Snippet Location:  [ssl.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/ssl.xml)
 
 
-###Session Caching
+### Session Caching
 
 The Liberty session caching feature builds on top of an existing technology called JCache (JSR 107), which provides an API for distributed in-memory caching. There are several providers of JCache implementations. One example is Hazelcast In-Memory Data Grid. Enabling Hazelcast session caching retrieves the Hazelcast client libraries from the `hazelcast/hazelcast` Docker image, configures Hazelcast by copying a sample hazelcast.xml, and configures the Liberty server feature sessionCache-1.0 by including a sample server.xml. By default, the [Hazelcast Discovery Plugin](https://github.com/hazelcast/hazelcast-kubernetes) for Kubernetes will auto-discover its peers within the same Kubernetes namespace. To enable this functionality, the Docker image author can include the following Dockerfile snippet, and choose from either client-server or embedded [topology](https://docs.hazelcast.org/docs/latest-development/manual/html/Hazelcast_Overview/Hazelcast_Topology.html).
 
