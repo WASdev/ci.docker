@@ -1,4 +1,5 @@
 #!/bin/bash
+set -Eeox pipefail
 
 ##Define variables for XML snippets source and target paths
 WLP_INSTALL_DIR=/opt/ibm/wlp
@@ -7,7 +8,7 @@ SHARED_RESOURCE_DIR=${WLP_INSTALL_DIR}/usr/shared/resources
 
 SNIPPETS_SOURCE=/opt/ibm/helpers/build/configuration_snippets
 SNIPPETS_TARGET=/config/configDropins/overrides
-
+mkdir -p ${SNIPPETS_TARGET}
 
 
 #Check for each Liberty value-add functionality
