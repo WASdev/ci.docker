@@ -10,12 +10,6 @@ case "${LICENSE,,}" in
     cat /opt/ibm/wlp/lafiles/LI_${LANG:-en}
     exit 1
     ;;
-  "core"|"base"|"nd" ) #Attempt to install license file
-    if [ -f /etc/wlp/license/wlp-${LICENSE}-license.jar ]
-    then
-      java -jar /etc/wlp/license/wlp-${LICENSE}-license.jar --acceptLicense /opt/ibm/wlp
-    fi
-    ;;
   "" ) # Continue, displaying license message in logs
     true
     ;;
