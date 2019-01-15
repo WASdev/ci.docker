@@ -51,6 +51,28 @@ This section describes the optional enterprise functionality that can be enabled
   *  Decription: Add configuration properties for an JMS endpoint.
   *  XML Snippet Location: [jms-ssl-endpoint.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/jms-ssl-endpoint.xml) when SSL is enabled. Otherwise, [jms-endpoint.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/jms-endpoint.xml)
 
+
+### Session Caching
+
+The Liberty session caching feature builds on top of an existing technology called JCache (JSR 107), which provides an API for distributed in-memory caching. There are several providers of JCache implementations. One example is [Hazelcast In-Memory Data Grid](https://hazelcast.org/). Enabling Hazelcast session caching retrieves the Hazelcast client libraries from the [hazelcast/hazelcast](https://hub.docker.com/r/hazelcast/hazelcast/) Docker image, configures Hazelcast by copying a sample [hazelcast.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/), and configures the Liberty server feature [sessionCache-1.0](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_admin_session_persistence_jcache.html) by including the XML snippet [hazelcast-sessioncache.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml). By default, the [Hazelcast Discovery Plugin for Kubernetes](https://github.com/hazelcast/hazelcast-kubernetes) will auto-discover its peers within the same Kubernetes namespace. To enable this functionality, the Docker image author can include the following Dockerfile snippet, and choose from either client-server or embedded [topology](https://docs.hazelcast.org/docs/latest-development/manual/html/Hazelcast_Overview/Hazelcast_Topology.html).
+
+```dockerfile
+### Hazelcast Session Caching ###
+# Copy the Hazelcast libraries from the Hazelcast Docker image
+COPY --from=hazelcast/hazelcast --chown=1001:0 /opt/hazelcast/*.jar /opt/ibm/wlp/usr/shared/resources/hazelcast/
+
+# Instruct configure.sh to copy the client topology hazelcast.xml
+ARG HZ_SESSION_CACHE=client
+
+# Instruct configure.sh to copy the embedded topology hazelcast.xml and set the required system property
+#ARG HZ_SESSION_CACHE=embedded
+#ENV JAVA_TOOL_OPTIONS="-Dhazelcast.jcache.provider.type=server ${JAVA_TOOL_OPTIONS}"
+
+## This script will add the requested XML snippets and grow image to be fit-for-purpose
+RUN configure.sh
+```
+
+
 # Issues and Contributions
 
 For issues relating specifically to the Dockerfiles and scripts, please use the [GitHub issue tracker](https://github.com/WASdev/ci.docker/issues). For more general issue relating to IBM WebSphere Application Server Liberty you can [get help](https://developer.ibm.com/wasdev/help/) through the WASdev community or, if you have production licenses for WebSphere Application Server, via the usual support channels. We welcome contributions following [our guidelines](https://github.com/WASdev/wasdev.github.io/blob/master/CONTRIBUTING.md).

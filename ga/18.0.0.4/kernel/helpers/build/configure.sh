@@ -1,8 +1,15 @@
 #!/bin/bash
+set -Eeox pipefail
 
 ##Define variables for XML snippets source and target paths
+WLP_INSTALL_DIR=/opt/ibm/wlp
+SHARED_CONFIG_DIR=${WLP_INSTALL_DIR}/usr/shared/config
+SHARED_RESOURCE_DIR=${WLP_INSTALL_DIR}/usr/shared/resources
+
 SNIPPETS_SOURCE=/opt/ibm/helpers/build/configuration_snippets
 SNIPPETS_TARGET=/config/configDropins/overrides
+mkdir -p ${SNIPPETS_TARGET}
+
 
 #Check for each Liberty value-add functionality
 
@@ -30,6 +37,14 @@ if [ "$HTTP_ENDPOINT" == "true" ]; then
   fi
 fi
 
+# Hazelcast Session Caching
+if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]
+then
+ cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
+ mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
+ cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
+fi
+
 # IIOP Endpoint
 if [ "$IIOP_ENDPOINT" == "true" ]; then
   if [ "$SSL" == "true" ]; then
@@ -47,6 +62,7 @@ if [ "$JMS_ENDPOINT" == "true" ]; then
     cp $SNIPPETS_SOURCE/jms-endpoint.xml $SNIPPETS_TARGET/jms-endpoint.xml
   fi
 fi
+
 
 # Install needed features
 installUtility install --acceptLicense defaultServer
