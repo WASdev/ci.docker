@@ -42,7 +42,14 @@ This section describes the optional enterprise functionality that can be enabled
   *  XML Snippet Location: [mp-monitoring.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/mp-monitoring.xml)
 * `SSL` 
   *  Decription: Enable SSL in Liberty by adding the `ssl-1.0` feature.
-  *  XML Snippet Location:  [ssl.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/ssl.xml)
+  *  XML Snippet Location:  [ssl.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/ssl.xml).
+* `IIOP_ENDPOINT`
+  *  Decription: Add configuration properties for an IIOP endpoint.
+  *  XML Snippet Location: [iiop-ssl-endpoint.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/iiop-ssl-endpoint.xml) when SSL is enabled. Otherwise, [iiop-endpoint.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/iiop-endpoint.xml).
+  *  Note: If using this option, `env.IIOP_ENDPOINT_HOST` environment variable should be set to the server's host. See [IIOP endpoint configuration](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.liberty.autogen.base.doc/ae/rwlp_config_orb.html#iiopEndpoint) for more details.
+* `JMS_ENDPOINT`
+  *  Decription: Add configuration properties for an JMS endpoint.
+  *  XML Snippet Location: [jms-ssl-endpoint.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/jms-ssl-endpoint.xml) when SSL is enabled. Otherwise, [jms-endpoint.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/jms-endpoint.xml)
 
 
 ### Session Caching

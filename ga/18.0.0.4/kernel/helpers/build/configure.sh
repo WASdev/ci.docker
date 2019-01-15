@@ -37,6 +37,7 @@ if [ "$HTTP_ENDPOINT" == "true" ]; then
   fi
 fi
 
+# Hazelcast Session Caching
 if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]
 then
  cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
@@ -44,7 +45,23 @@ then
  cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
 fi
 
+# IIOP Endpoint
+if [ "$IIOP_ENDPOINT" == "true" ]; then
+  if [ "$SSL" == "true" ]; then
+    cp $SNIPPETS_SOURCE/iiop-ssl-endpoint.xml $SNIPPETS_TARGET/iiop-ssl-endpoint.xml
+  else
+    cp $SNIPPETS_SOURCE/iiop-endpoint.xml $SNIPPETS_TARGET/iiop-endpoint.xml
+  fi
+fi
 
+# JMS Endpoint
+if [ "$JMS_ENDPOINT" == "true" ]; then
+  if [ "$SSL" == "true" ]; then
+    cp $SNIPPETS_SOURCE/jms-ssl-endpoint.xml $SNIPPETS_TARGET/jms-ssl-endpoint.xml
+  else
+    cp $SNIPPETS_SOURCE/jms-endpoint.xml $SNIPPETS_TARGET/jms-endpoint.xml
+  fi
+fi
 
 
 # Install needed features
