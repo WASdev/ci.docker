@@ -40,7 +40,7 @@ RUN java -jar /tmp/wlp-nd-license.jar --acceptLicense /opt/ibm/wlp \
     && rm /tmp/wlp-nd-license.jar
 ```
 
-## Enterprise Functionality (under construction)
+## Enterprise Functionality
 
 This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular build-arguments (`ARG`) and calling `RUN /configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
 
