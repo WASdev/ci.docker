@@ -1,0 +1,44 @@
+<server>
+  <featureManager>
+    <feature>openidConnectServer-1.0</feature>
+  </featureManager>
+
+  <openidConnectProvider id="OIDC" 
+    oauthProviderRef="OAuth" 
+    signatureAlgorithm="RS256" keyStoreRef="defaultKeyStore" 
+    customClaims="phone, email, preferredName" jwkEnabled="true" >
+    <claimToUserRegistryMap email="mail"/>
+    <claimToUserRegistryMap phone="mobile"/> 
+    <claimToUserRegistryMap preferredName="givenName"/>
+  </openidConnectProvider>
+
+  <oauthProvider id="OAuth" tokenFormat="mpjwt">
+    <databaseStore dataSourceRef="OAuth2DataSource" /> 
+  </oauthProvider>
+
+  <dataSource id="OAuth2DataSource" 
+    jdbcDriverRef="mysql-driver" 
+    jndiName="jdbc/OAuth2DB" transactional="true" 
+    type="javax.sql.ConnectionPoolDataSource">
+    <connectionManager
+      maxPoolSize="100"
+      minPoolSize="0"
+      connectionTimeout="20s"
+      agedTimeout="9m"/>
+    <properties
+      databaseName="OAuthDBSchema"
+      user="${env.OAUTH2DB_USER}"
+      password="${env.OAUTH2DB_PASSWORD}"
+      portNumber="${env.OAUTH2DB_DB_PORT}"
+      serverName="${env.OAUTH2DB_DB_HOST}"/>
+  </dataSource>
+
+  <jdbcDriver id="mysql-driver"
+    javax.sql.XADataSource="org.mariadb.jdbc.MySQLDataSource"
+    javax.sql.ConnectionPoolDataSource="org.mariadb.jdbc.MySQLDataSource"
+    libraryRef="mysql-library" />
+
+  <library id="mysql-library">
+    <fileset id="mysql-fileset" dir="/config/lib" />
+  </library>
+</server>
