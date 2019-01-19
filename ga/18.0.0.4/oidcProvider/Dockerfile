@@ -24,6 +24,5 @@ RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
   && rm -rf /output/workarea /output/logs
 
 COPY server.xml /config/
-COPY docker-server.sh /opt/ibm/helpers/runtime/
 
 RUN server start && server stop && rm -rf /output/resources/security/ /logs/*
