@@ -22,7 +22,7 @@ ARG SSL=true
 ARG MP_MONITORING=true
 
 # This script will add the requested XML snippets and grow image to be fit-for-purpose
-RUN /opt/ibm/helpers/build/configure.sh
+RUN configure.sh
 ```
 
 This will result in a Docker image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
@@ -42,7 +42,7 @@ RUN java -jar /tmp/wlp-nd-license.jar --acceptLicense /opt/ibm/wlp \
 
 ## Enterprise Functionality
 
-This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular build-arguments (`ARG`) and calling `RUN /opt/ibm/helpers/build/configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
+This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular build-arguments (`ARG`) and calling `RUN configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
 
 * `HTTP_ENDPOINT` 
   *  Decription: Add configuration properties for an HTTP endpoint.
