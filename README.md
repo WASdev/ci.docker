@@ -4,7 +4,7 @@ This project contains the Dockerfiles for [WebSphere Application Server Liberty]
 
 ## Building an application image 
 
-According to Docker's best practices you should create a new image (FROM websphere-liberty) which adds a single application and the corresponding configuration. You should avoid configuring the image manually (after it started) via Admin Console or wsadmin (unless it is for debugging purposes) because such changes won't be present if you spawn a new container from the image.
+According to Docker's best practices you should create a new image (FROM websphere-liberty) which adds a single application and the corresponding configuration. You should avoid configuring the image manually, after it started (unless it is for debugging purposes), because such changes won't be present if you spawn a new container from the image.
 
 Even if you docker save the manually configured container, the steps to reproduce the image from `websphere-liberty` will be lost and you will hinder your ability to update that image.
 
@@ -22,7 +22,7 @@ ARG SSL=true
 ARG MP_MONITORING=true
 
 # This script will add the requested XML snippets and grow image to be fit-for-purpose
-RUN /configure.sh
+RUN /opt/ibm/helpers/build/configure.sh
 ```
 
 This will result in a Docker image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
@@ -42,7 +42,7 @@ RUN java -jar /tmp/wlp-nd-license.jar --acceptLicense /opt/ibm/wlp \
 
 ## Enterprise Functionality
 
-This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular build-arguments (`ARG`) and calling `RUN /configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
+This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular build-arguments (`ARG`) and calling `RUN /opt/ibm/helpers/build/configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
 
 * `HTTP_ENDPOINT` 
   *  Decription: Add configuration properties for an HTTP endpoint.
@@ -53,6 +53,7 @@ This section describes the optional enterprise functionality that can be enabled
 * `MP_MONITORING` 
   *  Decription: Monitor the server runtime environment and application metrics by using Liberty features `mpMetrics-1.1` (implements [Microprofile Metrics](https://microprofile.io/project/eclipse/microprofile-metrics)) and `monitor-1.0`.
   *  XML Snippet Location: [mp-monitoring.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/mp-monitoring.xml)
+  *  Note: With this option, `/metrics` endpoint is configured without authentication to support the environments that do not yet support scraping secured endpoints.
 * `SSL` 
   *  Decription: Enable SSL in Liberty by adding the `ssl-1.0` feature.
   *  XML Snippet Location:  [ssl.xml](ga/18.0.0.4/kernel/helpers/build/configuration_snippets/ssl.xml).
