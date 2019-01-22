@@ -20,7 +20,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends unzip \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /licenses/ \
-    && useradd -u 1001 -r -g 0 -s /sbin/nologin default
+    && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default
 
 COPY *.html /licenses/
 

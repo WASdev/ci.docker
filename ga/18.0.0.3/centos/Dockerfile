@@ -50,7 +50,7 @@ RUN mkdir /logs \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config  \
     && ln -s /opt/ibm /liberty \
     && mkdir /config/configDropins \
-    && useradd -u 1001 -r -g 0 -s /sbin/nologin default \
+    && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && chown -R 1001:0 /config \
     && chmod -R g+rw /config \
     && chown -R 1001:0 /opt/ibm/docker/docker-server \
