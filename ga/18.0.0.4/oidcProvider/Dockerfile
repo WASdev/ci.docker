@@ -19,7 +19,11 @@ ARG REPOSITORIES_PROPERTIES=""
 RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
   && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
   && installUtility install --acceptLicense \
-    appSecurity-2.0 ldapRegistry-3.0 restConnector-2.0 openidConnectServer-1.0 \
+    appSecurity-2.0 \
+    ldapRegistry-3.0 \
+    restConnector-2.0 
+    openidConnectServer-1.0 \
+    samlWeb-2.0 \
   && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
   && rm -rf /output/workarea /output/logs
 
