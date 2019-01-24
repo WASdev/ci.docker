@@ -28,6 +28,15 @@ if [ "$SSL" == "true" ]; then
   cp $SNIPPETS_SOURCE/ssl.xml $SNIPPETS_TARGET/ssl.xml
 fi
 
+# OpenIdConnect Client
+if [ "$OIDC" == "true" || "$OIDC" == "true" ]; then
+  cp $SNIPPETS_SOURCE/oidc.xml $SNIPPETS_TARGET/oidc.xml
+fi
+
+if [ "$OIDC_PRECONFIG" == "true" ]; then
+  cp $SNIPPETS_SOURCE/oidc-preconfig.xml $SNIPPETS_TARGET/oidc-preconfig.xml
+fi
+
 # HTTP Endpoint
 if [ "$HTTP_ENDPOINT" == "true" ]; then
   if [ "$SSL" == "true" ]; then
