@@ -4,7 +4,7 @@
     <featureManager>      
       <feature>openidConnectServer-1.0</feature>      
       <feature>ldapRegistry-3.0</feature>
-      <!-- if this server will delegate authentication another
+      <!-- if this server will delegate authentication to another
            provider that is not LDAP, then one of these features
            could be needed:
       -->
@@ -75,13 +75,13 @@
     
     <oauthProvider id="OAuth" tokenFormat="mpjwt">
          <!-- localStore for test / development use. 
-         When this is used, all client data and token status is held
+         When localStore is used, all client data and token status is held
          in memory.  This container can only be a singleton when this is
          used.
          Comment out localStore when using a database.
          --> 
         <localStore>
-          <!-- When using a database, clients are not speicified in server.xml.
+          <!-- When using a database, clients are not specified in server.xml.
                Instead they are added to the database through the registration endpoint.
           -->
           <client displayname="clusterConfig" enabled="true"
