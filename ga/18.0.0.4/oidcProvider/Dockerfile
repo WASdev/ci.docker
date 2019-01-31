@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2019.
+# (C) Copyright IBM Corporation 2018.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,14 +19,15 @@ ARG REPOSITORIES_PROPERTIES=""
 RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
   && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
   && installUtility install --acceptLicense \
-    appSecurity-2.0 \
-    ldapRegistry-3.0 \
-    restConnector-2.0 \
-    openidConnectServer-1.0 \
+    appSecurity-2.0 ldapRegistry-3.0 \
+    localConnector-1.0  \
     samlWeb-2.0 \
+    openidConnectServer-1.0 \
+    socialLogin-1.0 \
+    openidConnectClient-1.0 \
   && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
   && rm -rf /output/workarea /output/logs
 
 COPY server.xml /config/
 
-RUN server start && server stop && rm -rf /output/resources/security/ /logs/*
+RUN server start && server stop && rm -rf /output/resources/security/ /output/messaging /logs/*
