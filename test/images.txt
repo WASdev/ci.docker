@@ -1,10 +1,10 @@
-websphere-liberty:kernel       ../ga/19.0.0.1/kernel
-websphere-liberty:microProfile1 ../ga/19.0.0.1/microProfile1
-websphere-liberty:microProfile2 ../ga/19.0.0.1/microProfile2
-websphere-liberty:springBoot1  ../ga/19.0.0.1/springBoot1
-websphere-liberty:springBoot2  ../ga/19.0.0.1/springBoot2
-websphere-liberty:webProfile7  ../ga/19.0.0.1/webProfile7
-websphere-liberty:webProfile8  ../ga/19.0.0.1/webProfile8
-websphere-liberty:javaee7      ../ga/19.0.0.1/javaee7
-websphere-liberty:javaee8      ../ga/19.0.0.1/javaee8
-websphere-liberty:beta         ../beta
+websphere-liberty:kernel         websphere-liberty:19.0.0.1-kernel        ../ga/19.0.0.1/kernel
+websphere-liberty:microProfile1  websphere-liberty:19.0.0.1-microProfile1 ../ga/19.0.0.1/microProfile1
+websphere-liberty:microProfile2  websphere-liberty:19.0.0.1-microProfile2 ../ga/19.0.0.1/microProfile2
+websphere-liberty:springBoot1    websphere-liberty:19.0.0.1-springBoot1   ../ga/19.0.0.1/springBoot1
+websphere-liberty:springBoot2    websphere-liberty:19.0.0.1-springBoot2   ../ga/19.0.0.1/springBoot2
+websphere-liberty:webProfile7    websphere-liberty:19.0.0.1-webProfile7   ../ga/19.0.0.1/webProfile7
+websphere-liberty:webProfile8    websphere-liberty:19.0.0.1-webProfile8   ../ga/19.0.0.1/webProfile8
+websphere-liberty:javaee7        websphere-liberty:19.0.0.1-javaee7       ../ga/19.0.0.1/javaee7
+websphere-liberty:javaee8        websphere-liberty:19.0.0.1-javaee8       ../ga/19.0.0.1/javaee8
+websphere-liberty:beta           websphere-liberty:beta                   ../beta

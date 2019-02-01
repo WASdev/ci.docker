@@ -9,18 +9,19 @@
 #####################################################################################
 
 image=$1
-dloc=$2
+versionimage=$2
+dloc=$3
 
 tag=`echo $image | cut -d ":" -f2`
 
 test=test
 cname=$tag$test
 
-if [ $# != 2 ]
+if [ $# != 3 ]
 then
-   if [ $# != 1 ]
+   if [ $# != 2 ]
    then
-      echo "Usage : build.sh <Image name> <Dockerfile location>"
+      echo "Usage : build.sh <Image name (e.g. websphere-liberty:kernel)> <Versioned image name (e.g. websphere-liberty:19.0.0.1-kernel)> <Dockerfile location>"
       exit 1
    else
       echo "Dockerfile location not provided, using ."
@@ -32,7 +33,7 @@ echo "**************************************************************************
 echo "           Starting docker build for $image                                   "
 echo "******************************************************************************"
 
-docker build --no-cache=true -t $image $dloc  > build_$tag.log
+docker build --no-cache=true -t $image -t $versionimage $dloc  > build_$tag.log
 
 if [ $? = 0 ]
 then

@@ -15,9 +15,9 @@ if [[ $arch == "ppc64le" || $arch == "s390x" ]]; then
   docker tag $arch/ibmjava:8-jre ibmjava:8-jre
 fi
 
-while read -r imageName buildContextDirectory
+while read -r imageName versionImageName buildContextDirectory
 do
-  ./build.sh $imageName $buildContextDirectory && ./verify.sh $imageName
+  ./build.sh $imageName $versionImageName $buildContextDirectory && ./verify.sh $imageName
    
   if [ $? != 0 ]; then
     echo "Failed at image $imageName - exiting"
