@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+    <wasJmsEndpoint id="InboundJmsEndpoint" host="*" wasJmsPort="7276" />
+</server>
