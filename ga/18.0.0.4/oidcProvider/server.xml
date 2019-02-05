@@ -100,7 +100,7 @@
           </client>
         </localStore>
   <!-- uncomment below line when using a database -->
-  <!-- <databaseStore dataSourceRef="OAuth2DataSource" /> -->
+  <!-- <databaseStore dataSourceRef="OIDC_DBDS4" /> -->
     </oauthProvider>
      
     <!-- ClientManagers can add new clients when using a database.
@@ -113,39 +113,24 @@
       <group name="some-group-here" />
     </clientManager>
     -->
-    
+
+
     <!-- sample database configuration -->
     <!--
-    <dataSource id="OAuth2DataSource" 
-        jdbcDriverRef="mysql-driver" 
-        jndiName="jdbc/OAuth2DB" transactional="true" 
-        type="javax.sql.ConnectionPoolDataSource">
-        <connectionManager
-          maxPoolSize="100"
-          minPoolSize="0"
-          connectionTimeout="20s"
-          agedTimeout="9m"/>
-        <properties
-          databaseName="OAuthDBSchema"
-          user="${env.OAUTH2DB_USER}"
-          password="${env.OAUTH2DB_PASSWORD}"
-          portNumber="${env.OAUTH2DB_DB_PORT}"
-          serverName="${env.OAUTH2DB_DB_HOST}"/>
+    <dataSource id="OIDC_DBDS4" jdbcDriverRef="db2Driver" jndiName="jdbc/oauthProvider" containerAuthDataRef="OIDC_DBAuth4" >
+        <properties databaseName="oidcdb4" driverType="4" portNumber="60006" serverName="somedb.somedomain.ibm.com" />
+        <connectionManager maxPoolSize="250" minPoolSize="10" connectionTimeout="60s" />
     </dataSource>
 
-    <jdbcDriver id="mysql-driver"
-        javax.sql.XADataSource="org.mariadb.jdbc.MySQLDataSource"
-        javax.sql.ConnectionPoolDataSource="org.mariadb.jdbc.MySQLDataSource"
-        libraryRef="mysql-library" />
-    
-    <library id="mysql-library">
-        <fileset id="mysql-fileset" dir="/config/lib" />
-    </library>
-    <jdbcDriver id="mysql-driver"
-        javax.sql.XADataSource="org.mariadb.jdbc.MySQLDataSource"
-        javax.sql.ConnectionPoolDataSource="org.mariadb.jdbc.MySQLDataSource"
-        libraryRef="mysql-library" />      
-    -->  
+    <jdbcDriver id="db2Driver">
+       <library>
+       <fileset dir="${wlp.user.dir}/shared/resources/db2jars/" includes="db2jcc4.jar db2jcc_license_cu.jar"/>
+       </library>
+    </jdbcDriver>
+
+    <authData id="OIDC_DBAuth4" user="dbuser" password="dbpassword" />
+    -->
+   
  
     
      
