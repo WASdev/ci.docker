@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2015,2018.
+# (C) Copyright IBM Corporation 2015,2019.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -77,6 +77,10 @@ RUN mkdir /logs \
     && chmod -R g+rw /lib.index.cache \
     && chown -R 1001:0 /home/default \
     && chmod -R g+rw /home/default
+
+#These settings are needed so that we can run as a different user than 1001 after server warmup
+ENV RANDFILE=/tmp/.rnd \
+    JVM_ARGS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/"
 
 USER 1001
 
