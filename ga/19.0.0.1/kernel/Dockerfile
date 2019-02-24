@@ -24,8 +24,10 @@ RUN apt-get update \
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 19.0.0_01
-ARG LIBERTY_URL
+
+ARG LIBERTY_URL 
 ARG DOWNLOAD_OPTIONS=""
+
 RUN LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
     && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
     && unzip -q /tmp/wlp.zip -d /opt/ibm \
@@ -41,7 +43,7 @@ LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
-    WLP_OUTPUT_DIR=/opt/ibm/wlp/output
+    WLP_OUTPUT_DIR=/opt/ibm/wlp/output 
 
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
@@ -77,6 +79,10 @@ RUN mkdir /logs \
     && chmod -R g+rw /lib.index.cache \
     && chown -R 1001:0 /home/default \
     && chmod -R g+rw /home/default
+
+#These settings are needed so that we can run as a different user than 1001 after server warmup
+ENV RANDFILE=/tmp/.rnd \
+    JVM_ARGS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/"
 
 USER 1001
 
