@@ -13,12 +13,6 @@
       <!-- <feature>samlWeb-2.0</feature> -->
     </featureManager>
 
-    <oauth-roles>
-        <authenticated>
-            <special-subject type="ALL_AUTHENTICATED_USERS" />  
-        </authenticated>
-    </oauth-roles>
-    
     <!-- Basic registry for test / development use.  
          Comment this out if using LDAP or delegating to another 
          Oauth or SAML provider. 
@@ -99,20 +93,27 @@
                 <redirect>${env.OIDCP_CUSTOM_CLIENT_REDIRECT}</redirect>
           </client>
         </localStore>
-  <!-- uncomment below line when using a database -->
-  <!-- <databaseStore dataSourceRef="OIDC_DBDS4" /> -->
+    <!-- uncomment below line when using a database -->
+    <!-- <databaseStore dataSourceRef="OIDC_DBDS4" /> -->
     </oauthProvider>
      
-    <!-- ClientManagers can add new clients when using a database.
+    <!-- Users in the clientManager role can add/modify clients when using a
+         database by accessing the registration endpoint. 
          When using a localStore, clients are added by editing server.xml,
-         and this should be commented out.
+         and this can be commented out.
     -->  
     <!--
-    <clientManager>
-      <user name="some-user-here" />
-      <group name="some-group-here" />
-    </clientManager>
+    <oauth-roles>
+        <authenticated>
+            <special-subject type="ALL_AUTHENTICATED_USERS" />  
+        </authenticated>        
+        <clientManager>
+            <user name="testuser" />
+            <group name="oidcadmin" />
+        </clientManager>         
+    </oauth-roles>
     -->
+   
 
 
     <!-- sample database configuration -->
