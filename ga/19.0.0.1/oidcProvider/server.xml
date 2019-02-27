@@ -109,6 +109,7 @@
         </authenticated>        
         <clientManager>
             <user name="testuser" />
+            <group name="oidcadmin" />
         </clientManager>         
     </oauth-roles>
     -->
