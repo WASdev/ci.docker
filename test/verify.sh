@@ -157,7 +157,8 @@ testFeatureList()
 
    if [[ $LIBERTY_URL == *jar ]]; then
      required_features=$(docker run --rm ibmjava:8-jre-alpine sh -c \
-       "wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.jar
+       "apk add --no-cache wget
+wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.jar
 java -jar /tmp/wlp.jar --acceptLicense /opt/ibm > /dev/null
 /opt/ibm/wlp/bin/productInfo featureInfo" | cut -d ' ' -f1 | sort)
    else
@@ -166,7 +167,8 @@ java -jar /tmp/wlp.jar --acceptLicense /opt/ibm > /dev/null
        required_features="IGNORE"
      else
        required_features=$(docker run --rm ibmjava:8-jre-alpine sh -c \
-       "wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip
+       "apk add --no-cache wget
+wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip
 unzip -q /tmp/wlp.zip -d /opt/ibm
 /opt/ibm/wlp/bin/productInfo featureInfo" | cut -d ' ' -f1 | sort)
      fi
