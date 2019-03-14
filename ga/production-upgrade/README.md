@@ -1,8 +1,8 @@
 # Using WebSphere Liberty Docker in production
 
-The WebSphere Liberty Docker containers found in Docker Hub contain an International License Agreement for Non-Warranted Programs (ILAN) license which **allows** entitled WebSphere Liberty customers to use these same containers under an International Program License Agreement (IPLA) term.
+Starting with WebSphere Liberty 18.0.0.3, the WebSphere Liberty Docker images found in Docker Hub contain an International License Agreement for Non-Warranted Programs (ILAN) license which **allows entitled** WebSphere Liberty customers to use these same images under an International Program License Agreement (IPLA) term.
 
-All you have to do is set the environment variable called `LICENSE` to the value `accept`.  
+If you want to omit the "development-only" message from the logs all you have to do is set the environment variable called `LICENSE` to the value `accept`.  
 
 However, if you wish to apply a license to the image, you can do so by:
 
