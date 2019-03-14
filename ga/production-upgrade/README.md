@@ -1,6 +1,6 @@
-# Upgrading the image from Docker Hub to a production image
+# Using WebSphere Liberty Docker in production
 
-The WebSphere Liberty Docker containers found in Docker Hub contain an International License Agreement for Non-Warranted Programs (ILAN) license which allows entitled WebSphere Liberty customers to use these same containers under an International Program License Agreement (IPLA) term.
+The WebSphere Liberty Docker containers found in Docker Hub contain an International License Agreement for Non-Warranted Programs (ILAN) license which **allows** entitled WebSphere Liberty customers to use these same containers under an International Program License Agreement (IPLA) term.
 
 All you have to do is set the environment variable called `LICENSE` to the value `accept`.  
 
