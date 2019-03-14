@@ -27,19 +27,6 @@ RUN configure.sh
 
 This will result in a Docker image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
 
-### Applying a license
-
-To apply a license when building the Liberty Docker image:
-
-1. Copy the [base|core|nd] license jar to the directory the Dockerfile resides
-2. Add the following to the Dockerfile
-
-```shell
-COPY wlp-nd-license.jar /tmp/wlp-nd-license.jar
-RUN java -jar /tmp/wlp-nd-license.jar --acceptLicense /opt/ibm/wlp \
-    && rm /tmp/wlp-nd-license.jar
-```
-
 ## Enterprise Functionality
 
 This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular build-arguments (`ARG`) and calling `RUN configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
