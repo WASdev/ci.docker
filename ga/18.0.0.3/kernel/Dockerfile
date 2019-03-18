@@ -39,7 +39,8 @@ ENV PATH=/opt/ibm/wlp/bin:$PATH
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="18.0.0.3"
+      "ProductVersion"="18.0.0.3" \
+      "BuildLabel"="cl180320180905-2337"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
