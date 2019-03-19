@@ -1,4 +1,4 @@
-<server>   
+j<server>   
      <httpEndpoint id="defaultHttpEndpoint" host="*" httpsPort="9443" httpPort="9080" />
    
     <featureManager>      
@@ -101,18 +101,19 @@
          database by accessing the registration endpoint. 
          When using a localStore, clients are added by editing server.xml,
          and this can be commented out.
-    -->  
-    <!--
+    -->      
     <oauth-roles>
         <authenticated>
             <special-subject type="ALL_AUTHENTICATED_USERS" />  
-        </authenticated>        
-        <clientManager>
+        </authenticated>
+        <!--        
+        <clientManager>            
             <user name="testuser" />
-            <group name="oidcadmin" />
-        </clientManager>         
+            <group name="oidcadmin" />            
+        </clientManager>  
+        -->       
     </oauth-roles>
-    -->
+   
    
 
 
