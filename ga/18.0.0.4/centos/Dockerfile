@@ -65,7 +65,7 @@ RUN mkdir /logs \
 USER 1001
 
 # Add server.xml
-COPY --chown=1001:0 server.xml /config/
+COPY server.xml /config/
 
 EXPOSE 9080 9443
 ENTRYPOINT ["/opt/ibm/docker/docker-server"]
