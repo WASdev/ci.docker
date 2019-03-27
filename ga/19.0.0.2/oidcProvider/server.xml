@@ -1,4 +1,4 @@
-j<server>   
+<server>   
      <httpEndpoint id="defaultHttpEndpoint" host="*" httpsPort="9443" httpPort="9080" />
    
     <featureManager>      
