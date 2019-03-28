@@ -23,7 +23,7 @@ RUN apt-get update \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 19.0.0_02
+ENV LIBERTY_VERSION 19.0.0_03
 
 ARG LIBERTY_URL 
 ARG DOWNLOAD_OPTIONS=""
@@ -39,8 +39,8 @@ ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="19.0.0.2" \
-      "BuildLabel"="cl190220190222-1311"
+      "ProductVersion"="19.0.0.3" \
+      "BuildLabel"="cl190320190321-1636"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \

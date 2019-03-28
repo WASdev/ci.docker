@@ -12,20 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:19.0.0.2-kernel
+FROM websphere-liberty:19.0.0.3-kernel
 
 ARG REPOSITORIES_PROPERTIES=""
 
 RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
   && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
   && installUtility install --acceptLicense \
-    appSecurity-2.0 ldapRegistry-3.0 localConnector-1.0 microProfile-2.1 \
-    monitor-1.0 requestTiming-1.0 restConnector-2.0 sessionCache-1.0 \
-    sessionDatabase-1.0 ssl-1.0 transportSecurity-1.0 webCache-1.0 \
-    webProfile-8.0 \
+    appSecurity-2.0 bluemixUtility-1.0 collectiveMember-1.0 ldapRegistry-3.0 \
+    localConnector-1.0 microProfile-1.0 microProfile-1.2 microProfile-1.3 microProfile-1.4 monitor-1.0 restConnector-1.0 \
+    requestTiming-1.0 restConnector-2.0 sessionDatabase-1.0 sessionCache-1.0 ssl-1.0 transportSecurity-1.0 \
+    webCache-1.0 webProfile-7.0 appSecurityClient-1.0 javaee-7.0 javaeeClient-7.0 \
   && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
   && rm -rf /output/workarea /output/logs
 
 COPY server.xml /config/
 
-RUN server start && server stop && rm -rf /output/resources/security/ /logs/* && chmod -R g+rwx /opt/ibm/wlp/output/*
+RUN server start && server stop && rm -rf /output/resources/security/ /output/messaging /logs/* && chmod -R g+rwx /opt/ibm/wlp/output/*
