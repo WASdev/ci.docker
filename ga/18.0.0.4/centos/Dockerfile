@@ -18,10 +18,7 @@ LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)"
 
 # Operating System update
 RUN yum makecache fast \
-    && yum update -y \
     && yum -y install openssl \
-    && yum clean packages \
-    && yum clean headers \
     && yum clean all \
     && rm -rf /var/cache/yum \
     && rm -rf /var/tmp/yum-*
