@@ -60,6 +60,8 @@ testLibertyStarts()
    if [ $? != 0 ]
    then
       echo "Liberty failed to start; exiting"
+      docker logs $cid
+      docker rm -f $cid >/dev/null
       exit 1
    fi
 
@@ -77,10 +79,21 @@ testLibertyStarts()
 testLibertyStops()
 {
    cid=$(docker run -d $image)
+   if [ $? != 0 ]
+   then
+      echo "Failed to run container; exiting"
+      exit 1
+   fi
    waitForServerStart $cid
-
-   sleep 20
-   result=$(docker stop $cid)
+   if [ $? != 0 ]
+   then
+      echo "Liberty failed to start; exiting"
+      docker logs $cid
+      docker rm -f $cid >/dev/null
+      exit 1
+   fi
+   sleep 30
+   docker stop $cid
    if [ $? != 0 ]
    then
       echo "Container failed to stop cleanly: $result; exiting"
@@ -93,7 +106,9 @@ testLibertyStops()
    if [ $? != 0 ]
    then
       echo "Liberty failed to stop cleanly; exiting"
+      echo "DEBUG START full log"
       docker logs $cid
+      echo "DEBUG END full log"
       docker rm -f $cid >/dev/null
       exit 1
    fi
@@ -103,14 +118,37 @@ testLibertyStops()
 
 testLibertyStopsAndRestarts()
 {
-   cid=$(docker run -d $image)
+   cid=$(docker run -d $security_opt $image)
+   if [ $? != 0 ]
+   then
+      echo "Failed to run container; exiting"
+      exit 1
+   fi
+   
    waitForServerStart $cid
+   if [ $? != 0 ]
+   then
+      echo "Liberty failed to start; exiting"
+      docker logs $cid
+      docker rm -f $cid >/dev/null
+      exit 1
+   fi
+   sleep 30
    docker stop $cid >/dev/null
+   if [ $? != 0 ]
+   then
+      echo "Error stopping container or server; exiting"
+      docker logs $cid
+      docker rm -f $cid >/dev/null
+      exit 1
+   fi
 
    docker start $cid >/dev/null
    if [ $? != 0 ]
    then
-      echo "Failed to run container; exiting"
+      echo "Failed to rerun container; exiting"
+      docker logs $cid
+      docker rm -f $cid >/dev/null
       exit 1
    fi
 
@@ -118,6 +156,8 @@ testLibertyStopsAndRestarts()
    if [ $? != 0 ]
    then
       echo "Server failed to restart; exiting"
+      docker logs $cid
+      docker rm -f $cid >/dev/null
       exit 1
    fi
 
@@ -125,6 +165,9 @@ testLibertyStopsAndRestarts()
    if [ $? = 0 ]
    then
       echo "Errors found in logs for container; exiting"
+      echo "DEBUG START full log"
+      docker logs $cid
+      echo "DEBUG END full log"
       docker rm -f $cid >/dev/null
       exit 1
    fi
