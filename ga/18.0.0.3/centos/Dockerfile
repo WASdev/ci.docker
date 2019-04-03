@@ -43,9 +43,11 @@ RUN installUtility install --acceptLicense microProfile-1.4 \
 
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
+    && mkdir -p /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
     && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config  \
     && ln -s /opt/ibm /liberty \
+    && ln -s /opt/ibm/wlp/usr/shared/resources/lib.index.cache /lib.index.cache \
     && mkdir /config/configDropins \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && chown -R 1001:0 /config \
@@ -54,6 +56,8 @@ RUN mkdir /logs \
     && chmod -R g+rwx /opt/ibm/docker/docker-server \
     && chown -R 1001:0 /opt/ibm/wlp/usr/servers/defaultServer \
     && chmod -R g+rw /opt/ibm/wlp/usr/servers/defaultServer \
+    && chown -R 1001:0 /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
+    && chmod -R g+rw /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
     && chown -R 1001:0 /opt/ibm/wlp/output \
     && chmod -R g+rw /opt/ibm/wlp/output \
     && chown -R 1001:0 /logs \
