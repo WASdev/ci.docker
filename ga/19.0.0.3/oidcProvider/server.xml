@@ -23,8 +23,8 @@
           name="${env.OIDCP_TEST_USER}"
           password="${env.OIDCP_TEST_USER_PASSWORD}" />
         <user
-          name="${env.OIDCP_ADMIN_USER}"
-          password="${env.OIDCP_ADMIN_USER_PASSWORD}" />
+          name="${env.OIDCP_TEST_USER2}"
+          password="${env.OIDCP_TEST_USER2_PASSWORD}" />
     </basicRegistry>
 
     <!-- LDAP example.  Customize and uncomment to use LDAP user authentication.
