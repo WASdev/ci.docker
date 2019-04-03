@@ -44,7 +44,6 @@ COPY server.xml /opt/ibm/wlp/usr/servers/defaultServer/
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
     && mkdir /etc/wlp \
-    && mkdir /lib.index.cache \
     && mkdir -p /home/default \
     && mkdir /output \
     && chmod -t /output \
@@ -63,8 +62,6 @@ RUN mkdir /logs \
     && chmod -R g+rw /logs \
     && chown -R 1001:0 /etc/wlp \
     && chmod -R g+rw /etc/wlp \
-    && chown -R 1001:0 /lib.index.cache \
-    && chmod -R g+rw /lib.index.cache \
     && chown -R 1001:0 /home/default \
     && chmod -R g+rw /home/default
 

@@ -55,7 +55,7 @@ COPY docker-server /opt/ibm/docker/
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
     && mkdir /etc/wlp \
-    && mkdir /lib.index.cache \
+    && mkdir -p /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
     && mkdir -p /home/default \
     && mkdir /output \
     && chmod -t /output \
@@ -63,6 +63,7 @@ RUN mkdir /logs \
     && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config \
     && ln -s /opt/ibm /liberty \
+    && ln -s /opt/ibm/wlp/usr/shared/resources/lib.index.cache /lib.index.cache \
     && mkdir -p /config/configDropins/defaults \
     && chown -R 1001:0 /config \
     && chmod -R g+rw /config \
@@ -76,8 +77,6 @@ RUN mkdir /logs \
     && chmod -R g+rw /logs \
     && chown -R 1001:0 /etc/wlp \
     && chmod -R g+rw /etc/wlp \
-    && chown -R 1001:0 /lib.index.cache \
-    && chmod -R g+rw /lib.index.cache \
     && chown -R 1001:0 /home/default \
     && chmod -R g+rw /home/default
 
