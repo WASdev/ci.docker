@@ -21,8 +21,6 @@ RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
   && installUtility install --acceptLicense \
     jsp-2.3 servlet-4.0 springBoot-1.5 transportSecurity-1.0 webSocket-1.1 \
   && mkdir /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
-  && chown -R 1001:0 /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
-  && chmod -R g+rw /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
   && ln -s /opt/ibm/wlp/usr/shared/resources/lib.index.cache /lib.index.cache \
   && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
   && rm -rf /output/workarea /output/logs
