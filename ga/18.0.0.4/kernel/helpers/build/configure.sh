@@ -75,4 +75,4 @@ fi
 
 
 # Install needed features
-installUtility install --acceptLicense defaultServer
+installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then exit $?; fi
