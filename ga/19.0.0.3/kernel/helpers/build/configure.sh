@@ -73,6 +73,10 @@ if [ "$JMS_ENDPOINT" == "true" ]; then
   fi
 fi
 
-
 # Install needed features
 installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then exit $?; fi
+
+# Apply interim fixes found in /opt/ibm/fixes
+# Fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in /opt/ibm/fixes
+# Note: This step should be done once needed features are enabled and installed using installUtility.
+find /opt/ibm/fixes -type f -name "*.jar"  -print0 | sort -z | xargs -0 -n 1 -r -I {} java -jar {} --installLocation $WLP_INSTALL_DIR

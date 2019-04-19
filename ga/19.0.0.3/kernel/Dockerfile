@@ -51,6 +51,7 @@ RUN /opt/ibm/wlp/bin/server create \
     && rm -rf $WLP_OUTPUT_DIR/.classCache /output/workarea
 
 COPY helpers/ /opt/ibm/helpers/
+COPY fixes/ /opt/ibm/fixes/
 COPY licenses/ /licenses/
 
 # Create symlinks && set permissions for non-root user
@@ -71,6 +72,8 @@ RUN mkdir /logs \
     && chmod -R g+rw /config \
     && chown -R 1001:0 /opt/ibm/helpers \
     && chmod -R g+rwx /opt/ibm/helpers \
+    && chown -R 1001:0 /opt/ibm/fixes \
+    && chmod -R g+rwx /opt/ibm/fixes \
     && chown -R 1001:0 /opt/ibm/wlp/usr \
     && chmod -R g+rw /opt/ibm/wlp/usr \
     && chown -R 1001:0 /opt/ibm/wlp/output \
