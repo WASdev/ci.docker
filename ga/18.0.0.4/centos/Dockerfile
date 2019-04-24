@@ -35,7 +35,7 @@ ENV JAVA_HOME=/opt/ibm/java \
     LOG_DIR=/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
     RANDFILE=/tmp/.rnd \
-    JVM_ARGS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/"
+    IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/"
 
 # Install MicroProfile features
 RUN installUtility install --acceptLicense microProfile-1.4 \
