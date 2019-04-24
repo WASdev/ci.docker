@@ -82,7 +82,7 @@ RUN mkdir /logs \
 
 #These settings are needed so that we can run as a different user than 1001 after server warmup
 ENV RANDFILE=/tmp/.rnd \
-    IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/"
+    IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/ ${IBM_JAVA_OPTIONS}"
 
 USER 1001
 
