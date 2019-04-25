@@ -16,24 +16,27 @@ FROM ibmjava:8-jre
 
 LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)"
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends unzip \
-    && rm -rf /var/lib/apt/lists/* \
-    && mkdir /licenses/ \
-    && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default
-
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 19.0.0_03
 
 ARG LIBERTY_URL 
 ARG DOWNLOAD_OPTIONS=""
 
-RUN LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends unzip \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir /licenses/ \
+    && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
+    && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
     && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
     && unzip -q /tmp/wlp.zip -d /opt/ibm \
     && rm /tmp/wlp.zip \
     && chown -R 1001:0 /opt/ibm/wlp \
-    && chmod -R g+rw /opt/ibm/wlp
+    && chmod -R g+rw /opt/ibm/wlp \
+    && apt-get purge --auto-remove -y unzip \
+    && apt-get purge --auto-remove -y wget \
+    && rm -rf /var/lib/apt/lists/*
+
 ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 
 # Add labels for consumption by IBM Product Insights
