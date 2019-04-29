@@ -80,3 +80,7 @@ installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then e
 # Fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in /opt/ibm/fixes
 # Note: This step should be done once needed features are enabled and installed using installUtility.
 find /opt/ibm/fixes -type f -name "*.jar"  -print0 | sort -z | xargs -0 -n 1 -r -I {} java -jar {} --installLocation $WLP_INSTALL_DIR
+#Make sure that group write permissions are set correctly after installing new features 
+find /opt/ibm/wlp -perm -g=w -print0 | xargs -0 -r chmod -R g+rw
+#Make folder executable for a group
+find /opt/ibm/wlp -type d -perm -g=x -print0 | xargs -0 -r chmod -R g+rwx
