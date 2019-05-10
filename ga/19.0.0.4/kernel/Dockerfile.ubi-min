@@ -55,7 +55,7 @@ RUN /opt/ibm/wlp/bin/server create \
 
 COPY helpers/ /opt/ibm/helpers/
 COPY fixes/ /opt/ibm/fixes/
-COPY licenses/ /licenses/
+COPY licenses.ubi-min/ /licenses/
 
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
