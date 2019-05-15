@@ -24,7 +24,7 @@ ARG DOWNLOAD_OPTIONS=""
 
 # Operating System update
 RUN microdnf update -y \
-    && microdnf -y install shadow-utils unzip \
+    && microdnf -y install shadow-utils unzip wget \
     && microdnf clean all \
     && mkdir /licenses \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
