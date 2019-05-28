@@ -83,6 +83,6 @@ find /opt/ibm/fixes -type f -name "*.jar"  -print0 | sort -z | xargs -0 -n 1 -r 
 #Make sure that group write permissions are set correctly after installing new features 
 find /opt/ibm/wlp -perm -g=w -print0 | xargs -0 -r chmod -R g+rw
 # Server start/stop to populate the /output/workarea and make subsequent server starts faster
-RUN server start && server stop && rm -rf /output/resources/security/ /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache && chmod -R g+rwx /opt/ibm/wlp/output/*
+/opt/ibm/wlp/bin/server start && /opt/ibm/wlp/bin/server stop && rm -rf /output/resources/security/ /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache && chmod -R g+rwx /opt/ibm/wlp/output/*
 #Make folder executable for a group
 find /opt/ibm/wlp -type d -perm -g=x -print0 | xargs -0 -r chmod -R g+rwx
