@@ -14,7 +14,12 @@
 
 FROM ibmjava:8-jre
 
-LABEL maintainer="Arthur De Magalhaes <arthurdm@ca.ibm.com> (@arthurdm)"
+LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Andy Naumann" \
+      org.opencontainers.image.vendor="IBM" \
+      org.opencontainers.image.url="http://wasdev.net" \
+      org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
+      org.opencontainers.image.version="19.0.0.5" \
+      org.opencontainers.image.revision="cl190520190522-2227"
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 19.0.0_05
