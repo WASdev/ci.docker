@@ -24,6 +24,7 @@ RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
     sessionDatabase-1.0 ssl-1.0 transportSecurity-1.0 webCache-1.0 webProfile-8.0 \
     appSecurityClient-1.0 javaee-8.0 javaeeClient-8.0 openidConnectClient-1.0 monitor-1.0 microProfile-2.0 microProfile-2.1 microProfile-2.2 \
   && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
-  && rm -rf /output/workarea /output/logs
+  && rm -rf /output/workarea /output/logs \
+  && chmod -R g+rwx /opt/ibm/wlp/output/*
 
 COPY --chown=1001:0 server.xml /config/

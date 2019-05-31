@@ -21,6 +21,7 @@ RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
   && installUtility install --acceptLicense \
     jsp-2.3 servlet-4.0 springBoot-2.0 transportSecurity-1.0 webSocket-1.1 \
   && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
-  && rm -rf /output/workarea /output/logs
+  && rm -rf /output/workarea /output/logs \
+  && chmod -R g+rwx /opt/ibm/wlp/output/*
 
 COPY --chown=1001:0 server.xml /config/
