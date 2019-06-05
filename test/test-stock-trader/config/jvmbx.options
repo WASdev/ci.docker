@@ -1,0 +1,2 @@
+-javaagent:/opt/ibm/wlp/usr/servers/defaultServer/resources/javametrics-agent.jar
+-Dorg.osgi.framework.bootdelegation=com.ibm.tivoli.itcam.*

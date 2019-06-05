@@ -1,0 +1,92 @@
+<!--
+       Copyright 2017 IBM Corp All Rights Reserved
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+       http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<server description="Trader UI server">
+    <!-- Enable features -->
+    <featureManager>
+        <feature>microProfile-2.2</feature>
+        <feature>appSecurity-2.0</feature>
+        <feature>monitor-1.0</feature>
+        <feature>jwtSso-1.0</feature>
+<!--    <feature>logstashCollector-1.0</feature> -->
+<!--    <feature>ldapRegistry-3.0</feature>      -->
+<!--    <feature>socialLogin-1.0</feature>       -->
+    </featureManager>
+
+    <logging consoleLogLevel="INFO" consoleSource="message,ffdc" consoleFormat="json" traceSpecification="*=info"/>
+
+    <httpEndpoint httpPort="9080" httpsPort="9443" host="*" id="defaultHttpEndpoint"/>
+
+    <keyStore id="defaultKeyStore" password="passw0rd" type="jks"
+         location="${server.config.dir}/resources/security/key.jks" />
+
+    <keyStore id="validationKeystore" password="Passw0rd" type="jks"
+         location="${server.config.dir}/resources/security/validationKeystore.jks" />
+
+    <sslDefault sslRef="RpSSLConfig" />
+
+    <ssl id="RpSSLConfig" keyStoreRef="defaultKeyStore" />
+
+    <jwtSso jwtBuilderRef="myBuilder"/>
+    <jwtBuilder id="myBuilder" keyStoreRef="defaultKeyStore" keyAlias="default" issuer="${env.JWT_ISSUER}" audiences="${env.JWT_AUDIENCE}" />
+    <mpJwt id="myMpJwt" audiences="${env.JWT_AUDIENCE}" issuer="${env.JWT_ISSUER}" keyName="default" ignoreApplicationAuthMethod="false"/>
+
+    <mpMetrics authentication="false"/>
+
+    <basicRegistry id="basic" realm="BasicRegistry">
+        <user name="admin" password="admin"/>
+        <user name="stock" password="trader"/>
+        <user name="debug" password="debug"/>
+        <user name="read"  password="only"/>
+        <user name="other" password="other"/>
+        <group name="StockTrader">
+            <member name="stock"/>
+            <member name="debug"/>
+        </group>
+        <group name="StockViewer">
+            <member name="read"/>
+        </group>
+    </basicRegistry>
+
+    <administrator-role>
+    	<user>admin</user>
+    </administrator-role>
+
+    <!-- Define an LDAP configuration for BluePages.
+    <ldapRegistry ldapType="IBM Tivoli Directory Server" host="bluepages.ibm.com" port="389" baseDN="o=ibm.com" realm="BluePages">
+        <idsFilters userFilter="(&amp;(emailAddress=%v)(objectclass=person))"
+            groupFilter="(&amp;(cn=%v)(|(objectclass=groupOfNames)(objectclass=groupOfUniqueNames)(objectclass=groupOfURLs)))"/>
+    </ldapRegistry>
+
+    <ltpa expiration="1h"/>
+ -->
+
+    <!-- <oidcLogin id="${env.OIDC_NAME}" clientId="${env.OIDC_ID}" displayName="${env.OIDC_NAME}"
+           clientSecret="${env.OIDC_SECRET}" authorizationEndpoint="${env.OIDC_AUTH}"
+           tokenEndpoint="${env.OIDC_TOKEN}" scope="openid profile email" userNameAttribute="email"
+           issuer="${env.OIDC_ISSUER}" trustAliasName="${env.OIDC_KEY}"
+           redirectToRPHostAndPort="${env.OIDC_NODEPORT}">
+    </oidcLogin> -->
+ 
+    <webAppSecurity allowFailOverToBasicAuth="true" displayAuthenticationRealm="true" logoutOnHttpSessionExpire="true"
+        webAlwaysLogin="true" preserveFullyQualifiedReferrerUrl="true" trackLoggedOutSSOCookies="true" ssoCookieName="StockTraderSSO"
+        useOnlyCustomCookieName="true" ssoUseDomainFromURL="true"/>
+
+    <webApplication id="TraderUI" name="TraderUI" location="TraderUI.war" contextRoot="/trader">
+        <application-bnd>
+            <security-role id="StockTrader" name="StockTrader">
+                <special-subject type="ALL_AUTHENTICATED_USERS" id="IBMid"/>
+            </security-role>
+        </application-bnd>
+    </webApplication>
+</server>
