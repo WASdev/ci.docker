@@ -19,12 +19,17 @@ LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Andy Naumann" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="19.0.0.5" \
-      org.opencontainers.image.revision="cl190520190522-2227"
+      org.opencontainers.image.revision="cl190520190522-2227" \
+      vendor="IBM" \
+      name="IBM WebSphere Liberty" \
+      version="19.0.0.5" \
+      summary="Image for WebSphere Liberty with IBM's SFJ and UBI minimal" \
+      description="This image contains the WebSphere Liberty runtime with IBM's SFJ and Red Hat UBI minimal as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 19.0.0_05
 
-ARG LIBERTY_URL 
+ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
 
 RUN microdnf -y install shadow-utils unzip wget \
@@ -38,7 +43,7 @@ RUN microdnf -y install shadow-utils unzip wget \
     && chown -R 1001:0 /opt/ibm/wlp \
     && chmod -R g+rw /opt/ibm/wlp \
     && microdnf -y remove shadow-utils unzip wget \
-    && microdnf clean all 
+    && microdnf clean all
 
 ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 
@@ -50,7 +55,7 @@ LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
-    WLP_OUTPUT_DIR=/opt/ibm/wlp/output 
+    WLP_OUTPUT_DIR=/opt/ibm/wlp/output
 
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
