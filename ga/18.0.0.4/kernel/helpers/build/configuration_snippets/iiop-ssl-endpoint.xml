@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server>
-    <variable name="IIOP_PORT" defaultValue="2809" />
-    <variable name="IIOPS_PORT" defaultValue="9402" />
-    <iiopEndpoint id="defaultIiopEndpoint" host="${env.IIOP_ENDPOINT_HOST}" iiopPort="${env.IIOP_PORT}">
-        <iiopsOptions iiopsPort="${env.IIOPS_PORT}" sslRef="defaultSSLConfig" />
+    <iiopEndpoint id="defaultIiopEndpoint" host="${env.IIOP_ENDPOINT_HOST}" iiopPort="2809">
+        <iiopsOptions iiopsPort="9402" sslRef="defaultSSLConfig" />
     </iiopEndpoint>
 </server>

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server>
-    <variable name="JMS_PORT" defaultValue="7276" />
-    <wasJmsEndpoint id="InboundJmsEndpoint" host="*" wasJmsPort="${env.JMS_PORT}" />
+    <wasJmsEndpoint id="InboundJmsEndpoint" host="*" wasJmsPort="7276" />
 </server>
