@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server>
-    <iiopEndpoint id="defaultIiopEndpoint" host="${env.IIOP_ENDPOINT_HOST}" iiopPort="2809" />
+    <variable name="IIOP_PORT" defaultValue="2809" />
+    <iiopEndpoint id="defaultIiopEndpoint" host="${env.IIOP_ENDPOINT_HOST}" iiopPort="${env.IIOP_PORT}" />
 </server>
