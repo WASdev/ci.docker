@@ -267,7 +267,6 @@ testDockerOnOpenShift()
    testLibertyStarts "OpenShift"
    testLibertyStops "OpenShift"
    testLibertyStopsAndRestarts "OpenShift"
-   testFeatureList "OpenShift"
 }
 
 tests=$(declare -F | cut -d" " -f3 | grep "test")
