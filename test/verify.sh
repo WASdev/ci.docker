@@ -49,7 +49,13 @@ waitForServerStop()
 
 testLibertyStarts()
 {
-   cid=$(docker run -d $image)
+   if [ "$1" == "OpenShift" ]; then
+      echo "testLibertyStarts on OpenShift"
+      cid=$(docker run -d -u 1005:0 $image)
+   else
+      cid=$(docker run -d $image)
+   fi
+   
    if [ $? != 0 ]
    then
       echo "Failed to run container; exiting"
@@ -78,7 +84,13 @@ testLibertyStarts()
 
 testLibertyStops()
 {
-   cid=$(docker run -d $image)
+   if [ "$1" == "OpenShift" ]; then
+      echo "testLibertyStops on OpenShift"
+      cid=$(docker run -d -u 1005:0 $image)
+   else
+      cid=$(docker run -d $image)
+   fi
+
    if [ $? != 0 ]
    then
       echo "Failed to run container; exiting"
@@ -118,7 +130,13 @@ testLibertyStops()
 
 testLibertyStopsAndRestarts()
 {
-   cid=$(docker run -d $security_opt $image)
+   if [ "$1" == "OpenShift" ]; then
+      echo "testLibertyStopsAndRestarts on OpenShift"
+      cid=$(docker run -d -u 1005:0 $security_opt $image)
+   else
+      cid=$(docker run -d $security_opt $image)
+   fi
+   
    if [ $? != 0 ]
    then
       echo "Failed to run container; exiting"
@@ -178,7 +196,12 @@ testLibertyStopsAndRestarts()
 
 testFeatureList()
 {
-   version=$(docker run --rm $image sh -c 'echo $LIBERTY_VERSION')
+   if [ "$1" == "OpenShift" ]; then
+      echo "testFeatureList on OpenShift"
+      version=$(docker run --rm -u 1005:0 $image sh -c 'echo $LIBERTY_VERSION')
+   else
+      version=$(docker run --rm $image sh -c 'echo $LIBERTY_VERSION')
+   fi
    echo "Checking features for $image against version $version"
 
    case $tag in
@@ -237,6 +260,13 @@ unzip -q /tmp/wlp.zip -d /opt/ibm
       exit 1
     fi
    fi
+}
+
+testDockerOnOpenShift()
+{
+   testLibertyStarts "OpenShift"
+   testLibertyStops "OpenShift"
+   testLibertyStopsAndRestarts "OpenShift"
 }
 
 tests=$(declare -F | cut -d" " -f3 | grep "test")

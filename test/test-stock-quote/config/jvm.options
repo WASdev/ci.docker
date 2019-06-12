@@ -1,0 +1,2 @@
+-Dcom.ibm.hybrid.cloud.sample.stocktrader.stockquote.client.APIConnectClient/mp-rest/url=https://api.us.apiconnect.ibmcloud.com/jalcornusibmcom-dev/sb/stocks
+-Dcom.ibm.hybrid.cloud.sample.stocktrader.stockquote.client.IEXClient/mp-rest/url=https://api.iextrading.com/1.0/stock

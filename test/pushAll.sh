@@ -14,6 +14,11 @@ latestTag=$2
 
 while IFS=': ' read -r imageName imageTag buildContextDirectory
 do
+  if [ "$imageTag" == "test-stock-quote" ] || [ "$imageTag" == "test-stock-trader" ] || [ "$imageTag" == "test-pet-clinic" ]; then
+    echo "Reached test applications, skiping this iteration"
+    continue
+  fi
+
   fullImageName="$imageName:$imageTag"
   repositoryImageName=$repository/$fullImageName
   echo "*** Pushing $repositoryImageName"

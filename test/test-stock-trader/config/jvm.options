@@ -1,0 +1,1 @@
+-Dcom.ibm.hybrid.cloud.sample.stocktrader.trader.client.PortfolioClient/mp-rest/url=http://portfolio-service:9080/portfolio
