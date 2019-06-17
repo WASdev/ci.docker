@@ -197,7 +197,7 @@ testLibertyStopsAndRestarts()
 }
 
 
-testFeatureList()
+disabledTestFeatureList()
 {
    if [ "$1" == "OpenShift" ]; then
       timestamp=$(date '+%Y/%m/%d %H:%M:%S')
