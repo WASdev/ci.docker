@@ -50,7 +50,8 @@ waitForServerStop()
 testLibertyStarts()
 {
    if [ "$1" == "OpenShift" ]; then
-      echo "testLibertyStarts on OpenShift"
+      timestamp=$(date '+%Y/%m/%d %H:%M:%S')
+      echo "$timestamp *** testLibertyStarts on OpenShift"
       cid=$(docker run -d -u 1005:0 $image)
    else
       cid=$(docker run -d $image)
@@ -85,7 +86,8 @@ testLibertyStarts()
 testLibertyStops()
 {
    if [ "$1" == "OpenShift" ]; then
-      echo "testLibertyStops on OpenShift"
+      timestamp=$(date '+%Y/%m/%d %H:%M:%S')
+      echo "$timestamp *** testLibertyStops on OpenShift"
       cid=$(docker run -d -u 1005:0 $image)
    else
       cid=$(docker run -d $image)
@@ -105,7 +107,7 @@ testLibertyStops()
       exit 1
    fi
    sleep 30
-   docker stop $cid
+   docker stop $cid >/dev/null
    if [ $? != 0 ]
    then
       echo "Container failed to stop cleanly: $result; exiting"
@@ -131,7 +133,8 @@ testLibertyStops()
 testLibertyStopsAndRestarts()
 {
    if [ "$1" == "OpenShift" ]; then
-      echo "testLibertyStopsAndRestarts on OpenShift"
+      timestamp=$(date '+%Y/%m/%d %H:%M:%S')
+      echo "$timestamp *** testLibertyStopsAndRestarts on OpenShift"
       cid=$(docker run -d -u 1005:0 $security_opt $image)
    else
       cid=$(docker run -d $security_opt $image)
@@ -197,7 +200,8 @@ testLibertyStopsAndRestarts()
 testFeatureList()
 {
    if [ "$1" == "OpenShift" ]; then
-      echo "testFeatureList on OpenShift"
+      timestamp=$(date '+%Y/%m/%d %H:%M:%S')
+      echo "$timestamp *** testFeatureList on OpenShift"
       version=$(docker run --rm -u 1005:0 $image sh -c 'echo $LIBERTY_VERSION')
    else
       version=$(docker run --rm $image sh -c 'echo $LIBERTY_VERSION')
@@ -272,7 +276,9 @@ testDockerOnOpenShift()
 tests=$(declare -F | cut -d" " -f3 | grep "test")
 for name in $tests
 do
-   echo "*** $name - Executing"
+   timestamp=$(date '+%Y/%m/%d %H:%M:%S')
+   echo "$timestamp *** $name - Executing"
    eval $name
-   echo "*** $name - Completed successfully"
+   timestamp=$(date '+%Y/%m/%d %H:%M:%S')
+   echo "$timestamp *** $name - Completed successfully"
 done
