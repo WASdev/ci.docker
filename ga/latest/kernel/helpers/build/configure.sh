@@ -88,7 +88,13 @@ then
 fi
 
 # Install needed features
-installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then exit $?; fi
+if [ "$FEATURE_REPO_URL" ]; then
+  curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
+  installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || if [ $? -ne 22 ]; then exit $?; fi
+  rm -rf /tmp/repo.zip
+else
+  installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then exit $?; fi
+fi
 
 # Apply interim fixes found in /opt/ibm/fixes
 # Fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in /opt/ibm/fixes
@@ -97,6 +103,6 @@ find /opt/ibm/fixes -type f -name "*.jar"  -print0 | sort -z | xargs -0 -n 1 -r 
 #Make sure that group write permissions are set correctly after installing new features 
 find /opt/ibm/wlp -perm -g=w -print0 | xargs -0 -r chmod -R g+rw
 # Server start/stop to populate the /output/workarea and make subsequent server starts faster
-/opt/ibm/wlp/bin/server start && /opt/ibm/wlp/bin/server stop && rm -rf /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache && chmod -R g+rwx /opt/ibm/wlp/output/*
+/opt/ibm/wlp/bin/server start && /opt/ibm/wlp/bin/server stop && rm -rf /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache /output/workarea && chmod -R g+rwx /opt/ibm/wlp/output/*
 #Make folder executable for a group
 find /opt/ibm/wlp -type d -perm -g=x -print0 | xargs -0 -r chmod -R g+rwx
