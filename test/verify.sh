@@ -47,7 +47,7 @@ waitForServerStop()
    return 1
 }
 
-testLibertyStarts()
+disabledTestLibertyStarts()
 {
    if [ "$1" == "OpenShift" ]; then
       timestamp=$(date '+%Y/%m/%d %H:%M:%S')
@@ -268,7 +268,6 @@ unzip -q /tmp/wlp.zip -d /opt/ibm
 
 testDockerOnOpenShift()
 {
-   testLibertyStarts "OpenShift"
    testLibertyStops "OpenShift"
    testLibertyStopsAndRestarts "OpenShift"
 }
