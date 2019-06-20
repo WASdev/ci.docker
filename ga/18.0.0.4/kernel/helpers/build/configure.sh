@@ -73,12 +73,25 @@ if [ "$JMS_ENDPOINT" == "true" ]; then
   fi
 fi
 
+# Key Store
+keystorePath="$SNIPPETS_TARGET/keystore.xml"
+if [ "$KEYSTORE_REQUIRED" = "true" ]
+then
+    # Check if the password is set already
+    if [ ! -e $keystorePath ]
+    then
+      # Generate the keystore.xml
+      export KEYSTOREPWD=$(openssl rand -base64 32)
+      sed -i.bak "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml
+      cp $SNIPPETS_SOURCE/keystore.xml $SNIPPETS_TARGET/keystore.xml
+    fi
+fi
 
 # Install needed features
 installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then exit $?; fi
 #Make sure that group write permissions are set correctly after installing new features 
 find /opt/ibm/wlp -perm -g=w -print0 | xargs -0 -r chmod -R g+rw
 # Server start/stop to populate the /output/workarea and make subsequent server starts faster
-/opt/ibm/wlp/bin/server start && /opt/ibm/wlp/bin/server stop && rm -rf /output/resources/security/ /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache && chmod -R g+rwx /opt/ibm/wlp/output/*
+/opt/ibm/wlp/bin/server start && /opt/ibm/wlp/bin/server stop && rm -rf /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache && chmod -R g+rwx /opt/ibm/wlp/output/*
 #Make folder executable for a group
 find /opt/ibm/wlp -type d -perm -g=x -print0 | xargs -0 -r chmod -R g+rwx

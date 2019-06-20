@@ -19,19 +19,20 @@ case "${LICENSE,,}" in
     ;;
 esac
 
-keystorePath="/config/configDropins/defaults/keystore.xml"
+SNIPPETS_SOURCE=/opt/ol/helpers/build/configuration_snippets
+SNIPPETS_TARGET=/config/configDropins/overrides
+
+keystorePath="$SNIPPETS_TARGET/keystore.xml"
 
 if [ "$KEYSTORE_REQUIRED" == "true" ]
 then
+  # Check if the password is set already
   if [ ! -e $keystorePath ]
   then
     # Generate the keystore.xml
-    PASSWORD=$(openssl rand -base64 32)
-    XML="<server description=\"Default Server\"><keyStore id=\"defaultKeyStore\" password=\"$PASSWORD\" /></server>"
-
-    # Create the keystore.xml file and place in configDropins
-    mkdir -p $(dirname $keystorePath)
-    echo $XML > $keystorePath
+    export KEYSTOREPWD=$(openssl rand -base64 32)
+    sed -i.bak "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml
+    cp $SNIPPETS_SOURCE/keystore.xml $SNIPPETS_TARGET/keystore.xml
   fi
 fi
 
