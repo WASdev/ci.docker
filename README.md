@@ -63,7 +63,7 @@ This section describes the optional enterprise functionality that can be enabled
   *  Note: The following variables will be read:  OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_DISCOVERY_URL.  
 * `KEYSTORE_REQUIRED`
   *  Description: Enables keystore element, which holds the key that is required to make an SSL connection.
-  *  XML Snippet Location: [keystore.xml](/common/helpers/build/configuration_snippets/keystore.xml)
+  *  XML Snippet Location: [keystore.xml](ga/19.0.0.x/kernel/helpers/build/configuration_snippets/keystore.xml)
   *  Note: Keystore password and security certificate will be generated if you do not provide your own. You can provide keystore.xml (with defined password) and certificate using the following instructions inside your Dockerfile:
      ```dockerfile
      COPY --chown=1001:0 keystore.xml /config/configDropins/overrides
