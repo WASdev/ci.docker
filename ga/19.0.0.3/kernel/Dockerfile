@@ -101,5 +101,7 @@ USER 1001
 
 EXPOSE 9080 9443
 
+ENV KEYSTORE_REQUIRED true
+
 ENTRYPOINT ["/opt/ibm/helpers/runtime/docker-server.sh"]
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
