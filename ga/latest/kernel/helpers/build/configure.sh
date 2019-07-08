@@ -23,16 +23,6 @@ if [ "$MP_MONITORING" == "true" ]; then
   cp $SNIPPETS_SOURCE/mp-monitoring.xml $SNIPPETS_TARGET/mp-monitoring.xml
 fi
 
-# TLS
-if [ "$TLS" == "true" ]; then
-  cp $SNIPPETS_SOURCE/transportSecurity.xml $SNIPPETS_TARGET/transportSecurity.xml
-fi
-
-# SSL
-if [ "$SSL" == "true" ]; then
-  cp $SNIPPETS_SOURCE/ssl.xml $SNIPPETS_TARGET/ssl.xml
-fi
-
 # OpenIdConnect Client
 if [ "$OIDC" == "true" ]  || [ "$OIDC_CONFIG" == "true" ]
 then

@@ -44,12 +44,9 @@ This section describes the optional enterprise functionality that can be enabled
   *  Decription: Monitor the server runtime environment and application metrics by using Liberty features `mpMetrics-1.1` (implements [Microprofile Metrics](https://microprofile.io/project/eclipse/microprofile-metrics)) and `monitor-1.0`.
   *  XML Snippet Location: [mp-monitoring.xml](ga/latest/kernel/helpers/build/configuration_snippets/mp-monitoring.xml)
   *  Note: With this option, `/metrics` endpoint is configured without authentication to support the environments that do not yet support scraping secured endpoints.
-* `TLS`
+* `TLS` or `SSL` (SSL is being deprecated)
   *  Decription: Enable Transport Security in Liberty by adding the `transportSecurity-1.0` feature (includes support for SSL).
-  *  XML Snippet Location:  [transportSecurity.xml](ga/latest/kernel/helpers/build/configuration_snippets/transportSecurity.xml).
-* `SSL`
-  *  Decription: Enable SSL in Liberty by adding the `ssl-1.0` feature.
-  *  XML Snippet Location:  [ssl.xml](ga/latest/kernel/helpers/build/configuration_snippets/ssl.xml).
+  *  XML Snippet Location:  [keystore.xml](ga/latest/kernel/helpers/build/configuration_snippets/keystore.xml).
 * `IIOP_ENDPOINT`
   *  Decription: Add configuration properties for an IIOP endpoint.
   *  XML Snippet Location: [iiop-ssl-endpoint.xml](ga/latest/kernel/helpers/build/configuration_snippets/iiop-ssl-endpoint.xml) when SSL is enabled. Otherwise, [iiop-endpoint.xml](ga/latest/kernel/helpers/build/configuration_snippets/iiop-endpoint.xml).
