@@ -23,11 +23,6 @@ if [ "$MP_MONITORING" == "true" ]; then
   cp $SNIPPETS_SOURCE/mp-monitoring.xml $SNIPPETS_TARGET/mp-monitoring.xml
 fi
 
-# SSL
-if [ "$SSL" == "true" ]; then
-  cp $SNIPPETS_SOURCE/ssl.xml $SNIPPETS_TARGET/ssl.xml
-fi
-
 # OpenIdConnect Client
 if [ "$OIDC" == "true" ]  || [ "$OIDC_CONFIG" == "true" ]
 then
@@ -75,7 +70,7 @@ fi
 
 # Key Store
 keystorePath="$SNIPPETS_TARGET/keystore.xml"
-if [ "$KEYSTORE_REQUIRED" = "true" ]
+if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]
 then
     # Check if the password is set already
     if [ ! -e $keystorePath ]

@@ -24,7 +24,7 @@ SNIPPETS_TARGET=/config/configDropins/overrides
 
 keystorePath="$SNIPPETS_TARGET/keystore.xml"
 
-if [ "$KEYSTORE_REQUIRED" == "true" ]
+if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]
 then
   if [ ! -e $keystorePath ]
   then
