@@ -5,3 +5,5 @@ The [Dockerfile](Dockerfile) in this directory is used to build the `websphere-l
 # Usage
 
 Instructions for using the image can be found on [Docker Hub](https://registry.hub.docker.com/_/websphere-liberty/). It is possible to build the image yourself by cloning this repository, changing to the `ga/<version>/kernel` directory and then issuing the command `docker build .`.
+
+**Note:** Refer to [Optional Enterprise Functionality](https://github.com/WASdev/ci.docker#optional-enterprise-functionality) to ensure certain features are enabled such as monitoring or SSL.

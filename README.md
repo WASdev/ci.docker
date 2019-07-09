@@ -30,7 +30,7 @@ RUN configure.sh
 
 This will result in a Docker image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
 
-## Enterprise Functionality
+## Optional Enterprise Functionality
 
 This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular argument (`ARG`) or environment variable (`ENV`) and calling `RUN configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
 
@@ -61,6 +61,9 @@ This section describes the optional enterprise functionality that can be enabled
   *  Decription: Enable OpenIdConnect Client configuration to be read from environment variables.  
   *  XML Snippet Location: [oidc-config.xml](ga/latest/kernel/helpers/build/configuration_snippets/oidc-config.xml)
   *  Note: The following variables will be read:  OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_DISCOVERY_URL.  
+* `HZ_SESSION_CACHE`
+  *  Decription: Enable the persistence of HTTP sessions using JCache by adding the `sessionCache-1.0` feature.
+  *  XML Snippet Location: [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml)
 
 
 ### Session Caching
