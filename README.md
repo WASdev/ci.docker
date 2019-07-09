@@ -61,7 +61,7 @@ This section describes the optional enterprise functionality that can be enabled
   *  Decription: Enable OpenIdConnect Client configuration to be read from environment variables.  
   *  XML Snippet Location: [oidc-config.xml](ga/latest/kernel/helpers/build/configuration_snippets/oidc-config.xml)
   *  Note: The following variables will be read:  OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_DISCOVERY_URL.  
-  
+
 
 ### Session Caching
 
