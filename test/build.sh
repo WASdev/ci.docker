@@ -29,11 +29,22 @@ then
    fi
 fi
 
+# Default to podman where available, docker otherwise.
+# Override by setting the DOCKER environment variable.
+if test -z "$DOCKER"; then
+  which podman > /dev/null 2>&1
+  if [ $? != 0 ]; then
+    export DOCKER=docker
+  else
+    export DOCKER=podman
+  fi
+fi
+
 echo "******************************************************************************"
 echo "           Starting docker build for $image                                   "
 echo "******************************************************************************"
 
-docker build --no-cache=true -t $image -t $versionimage $dloc  > build_$tag.log
+$DOCKER build --no-cache=true -t $image -t $versionimage $dloc  > build_$tag.log
 
 if [ $? = 0 ]
 then
