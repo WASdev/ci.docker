@@ -1,6 +1,13 @@
 # WebSphere Application Server Liberty Profile and Docker [![Build Status](https://travis-ci.org/WASdev/ci.docker.svg?branch=master)](https://travis-ci.org/WASdev/ci.docker)
 
-This project contains the Dockerfiles for [WebSphere Application Server Liberty](https://hub.docker.com/_/websphere-liberty/).
+## Docker Hub images
+
+There are two different WebSphere Liberty Docker image sets available on Docker Hub:
+
+1. **Official Images**:  available [here](https://hub.docker.com/_/websphere-liberty), these are re-build automatically anytime something changes in the layers below, and updated with new WebSphere Liberty binaries as they become available (generally every 4 weeks). There are tags with Ubuntu and different combinations of Java versions.
+
+1. **Community Images**: available [here](https://hub.docker.com/r/ibmcom/websphere-liberty), these are images using Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and IBM's Small Footprint Java as the JRE.    
+
 
 ## Building an application image
 
