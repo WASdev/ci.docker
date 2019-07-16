@@ -17,9 +17,9 @@ waitForServerStart()
    cid=$1
    count=${2:-1}
    end=$((SECONDS+120))
-   while (( $SECONDS < $end && $(docker inspect -f {{.State.Running}} $cid) == "true" ))
+   while (( $SECONDS < $end && $($DOCKER inspect -f {{.State.Running}} $cid) == "true" ))
    do
-      result=$(docker logs $cid 2>&1 | grep "CWWKF0011I" | wc -l)
+      result=$($DOCKER logs $cid 2>&1 | grep "CWWKF0011I" | wc -l)
       if [ $result = $count ]
       then
          return 0
@@ -36,7 +36,7 @@ waitForServerStop()
    end=$((SECONDS+120))
    while (( $SECONDS < $end ))
    do
-      result=$(docker logs $cid 2>&1 | grep "CWWKE0036I" | wc -l)
+      result=$($DOCKER logs $cid 2>&1 | grep "CWWKE0036I" | wc -l)
       if [ $result = 1 ]
       then
          return 0
@@ -52,9 +52,9 @@ disabledTestLibertyStarts()
    if [ "$1" == "OpenShift" ]; then
       timestamp=$(date '+%Y/%m/%d %H:%M:%S')
       echo "$timestamp *** testLibertyStarts on OpenShift"
-      cid=$(docker run -d -u 1005:0 $image)
+      cid=$($DOCKER run -d -u 1005:0 $image)
    else
-      cid=$(docker run -d $image)
+      cid=$($DOCKER run -d $image)
    fi
    
    if [ $? != 0 ]
@@ -67,20 +67,20 @@ disabledTestLibertyStarts()
    if [ $? != 0 ]
    then
       echo "Liberty failed to start; exiting"
-      docker logs $cid
-      docker rm -f $cid >/dev/null
+      $DOCKER logs $cid
+      $DOCKER rm -f $cid >/dev/null
       exit 1
    fi
 
-   docker logs $cid 2>&1 | grep "ERROR"
+   $DOCKER logs $cid 2>&1 | grep "ERROR"
    if [ $? = 0 ]
    then
       echo "Errors found in logs for container; exiting"
-      docker rm -f $cid >/dev/null
+      $DOCKER rm -f $cid >/dev/null
       exit 1
    fi
 
-   docker rm -f $cid >/dev/null
+   $DOCKER rm -f $cid >/dev/null
 }
 
 disabledTestLibertyStops()
@@ -88,9 +88,9 @@ disabledTestLibertyStops()
    if [ "$1" == "OpenShift" ]; then
       timestamp=$(date '+%Y/%m/%d %H:%M:%S')
       echo "$timestamp *** testLibertyStops on OpenShift"
-      cid=$(docker run -d -u 1005:0 $image)
+      cid=$($DOCKER run -d -u 1005:0 $image)
    else
-      cid=$(docker run -d $image)
+      cid=$($DOCKER run -d $image)
    fi
 
    if [ $? != 0 ]
@@ -102,32 +102,32 @@ disabledTestLibertyStops()
    if [ $? != 0 ]
    then
       echo "Liberty failed to start; exiting"
-      docker logs $cid
-      docker rm -f $cid >/dev/null
+      $DOCKER logs $cid
+      $DOCKER rm -f $cid >/dev/null
       exit 1
    fi
    sleep 30
-   docker stop $cid >/dev/null
+   $DOCKER stop $cid >/dev/null
    if [ $? != 0 ]
    then
       echo "Container failed to stop cleanly: $result; exiting"
-      docker rm -f $cid >/dev/null
+      $DOCKER rm -f $cid >/dev/null
       exit 1
    fi
 
    waitForServerStop $cid
-   docker logs $cid | grep -iq "CWWKE0036I"
+   $DOCKER logs $cid | grep -iq "CWWKE0036I"
    if [ $? != 0 ]
    then
       echo "Liberty failed to stop cleanly; exiting"
       echo "DEBUG START full log"
-      docker logs $cid
+      $DOCKER logs $cid
       echo "DEBUG END full log"
-      docker rm -f $cid >/dev/null
+      $DOCKER rm -f $cid >/dev/null
       exit 1
    fi
 
-   docker rm -f $cid >/dev/null
+   $DOCKER rm -f $cid >/dev/null
 }
 
 testLibertyStopsAndRestarts()
@@ -135,9 +135,9 @@ testLibertyStopsAndRestarts()
    if [ "$1" == "OpenShift" ]; then
       timestamp=$(date '+%Y/%m/%d %H:%M:%S')
       echo "$timestamp *** testLibertyStopsAndRestarts on OpenShift"
-      cid=$(docker run -d -u 1005:0 $security_opt $image)
+      cid=$($DOCKER run -d -u 1005:0 $security_opt $image)
    else
-      cid=$(docker run -d $security_opt $image)
+      cid=$($DOCKER run -d $security_opt $image)
    fi
    
    if [ $? != 0 ]
@@ -150,26 +150,26 @@ testLibertyStopsAndRestarts()
    if [ $? != 0 ]
    then
       echo "Liberty failed to start; exiting"
-      docker logs $cid
-      docker rm -f $cid >/dev/null
+      $DOCKER logs $cid
+      $DOCKER rm -f $cid >/dev/null
       exit 1
    fi
    sleep 30
-   docker stop $cid >/dev/null
+   $DOCKER stop $cid >/dev/null
    if [ $? != 0 ]
    then
       echo "Error stopping container or server; exiting"
-      docker logs $cid
-      docker rm -f $cid >/dev/null
+      $DOCKER logs $cid
+      $DOCKER rm -f $cid >/dev/null
       exit 1
    fi
 
-   docker start $cid >/dev/null
+   $DOCKER start $cid >/dev/null
    if [ $? != 0 ]
    then
       echo "Failed to rerun container; exiting"
-      docker logs $cid
-      docker rm -f $cid >/dev/null
+      $DOCKER logs $cid
+      $DOCKER rm -f $cid >/dev/null
       exit 1
    fi
 
@@ -177,23 +177,23 @@ testLibertyStopsAndRestarts()
    if [ $? != 0 ]
    then
       echo "Server failed to restart; exiting"
-      docker logs $cid
-      docker rm -f $cid >/dev/null
+      $DOCKER logs $cid
+      $DOCKER rm -f $cid >/dev/null
       exit 1
    fi
 
-   docker logs $cid 2>&1 | grep "ERROR"
+   $DOCKER logs $cid 2>&1 | grep "ERROR"
    if [ $? = 0 ]
    then
       echo "Errors found in logs for container; exiting"
       echo "DEBUG START full log"
-      docker logs $cid
+      $DOCKER logs $cid
       echo "DEBUG END full log"
-      docker rm -f $cid >/dev/null
+      $DOCKER rm -f $cid >/dev/null
       exit 1
    fi
 
-   docker rm -f $cid >/dev/null
+   $DOCKER rm -f $cid >/dev/null
 }
 
 
@@ -202,9 +202,9 @@ disabledTestFeatureList()
    if [ "$1" == "OpenShift" ]; then
       timestamp=$(date '+%Y/%m/%d %H:%M:%S')
       echo "$timestamp *** testFeatureList on OpenShift"
-      version=$(docker run --rm -u 1005:0 $image sh -c 'echo $LIBERTY_VERSION')
+      version=$($DOCKER run --rm -u 1005:0 $image sh -c 'echo $LIBERTY_VERSION')
    else
-      version=$(docker run --rm $image sh -c 'echo $LIBERTY_VERSION')
+      version=$($DOCKER run --rm $image sh -c 'echo $LIBERTY_VERSION')
    fi
    echo "Checking features for $image against version $version"
 
@@ -226,7 +226,7 @@ disabledTestFeatureList()
    fi
 
    if [[ $LIBERTY_URL == *jar ]]; then
-     required_features=$(docker run --rm ibmjava:8-jre-alpine sh -c \
+     required_features=$($DOCKER run --rm ibmjava:8-jre-alpine sh -c \
        "apk add --no-cache wget > /dev/null
 wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.jar > /dev/null
 java -jar /tmp/wlp.jar --acceptLicense /opt/ibm > /dev/null
@@ -236,7 +236,7 @@ java -jar /tmp/wlp.jar --acceptLicense /opt/ibm > /dev/null
        # Ignore missing archives for Spring Boot tags.
        required_features="IGNORE"
      else
-       required_features=$(docker run --rm ibmjava:8-jre-alpine sh -c \
+       required_features=$($DOCKER run --rm ibmjava:8-jre-alpine sh -c \
        "apk add --no-cache wget > /dev/null
 wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip > /dev/null
 unzip -q /tmp/wlp.zip -d /opt/ibm
@@ -244,7 +244,7 @@ unzip -q /tmp/wlp.zip -d /opt/ibm
      fi
    fi
 
-   actual_features=$(docker run --rm $image productInfo featureInfo | cut -d " " -f1 | sort)
+   actual_features=$($DOCKER run --rm $image productInfo featureInfo | cut -d " " -f1 | sort)
 
    additional_features=$(comm -1 -3 <(echo "$required_features") <(echo "$actual_features"))
    if [ "$additional_features" != "" ]; then
