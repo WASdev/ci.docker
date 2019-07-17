@@ -3,7 +3,7 @@
 #Project specific URL
 registry=$1
 
-tags="kernel microProfile1 microProfile2 springBoot1 springBoot2 webProfile7 javaee7 webProfile8 javaee8"
+tags="kernel microProfile1 microProfile2 microProfile3 springBoot1 springBoot2 webProfile7 javaee7 webProfile8 javaee8"
 
 for tag in $tags; do
   echo "****** Pushing ${tag}"
