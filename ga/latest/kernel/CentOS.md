@@ -14,9 +14,9 @@
 ### Build the WebSphere Liberty CentOS (or RHEL) image
 * `git clone https://github.com/WASdev/ci.docker.git`
 
-* `cd ci.docker/ga/19.0.0.6/kernel`
+* `cd ci.docker/ga/latest/kernel`
 
 * `docker build -t websphere-liberty:kernel -f Dockerfile.centos .`
 
 ### Build other tags
-You can then use the `websphere-liberty:kernel` image as the base of your own application Dockerfile and `installUtility` to grow the set of features, or alternatively you can build any of the other tags in the `19.0.0.6` directory, such as `javaee8`, `springBoot2`, etc.  
+You can then use the `websphere-liberty:kernel` image as the base of your own application Dockerfile and `installUtility` to grow the set of features, or alternatively you can build any of the other tags in the `latest` directory, such as `javaee8`, `springBoot2`, etc.  
