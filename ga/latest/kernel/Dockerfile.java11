@@ -13,15 +13,15 @@
 # limitations under the License.
 FROM adoptopenjdk:11-jre-openj9
 
-LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Andy Naumann" \
+LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="19.0.0.7" \
-      org.opencontainers.image.revision="cl190720190711-1115"
+      org.opencontainers.image.version="19.0.0.8" \
+      org.opencontainers.image.revision="cl190820190813-1136"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 19.0.0_07
+ENV LIBERTY_VERSION 19.0.0_08
 
 ARG LIBERTY_URL 
 ARG DOWNLOAD_OPTIONS=""
@@ -46,8 +46,8 @@ ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="19.0.0.7" \
-      "BuildLabel"="cl190720190711-1115"
+      "ProductVersion"="19.0.0.8" \
+      "BuildLabel"="cl190820190813-1136"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
