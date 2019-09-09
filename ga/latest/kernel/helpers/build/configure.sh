@@ -8,6 +8,7 @@ SHARED_RESOURCE_DIR=${WLP_INSTALL_DIR}/usr/shared/resources
 
 SNIPPETS_SOURCE=/opt/ibm/helpers/build/configuration_snippets
 SNIPPETS_TARGET=/config/configDropins/overrides
+SNIPPETS_TARGET_DEFAULTS=/config/configDropins/defaults
 mkdir -p ${SNIPPETS_TARGET}
 
 
@@ -69,17 +70,21 @@ if [ "$JMS_ENDPOINT" == "true" ]; then
 fi
 
 # Key Store
-keystorePath="$SNIPPETS_TARGET/keystore.xml"
+keystorePath="$SNIPPETS_TARGET_DEFAULTS/keystore.xml"
 if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]
 then
-    # Check if the password is set already
-    if [ ! -e $keystorePath ]
-    then
-      # Generate the keystore.xml
-      export KEYSTOREPWD=$(openssl rand -base64 32)
-      sed -i.bak "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml
-      cp $SNIPPETS_SOURCE/keystore.xml $SNIPPETS_TARGET/keystore.xml
-    fi
+  cp $SNIPPETS_SOURCE/tls.xml $SNIPPETS_TARGET/tls.xml
+fi
+
+if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]
+then
+  if [ ! -e $keystorePath ]
+  then
+    # Generate the keystore.xml
+    export KEYSTOREPWD=$(openssl rand -base64 32)
+    sed -i.bak "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml
+    cp $SNIPPETS_SOURCE/keystore.xml $SNIPPETS_TARGET_DEFAULTS/keystore.xml
+  fi
 fi
 
 # Install needed features
