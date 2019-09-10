@@ -111,6 +111,23 @@ RUN configure.sh
 
 This section describes very simple way to speed up feature installation during builds of your images
 
+#### Locallly hosting feature repository
+
+The repository files can be downloaded from [Fix Central](https://www-945.ibm.com/support/fixcentral). 
+
+
+To host feature repository on-premises one of the easiest solutions could be using `nginx` docker image.
+
+`docker run --name repo-host -v /repo-host:/usr/share/nginx/html:ro -p 8080:80 -d nginx`
+
+You can mount and serve multiple zip files using a docker volume mount, for example repo-host folder mounted from host to nginx container above.
+
+You can place each zip archive in versioned folders, for example repo-host/${LIBERTY_VERSION}/repo.zip
+
+You will need a hostname/IP and mapped port to generate `FEATURE_REPO_URL`, for example above port 8080 is used.
+
+#### Using locally hosted feautre repository in Dockerfile
+
 Using `FEATURE_REPO_URL` build argument it is possible to provide a link to a feature repo zip file 
 containing all the features. You will also need to make sure to call `RUN configure.sh` in your Dockerfile
 
@@ -124,8 +141,6 @@ ARG FEATURE_REPO_URL=http://wlprepos:8080/19.0.0.x/repo.zip
 RUN configure.sh
 ```
 
-The repository files can be downloaded from [Fix Central](https://www-945.ibm.com/support/fixcentral). 
-
 Note: This feature requires a `curl ` command to be in the docker image.
 Some base images do not provide `curl`. You can add it before calling `confiure.sh` this way:
 
@@ -138,15 +153,7 @@ ARG FEATURE_REPO_URL=http://wlprepos:8080/19.0.0.x/repo.zip
 RUN configure.sh
 ```
 
-To be able to host these on-premises one of the easiest solutions could be using `nginx` docker image
 
-`docker run --name repo-host -v /repo-host:/usr/share/nginx/html:ro -p 8080:80 -d nginx`
-
-You can mount and serve multiple zip files using a docker volume mount, for example repo-host folder mounted from host to nginx container above.
-
-You can place each zip archive in versioned folders, for example repo-host/${LIBERTY_VERSION}/repo.zip
-
-You will need a hostname/IP and mapped port to generate `FEATURE_REPO_URL`, for example above port 8080 is used.
 
 # Issues and Contributions
 
