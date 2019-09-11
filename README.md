@@ -73,6 +73,28 @@ This section describes the optional enterprise functionality that can be enabled
   *  XML Snippet Location: [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml)
 
 
+### Logging
+
+It is important to be able to observe the logs emitted by Open Liberty when it is running in docker. A best practice method would be to emit the logs in JSON and to then consume it with a logging stack of your choice.
+
+Configure your Open Liberty docker image to emit JSON formatted logs to the console/standard-out with your selection of liberty logging events by providing the following environment variables to your Open Liberty DockerFile.
+
+For example:
+```
+//This example illustrates the use of all available logging sources.
+ENV WLP_LOGGING_CONSOLE_FORMAT=JSON
+ENV WLP_LOGGING_CONSOLE_LOGLEVEL=info
+ENV WLP_LOGGING_CONSOLE_SOURCE=message,trace,accessLog,ffdc,audit
+```
+
+These environment variables can be set during container invocation as well. This can be achieved by using the docker command's '-e' option to pass in an environment variable value.
+
+```
+docker run -d -p 80:9080 -p 443:9443 -e WLP_LOGGING_CONSOLE_FORMAT=JSON -e WLP_LOGGING_CONSOLE_LOGLEVEL=info -e WLP_LOGGING_CONSOLE_SOURCE=message,trace,accessLog,ffdc,audit open-liberty:latest
+```
+
+For more information regarding the configuration of Open Liberty's logging capabilities see: https://openliberty.io/docs/ref/general/#logging.html
+
 ### Session Caching
 
 The Liberty session caching feature builds on top of an existing technology called JCache (JSR 107), which provides an API for distributed in-memory caching. There are several providers of JCache implementations. One example is [Hazelcast In-Memory Data Grid](https://hazelcast.org/). Enabling Hazelcast session caching retrieves the Hazelcast client libraries from the [hazelcast/hazelcast](https://hub.docker.com/r/hazelcast/hazelcast/) Docker image, configures Hazelcast by copying a sample [hazelcast.xml](ga/latest/kernel/helpers/build/configuration_snippets/), and configures the Liberty server feature [sessionCache-1.0](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_admin_session_persistence_jcache.html) by including the XML snippet [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml). By default, the [Hazelcast Discovery Plugin for Kubernetes](https://github.com/hazelcast/hazelcast-kubernetes) will auto-discover its peers within the same Kubernetes namespace. To enable this functionality, the Docker image author can include the following Dockerfile snippet, and choose from either client-server or embedded [topology](https://docs.hazelcast.org/docs/latest-development/manual/html/Hazelcast_Overview/Hazelcast_Topology.html).
@@ -113,7 +135,7 @@ This section describes very simple way to speed up feature installation during b
 
 #### Locallly hosting feature repository
 
-The repository files can be downloaded from [Fix Central](https://www-945.ibm.com/support/fixcentral). 
+The repository files can be downloaded from [Fix Central](https://www-945.ibm.com/support/fixcentral).
 
 
 To host feature repository on-premises one of the easiest solutions could be using `nginx` docker image.
@@ -128,12 +150,12 @@ You will need a hostname/IP and mapped port to generate `FEATURE_REPO_URL`, for 
 
 #### Using locally hosted feautre repository in Dockerfile
 
-Using `FEATURE_REPO_URL` build argument it is possible to provide a link to a feature repo zip file 
+Using `FEATURE_REPO_URL` build argument it is possible to provide a link to a feature repo zip file
 containing all the features. You will also need to make sure to call `RUN configure.sh` in your Dockerfile
 
 `docker build --build-arg FEATURE_REPO_URL="http://wlprepos:8080/19.0.0.x/repo.zip"`
 
-You can also set it through Dockerfile 
+You can also set it through Dockerfile
 
 ```dockerfile
 FROM websphere-liberty:kernel
