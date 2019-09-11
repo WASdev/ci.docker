@@ -75,9 +75,9 @@ This section describes the optional enterprise functionality that can be enabled
 
 ### Logging
 
-It is important to be able to observe the logs emitted by Open Liberty when it is running in docker. A best practice method would be to emit the logs in JSON and to then consume it with a logging stack of your choice.
+It is important to be able to observe the logs emitted by WebSphere Liberty when it is running in docker. A best practice method would be to emit the logs in JSON and to then consume it with a logging stack of your choice.
 
-Configure your Open Liberty docker image to emit JSON formatted logs to the console/standard-out with your selection of liberty logging events by providing the following environment variables to your Open Liberty DockerFile.
+Configure your WebSphere Liberty docker image to emit JSON formatted logs to the console/standard-out with your selection of liberty logging events by providing the following environment variables to your WebSphere Liberty DockerFile.
 
 For example:
 ```
@@ -90,10 +90,10 @@ ENV WLP_LOGGING_CONSOLE_SOURCE=message,trace,accessLog,ffdc,audit
 These environment variables can be set during container invocation as well. This can be achieved by using the docker command's '-e' option to pass in an environment variable value.
 
 ```
-docker run -d -p 80:9080 -p 443:9443 -e WLP_LOGGING_CONSOLE_FORMAT=JSON -e WLP_LOGGING_CONSOLE_LOGLEVEL=info -e WLP_LOGGING_CONSOLE_SOURCE=message,trace,accessLog,ffdc,audit open-liberty:latest
+docker run -d -p 80:9080 -p 443:9443 -e WLP_LOGGING_CONSOLE_FORMAT=JSON -e WLP_LOGGING_CONSOLE_LOGLEVEL=info -e WLP_LOGGING_CONSOLE_SOURCE=message,trace,accessLog,ffdc,audit websphere-liberty:latest
 ```
 
-For more information regarding the configuration of Open Liberty's logging capabilities see: https://openliberty.io/docs/ref/general/#logging.html
+For more information regarding the configuration of WebSphere Liberty's logging capabilities see: https://www.ibm.com/support/knowledgecenter/en/SSD28V_liberty/com.ibm.websphere.wlp.core.doc/ae/rwlp_logging.html
 
 ### Session Caching
 
