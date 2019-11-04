@@ -34,7 +34,6 @@ ARG DOWNLOAD_OPTIONS=""
 
 RUN yum -y install unzip wget \
     && yum clean all \
-    && mkdir /licenses \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
     && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
@@ -43,7 +42,7 @@ RUN yum -y install unzip wget \
     && chown -R 1001:0 /opt/ibm/wlp \
     && chmod -R g+rw /opt/ibm/wlp \
     && yum -y remove unzip wget \
-    && microdnf clean all
+    && yum clean all
 
 ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 
