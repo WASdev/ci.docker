@@ -32,7 +32,7 @@ ENV LIBERTY_VERSION 19.0.0_10
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
 
-RUN microdnf -y install shadow-utils unzip wget \
+RUN microdnf -y install shadow-utils unzip wget findutils \
     && microdnf clean all \
     && mkdir /licenses \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
