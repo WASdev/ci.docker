@@ -18,7 +18,7 @@ main() {
   check_podman
   check_arch
 
-  if [[ $1 =~ ^\.\.\/ga\/19\.0\.0\.[69]$ ]]; then
+  if [ $1 = "../ga/19.0.0.6" || $1 = "../ga/19.0.0.9" ]; then
     while read -r imageName versionImageName buildContextDirectory
     do
       ./build.sh $imageName $versionImageName $buildContextDirectory
