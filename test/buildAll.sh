@@ -18,7 +18,7 @@ main() {
   check_podman
   check_arch
 
-  if [[ $1 =~ ^\.\.\/ga\/19\.0\.0\.[69]$ ]]
+  if [[ $1 =~ ^\.\.\/ga\/19\.0\.0\.[69]$ ]]; then
     while read -r imageName versionImageName buildContextDirectory
     do
       ./build.sh $imageName $versionImageName $buildContextDirectory
@@ -27,7 +27,6 @@ main() {
         echo "Failed at image $imageName - exiting"
         exit 1
       fi
-
     done < $currentRelease/"images.txt"
   else
       local file_exts_ubi=(ubi.adoptopenjdk8 ubi.adoptopenjdk11 ubi.ibmjava8 ubuntu.ibmjava8)
@@ -46,7 +45,6 @@ main() {
               exit 1
           fi
   fi
-
 }
 
 check_podman() {
