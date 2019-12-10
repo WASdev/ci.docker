@@ -31,6 +31,15 @@ if [[ $arch == "ppc64le" || $arch == "s390x" ]]; then
   $DOCKER tag $arch/ibmjava:8-jre ibmjava:8-jre
 fi
 
+$DOCKER pull registry.access.redhat.com/ubi8/ubi
+## pull Dockerfile from ibmjava
+mkdir java
+wget https://raw.githubusercontent.com/ibmruntimes/ci.docker/master/ibmjava/8/jre/ubi/Dockerfile -O java/Dockerfile
+
+## replace references to user 1001 as we need to build as root
+sed -i.bak '/useradd -u 1001*/d' ./java/Dockerfile && sed -i.bak '/USER 1001/d' ./java/Dockerfile && rm java/Dockerfile.bak
+$DOCKER build -t ibmjava:8-ubi java
+
 if [[ $1 =~ ^\.\.\/ga\/19\.0\.0\.[69]$ ]]; then
   while read -r imageName versionImageName buildContextDirectory
   do
