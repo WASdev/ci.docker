@@ -29,10 +29,10 @@ fi
 while read -r imageName versionImageName buildContextDirectory
 do
   ./build.sh $imageName $versionImageName $buildContextDirectory && ./verify.sh $imageName
-   
+
   if [ $? != 0 ]; then
     echo "Failed at image $imageName - exiting"
     exit 1
   fi
-    
+
 done < "images.txt"
