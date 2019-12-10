@@ -9,6 +9,8 @@
 #                                                                                   #
 #####################################################################################
 
+currentRelease=$1
+
 # Default to podman where available, docker otherwise.
 # Override by setting the DOCKER environment variable.
 if test -z "$DOCKER"; then
@@ -35,4 +37,4 @@ do
     exit 1
   fi
 
-done < "images.txt"
+done < $currentRelease/"images.txt"
