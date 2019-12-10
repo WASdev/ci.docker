@@ -1,7 +1,6 @@
 websphere-liberty:kernel              websphere-liberty:kernel              ../ga/19.0.0.6/kernel
 websphere-liberty:microProfile1       websphere-liberty:microProfile1       ../ga/19.0.0.6/microProfile1
 websphere-liberty:microProfile2       websphere-liberty:microProfile2       ../ga/19.0.0.6/microProfile2
-websphere-liberty:microProfile3       websphere-liberty:microProfile3       ../ga/19.0.0.6/microProfile3
 websphere-liberty:springBoot1         websphere-liberty:springBoot1         ../ga/19.0.0.6/springBoot1
 websphere-liberty:springBoot2         websphere-liberty:springBoot2         ../ga/19.0.0.6/springBoot2
 websphere-liberty:webProfile7         websphere-liberty:webProfile7         ../ga/19.0.0.6/webProfile7
