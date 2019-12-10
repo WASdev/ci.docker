@@ -28,23 +28,23 @@ main() {
         exit 1
       fi
     done < $currentRelease/"images.txt"
-  else
-      local file_exts_ubi=(ubi.adoptopenjdk8 ubi.adoptopenjdk11 ubi.ibmjava8 ubuntu.ibmjava8)
-      local tag_exts_ubi=(java8-openj9-ubi java11-openj9-ubi java8-ibmjava-ubi java8-ibmjava)
+  # else
+  #     local file_exts_ubi=(ubi.adoptopenjdk8 ubi.adoptopenjdk11 ubi.ibmjava8 ubuntu.ibmjava8)
+  #     local tag_exts_ubi=(java8-openj9-ubi java11-openj9-ubi java8-ibmjava-ubi java8-ibmjava)
 
-      for i in "${!tag_exts_ubi[@]}"; do
-          local docker_dir="${IMAGE_ROOT}/kernel"
-          local full_path="${docker_dir}/Dockerfile.${file_exts_ubi[$i]}"
-          if [[ -f "${full_path}" ]]; then
-              local build_tag="${REPO}:full-${tag_exts_ubi[$i]}"
+  #     for i in "${!tag_exts_ubi[@]}"; do
+  #         local docker_dir="${IMAGE_ROOT}/kernel"
+  #         local full_path="${docker_dir}/Dockerfile.${file_exts_ubi[$i]}"
+  #         if [[ -f "${full_path}" ]]; then
+  #             local build_tag="${REPO}:full-${tag_exts_ubi[$i]}"
 
-              echo "****** Building image ${build_tag}..."
-              $DOCKER build --no-cache=true "${build_tag}" -f "${full_path}"
-          else
-              echo "Could not find Dockerfile at path ${full_path}"
-              exit 1
-          fi
-      done
+  #             echo "****** Building image ${build_tag}..."
+  #             $DOCKER build --no-cache=true "${build_tag}" -f "${full_path}"
+  #         else
+  #             echo "Could not find Dockerfile at path ${full_path}"
+  #             exit 1
+  #         fi
+  #     done
   fi
 }
 
