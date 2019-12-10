@@ -14,7 +14,6 @@
 #   limitations under the License.
 
 FROM ibmcom/websphere-liberty:full-java8-openj9-ubi
-# FROM open-liberty:microProfile2
 
 COPY --chown=1001:0 config /config/
 COPY --chown=1001:0 stock-quote-1.0-SNAPSHOT.war /config/apps/StockQuote.war
