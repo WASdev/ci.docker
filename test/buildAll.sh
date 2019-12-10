@@ -48,12 +48,12 @@ else
 
   for i in "${!tag_exts_ubi[@]}"; do
       docker_dir="${IMAGE_ROOT}/kernel"
-      full_path="${docker_dir}/Dockerfile.${file_exts_ubi[$i]}"
+      full_path="${docker_dir}"
       if [[ -f "${full_path}" ]]; then
           build_tag="${REPO}:full-${tag_exts_ubi[$i]}"
 
           echo "****** Building image ${build_tag}..."
-          $DOCKER build --no-cache=true "${build_tag}" -f "${full_path}"
+          $DOCKER build --no-cache=true "${build_tag}" -f "${full_path}/Dockerfile.${file_exts_ubi[$i]}"
       else
           echo "Could not find Dockerfile at path ${full_path}"
           exit 1
