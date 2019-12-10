@@ -30,7 +30,7 @@ fi
 
 while read -r imageName versionImageName buildContextDirectory
 do
-  ./build.sh $imageName $versionImageName $buildContextDirectory && ./verify.sh $imageName
+  ./build.sh $imageName $versionImageName $buildContextDirectory && ./verify.sh --image=$imageName --repository=websphere-liberty
 
   if [ $? != 0 ]; then
     echo "Failed at image $imageName - exiting"
