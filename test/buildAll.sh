@@ -44,6 +44,7 @@ main() {
               echo "Could not find Dockerfile at path ${full_path}"
               exit 1
           fi
+      done
   fi
 }
 
