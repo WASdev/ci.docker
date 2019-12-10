@@ -53,7 +53,7 @@ else
           build_tag="${REPO}:full-${tag_exts_ubi[$i]}"
 
           echo "****** Building image ${build_tag}..."
-          $DOCKER build --no-cache=true "${build_tag}" -f "${full_path}"
+          $DOCKER build --no-cache=true -t "${build_tag}" -f "${full_path}"
       else
           echo "Could not find Dockerfile at path ${full_path}"
           exit 1
