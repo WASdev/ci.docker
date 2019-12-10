@@ -7,7 +7,6 @@ websphere-liberty:webProfile7         websphere-liberty:webProfile7         ../g
 websphere-liberty:webProfile8         websphere-liberty:webProfile8         ../ga/19.0.0.6/webProfile8
 websphere-liberty:javaee7             websphere-liberty:javaee7             ../ga/19.0.0.6/javaee7
 websphere-liberty:javaee8             websphere-liberty:javaee8             ../ga/19.0.0.6/javaee8
-websphere-liberty:beta                websphere-liberty:beta                ../beta
 websphere-liberty:test-stock-quote    websphere-liberty:test-stock-quote    test-stock-quote
 websphere-liberty:test-stock-trader   websphere-liberty:test-stock-trader   test-stock-trader
 websphere-liberty:test-pet-clinic     websphere-liberty:test-pet-clinic     test-pet-clinic
