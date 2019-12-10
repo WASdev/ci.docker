@@ -10,6 +10,7 @@ before_install:
 env:
   - RELEASE=../ga/19.0.0.6
   - RELEASE=../ga/19.0.0.9
+  - RELEASE=../ga/latest
 
 script:
 - uname -a

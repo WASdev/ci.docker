@@ -18,10 +18,10 @@ main() {
   check_podman
   check_arch
 
-  if [[ $1 =~ ^\.\.\/ga\/19\.0\.0\.[69]$]]
+  if [[ $1 =~ ^\.\.\/ga\/19\.0\.0\.[69]$ ]]
     while read -r imageName versionImageName buildContextDirectory
     do
-      ./build.sh $imageName $versionImageName $buildContextDirectory && ./verify.sh --image=$imageName --repository=$REPO
+      ./build.sh $imageName $versionImageName $buildContextDirectory
 
       if [ $? != 0 ]; then
         echo "Failed at image $imageName - exiting"
