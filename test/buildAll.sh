@@ -30,7 +30,7 @@ if [[ $arch == "ppc64le" || $arch == "s390x" ]]; then
   $DOCKER tag $arch/ibmjava:8-jre ibmjava:8-jre
 fi
 
-# if [[ $1 =~ ^\.\.\/ga\/19\.0\.0\.[69]$ ]]; then
+if [[ $1 =~ ^\.\.\/ga\/19\.0\.0\.[69]$ ]]; then
   while read -r imageName versionImageName buildContextDirectory
   do
     ./build.sh $imageName $versionImageName $buildContextDirectory
@@ -40,6 +40,9 @@ fi
       exit 1
     fi
   done < $currentRelease/"images.txt"
+else 
+  echo "${currentRelease}"
+fi
 # else
 #     file_exts_ubi=(ubi.adoptopenjdk8 ubi.adoptopenjdk11 ubi.ibmjava8 ubuntu.ibmjava8)
 #     tag_exts_ubi=(java8-openj9-ubi java11-openj9-ubi java8-ibmjava-ubi java8-ibmjava)
