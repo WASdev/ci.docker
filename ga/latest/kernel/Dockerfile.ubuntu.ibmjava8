@@ -18,11 +18,11 @@ LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="19.0.0.11" \
+      org.opencontainers.image.version="19.0.0.12" \
       org.opencontainers.image.revision="cl191120191031-0300"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 19.0.0_11
+ENV LIBERTY_VERSION 19.0.0_12
 
 ARG LIBERTY_URL 
 ARG DOWNLOAD_OPTIONS=""

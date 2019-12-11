@@ -18,7 +18,7 @@ LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="2019.10.0.0" \
+      org.opencontainers.image.version="2019.12.0.0" \
       org.opencontainers.image.revision="cl191020191002-0300"
 
 RUN apt-get update \
@@ -27,7 +27,7 @@ RUN apt-get update \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 2019.10.0_0
+ENV LIBERTY_VERSION 2019.12.0_0
 RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 3 | sed -n 's/\s*webProfile7:\s//p' | tr -d '\r')  \
     && echo $LIBERTY_URL \
     && wget -q $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp-beta.zip \

@@ -40,26 +40,27 @@ wget https://raw.githubusercontent.com/ibmruntimes/ci.docker/master/ibmjava/8/jr
 sed -i.bak '/useradd -u 1001*/d' ./java/Dockerfile && sed -i.bak '/USER 1001/d' ./java/Dockerfile && rm java/Dockerfile.bak
 $DOCKER build -t ibmjava:8-ubi java
 
-if [[ $1 =~ ^\.\.\/ga\/19\.0\.0\.[69]$ ]]; then
-  while read -r imageName versionImageName buildContextDirectory
-  do
-    ./build.sh $imageName $versionImageName $buildContextDirectory
+while read -r imageName buildContextDirectory
+do
+  ./build.sh $imageName $buildContextDirectory
 
-    if [ $? != 0 ]; then
-      echo "Failed at image $imageName - exiting"
-      exit 1
-    fi
-  done < $currentRelease/"images.txt"
-else 
+  if [ $? != 0 ]; then
+    echo "Failed at image $imageName - exiting"
+    exit 1
+  fi
+done < $currentRelease/"images.txt"
+
+tags=(kernel full)
+for j in "${!tags[@]}"; do 
   echo "${currentRelease}"
-  file_exts_ubi=(ubi.adoptopenjdk8 ubi.adoptopenjdk11 ubi.ibmjava8 ubuntu.ibmjava8)
-  tag_exts_ubi=(java8-openj9-ubi java11-openj9-ubi java8-ibmjava-ubi java8-ibmjava)
+  file_exts_ubi=(ubi.adoptopenjdk8 ubi.adoptopenjdk11 ubi.ibmjava8)
+  tag_exts_ubi=(java8-openj9-ubi java11-openj9-ubi java8-ibmjava-ubi)
 
   for i in "${!tag_exts_ubi[@]}"; do
-      docker_dir="${IMAGE_ROOT}/kernel"
+      docker_dir="${IMAGE_ROOT}/${tags[$j]}"
       full_path="${docker_dir}/Dockerfile.${file_exts_ubi[$i]}"
       if [[ -f "${full_path}" ]]; then
-          build_tag="${REPO}:full-${tag_exts_ubi[$i]}"
+          build_tag="${REPO}:${tags[$j]}-${tag_exts_ubi[$i]}"
 
           echo "****** Building image ${build_tag}..."
           $DOCKER build --no-cache=true -t "${build_tag}" -f "${full_path}" "${docker_dir}"
@@ -68,4 +69,4 @@ else
           exit 1
       fi
   done
-fi
+done 

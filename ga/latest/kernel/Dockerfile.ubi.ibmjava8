@@ -22,12 +22,12 @@ LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.revision="cl191120191031-0300" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
-      version="19.0.0.11" \
+      version="19.0.0.12" \
       summary="Image for WebSphere Liberty with IBM's SFJ and UBI minimal" \
       description="This image contains the WebSphere Liberty runtime with IBM's SFJ and Red Hat UBI minimal as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 19.0.0_11
+ENV LIBERTY_VERSION 19.0.0_12
 
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
