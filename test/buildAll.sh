@@ -43,9 +43,9 @@ $DOCKER build -t ibmjava:8-ubi java
 while read -r imageName buildContextDirectory dockerfileName
 do
   if [ !$dockerfileName ]; then
-    ./build.sh $imageName $buildContextDirectory $dockerfileName
+    ./build.sh $imageName $buildContextDirectory $dockerfileName && ./verify.sh --image=$imageName --repository=websphere-liberty
   else 
-    ./build.sh $imageName $buildContextDirectory
+    ./build.sh $imageName $buildContextDirectory && ./verify.sh --image=$imageName --repository=websphere-liberty
   fi
 
   if [ $? != 0 ]; then
