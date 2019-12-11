@@ -37,7 +37,7 @@ echo "**************************************************************************
 echo "           Starting docker build for $image                                   "
 echo "******************************************************************************"
 
-$DOCKER build --no-cache=true -t $image -t $tag $dloc  > build_$tag.log
+$DOCKER build --no-cache=true -t $image $dloc  > build_$tag.log
 
 if [ $? = 0 ]
 then
