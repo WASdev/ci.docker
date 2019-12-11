@@ -46,6 +46,7 @@ do
     ./build.sh $imageName $buildContextDirectory $dockerfileName
   else 
     ./build.sh $imageName $buildContextDirectory
+  fi
 
   if [ $? != 0 ]; then
     echo "Failed at image $imageName - exiting"
