@@ -86,9 +86,9 @@ testLibertyStopsAndRestarts()
     if [ "$1" == "OpenShift" ]; then
         timestamp=$(date '+%Y/%m/%d %H:%M:%S')
         echo "$timestamp *** testLibertyStopsAndRestarts on OpenShift"
-        cid=$(docker run -rm=false -d -u 1005:0 $IMAGE)
+        cid=$(docker run -rm -d -u 1005:0 $IMAGE)
     else
-    local cid=$(docker run -rm=false -d $IMAGE)
+    local cid=$(docker run -rm -d $IMAGE)
     fi
     echo "Waiting for server to start..."
     waitForServerStart "${cid}" \
