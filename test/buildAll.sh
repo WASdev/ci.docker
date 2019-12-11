@@ -45,7 +45,7 @@ do
   if [ !$dockerfileName ]; then
     ./build.sh $imageName $buildContextDirectory $dockerfileName && ./verify.sh --image=$imageName --repository=websphere-liberty
   else 
-    ./build.sh $imageName $buildContextDirectory && ./verify.sh --image=$imageName --repository=websphere-liberty
+    ./build.sh $imageName $buildContextDirectory
   fi
 
   if [ $? != 0 ]; then
