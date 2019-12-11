@@ -9,7 +9,7 @@ IBM WebSphere Application Server Liberty Profile images can be built and verifie
 3. Build and Test image using:
 
     ```bash
-    sh build.sh <image-name> <dockerfile-location>
+    sh build.sh <image-name> <dockerfile-location> <optional: dockerfile name>
     sh verify.sh <image-name>
     ```
 

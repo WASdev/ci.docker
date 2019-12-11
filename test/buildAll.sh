@@ -40,9 +40,12 @@ wget https://raw.githubusercontent.com/ibmruntimes/ci.docker/master/ibmjava/8/jr
 sed -i.bak '/useradd -u 1001*/d' ./java/Dockerfile && sed -i.bak '/USER 1001/d' ./java/Dockerfile && rm java/Dockerfile.bak
 $DOCKER build -t ibmjava:8-ubi java
 
-while read -r imageName buildContextDirectory
+while read -r imageName buildContextDirectory dockerfileName
 do
-  ./build.sh $imageName $buildContextDirectory
+  if [ !$dockerfileName ]; then
+    ./build.sh $imageName $buildContextDirectory $dockerfileName
+  else 
+    ./build.sh $imageName $buildContextDirectory
 
   if [ $? != 0 ]; then
     echo "Failed at image $imageName - exiting"
