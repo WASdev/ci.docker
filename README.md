@@ -16,7 +16,7 @@ Even if you docker save the manually configured container, the steps to reproduc
 The key point to take-away from the sections below is that your application Dockerfile should always follow a pattern similar to:
 
 ```dockerfile
-FROM websphere-liberty:kernel-java8-openj9-ubi
+FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 
 # Add my app and config
 COPY --chown=1001:0  Sample1.war /config/dropins/
@@ -156,7 +156,7 @@ containing all the features. You will also need to make sure to call `RUN config
 You can also set it through Dockerfile
 
 ```dockerfile
-FROM websphere-liberty:kernel-java8-openj9-ubi
+FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 ARG FEATURE_REPO_URL=http://wlprepos:8080/19.0.0.x/repo.zip
 RUN configure.sh
 ```
@@ -165,7 +165,7 @@ Note: This feature requires a `curl ` command to be in the docker image.
 Some base images do not provide `curl`. You can add it before calling `confiure.sh` this way:
 
 ```dockerfile
-FROM websphere-liberty:kernel-java8-openj9-ubi
+FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 USER root
 RUN apt-get update && apt-get install -y curl
 USER 1001
