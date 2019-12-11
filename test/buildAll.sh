@@ -5,7 +5,7 @@
 #  Script to build and test all websphere-liberty Docker images                     #
 #                                                                                   #
 #                                                                                   #
-#  Usage : buildAll.sh							            # 
+#  Usage : buildAll.sh <Release Version>  						                              # 
 #                                                                                   #
 #####################################################################################
 

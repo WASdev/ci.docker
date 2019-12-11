@@ -1,4 +1,3 @@
-
 websphere-liberty:full                ../ga/latest/full/Dockerfile.ubuntu.ibmjava8
 websphere-liberty:kernel              ../ga/latest/full/Dockerfile.ubuntu.ibmjava8
 websphere-liberty:beta                ../beta
