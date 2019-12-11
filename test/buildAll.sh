@@ -43,7 +43,11 @@ $DOCKER build -t ibmjava:8-ubi java
 while read -r imageName buildContextDirectory dockerfileName
 do
   if [[ ! -z $dockerfileName ]]; then
-    ./build.sh $imageName $buildContextDirectory $dockerfileName && ./verify.sh --image=$imageName --repository=websphere-liberty
+    ./build.sh $imageName $buildContextDirectory $dockerfileName
+
+    if [ $currentRelease == "../ga/latest" ]; then
+      ./verify.sh --image=$imageName --repository=websphere-liberty
+    fi
   else 
     ./build.sh $imageName $buildContextDirectory
   fi
