@@ -9,23 +9,17 @@
 #####################################################################################
 
 image=$1
-dloc=$3
+dloc=$2
 
 tag=`echo $image | cut -d ":" -f2`
 
 test=test
 cname=$tag$test
 
-if [ $# != 3 ]
+if [ $# != 2 ]
 then
-   if [ $# != 2 ]
-   then
-      echo "Usage : build.sh <Image name (e.g. websphere-liberty:19.0.0.1-kernel)> <Dockerfile location>"
-      exit 1
-   else
-      echo "Dockerfile location not provided, using ."
-      dloc="."
-   fi
+  echo "Usage : build.sh <Image name (e.g. websphere-liberty:19.0.0.1-kernel)> <Dockerfile location>"
+  exit 1
 fi
 
 # Default to podman where available, docker otherwise.
