@@ -86,7 +86,7 @@ testLibertyStopsAndRestarts()
     if [ "$1" == "OpenShift" ]; then
         timestamp=$(date '+%Y/%m/%d %H:%M:%S')
         echo "$timestamp *** testLibertyStopsAndRestarts on OpenShift"
-        cid=$(docker run -d -u 1005:0 $IMAGE)
+        cid=$(docker run -d -u 1001:0 $IMAGE)
     else
     local cid=$(docker run -d $IMAGE)
     fi
