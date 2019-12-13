@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-FROM websphere-liberty:microProfile2
+FROM ibmcom/websphere-liberty:full-java8-openj9-ubi
 # FROM open-liberty:microProfile2
 
 COPY --chown=1001:0 config /config/

@@ -1,0 +1,6 @@
+websphere-liberty:19.0.0.12-kernel              ../ga/19.0.0.12/kernel    ../ga/19.0.0.12/kernel/Dockerfile.ubuntu.ibmjava8
+websphere-liberty:19.0.0.12-full                ../ga/19.0.0.12/full      ../ga/19.0.0.12/full/Dockerfile.ubuntu.ibmjava8
+websphere-liberty:beta                ../beta
+websphere-liberty:test-stock-quote    test-stock-quote
+websphere-liberty:test-stock-trader   test-stock-trader
+websphere-liberty:test-pet-clinic     test-pet-clinic

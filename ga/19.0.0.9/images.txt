@@ -1,0 +1,14 @@
+websphere-liberty:kernel              ../ga/19.0.0.9/kernel
+websphere-liberty:microProfile1       ../ga/19.0.0.9/microProfile1
+websphere-liberty:microProfile2       ../ga/19.0.0.9/microProfile2
+websphere-liberty:microProfile3       ../ga/19.0.0.9/microProfile3
+websphere-liberty:springBoot1         ../ga/19.0.0.9/springBoot1
+websphere-liberty:springBoot2         ../ga/19.0.0.9/springBoot2
+websphere-liberty:webProfile7         ../ga/19.0.0.9/webProfile7
+websphere-liberty:webProfile8         ../ga/19.0.0.9/webProfile8
+websphere-liberty:javaee7             ../ga/19.0.0.9/javaee7
+websphere-liberty:javaee8             ../ga/19.0.0.9/javaee8
+websphere-liberty:beta                ../beta
+websphere-liberty:test-stock-quote    test-stock-quote
+websphere-liberty:test-stock-trader   test-stock-trader
+websphere-liberty:test-pet-clinic     test-pet-clinic

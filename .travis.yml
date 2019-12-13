@@ -5,5 +5,16 @@ language: bash
 services:
   - docker
 
+before_install:
+  - sudo apt-get update
+env:
+  - RELEASE=../ga/19.0.0.12
+  - RELEASE=../ga/19.0.0.9
+  - RELEASE=../ga/latest
+
 script:
-- make test
+- uname -a
+- cat /etc/issue
+- pwd
+- cd test
+- ./buildAll.sh $RELEASE

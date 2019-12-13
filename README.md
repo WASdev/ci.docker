@@ -2,23 +2,21 @@
 
 ## Docker Hub images
 
-There are two different WebSphere Liberty Docker image sets available on Docker Hub:
-
-1. **Official Images**:  available [here](https://hub.docker.com/_/websphere-liberty), these are re-build automatically anytime something changes in the layers below, and updated with new WebSphere Liberty binaries as they become available (generally every 4 weeks). There are tags with Ubuntu and different combinations of Java versions.
-
-1. **Community Images**: available [here](https://hub.docker.com/r/ibmcom/websphere-liberty), these are images using Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and IBM's Small Footprint Java as the JRE.    
+There are two different supported WebSphere Liberty Docker image sets available on Docker Hub:
+1.  Our recommended set [here](https://hub.docker.com/r/ibmcom/websphere-liberty).  These are images using Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and are re-built daily.  
+2.  Other sets can be found [here](https://hub.docker.com/_/websphere-liberty).  These are re-built automatically anytime something changes in the layers below.  There are tags with different combinations of Java and Operating System versions.
 
 
 ## Building an application image
 
-According to Docker's best practices you should create a new image (FROM websphere-liberty) which adds a single application and the corresponding configuration. You should avoid configuring the image manually, after it started (unless it is for debugging purposes), because such changes won't be present if you spawn a new container from the image.
+According to Docker's best practices you should create a new image (FROM ibmcom/websphere-liberty) which adds a single application and the corresponding configuration. You should avoid configuring the image manually, after it started (unless it is for debugging purposes), because such changes won't be present if you spawn a new container from the image.
 
 Even if you docker save the manually configured container, the steps to reproduce the image from `websphere-liberty` will be lost and you will hinder your ability to update that image.
 
 The key point to take-away from the sections below is that your application Dockerfile should always follow a pattern similar to:
 
 ```dockerfile
-FROM websphere-liberty:kernel
+FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 
 # Add my app and config
 COPY --chown=1001:0  Sample1.war /config/dropins/
@@ -158,7 +156,7 @@ containing all the features. You will also need to make sure to call `RUN config
 You can also set it through Dockerfile
 
 ```dockerfile
-FROM websphere-liberty:kernel
+FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 ARG FEATURE_REPO_URL=http://wlprepos:8080/19.0.0.x/repo.zip
 RUN configure.sh
 ```
@@ -167,7 +165,7 @@ Note: This feature requires a `curl ` command to be in the docker image.
 Some base images do not provide `curl`. You can add it before calling `confiure.sh` this way:
 
 ```dockerfile
-FROM websphere-liberty:kernel
+FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 USER root
 RUN apt-get update && apt-get install -y curl
 USER 1001

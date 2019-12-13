@@ -4,29 +4,23 @@
 #  Script to build a docker image                                                   #
 #                                                                                   #
 #                                                                                   #
-#  Usage : build.sh <Image name> <Dockerfile location>                              #
+#  Usage : build.sh <Image name> <Dockerfile location> <optional: dockerfile name>  #
 #                                                                                   #
 #####################################################################################
 
 image=$1
-versionimage=$2
-dloc=$3
+dloc=$2
+dname=$3
 
 tag=`echo $image | cut -d ":" -f2`
 
 test=test
 cname=$tag$test
 
-if [ $# != 3 ]
+if [[ $# -gt 3 || $# -lt 2 ]]
 then
-   if [ $# != 2 ]
-   then
-      echo "Usage : build.sh <Image name (e.g. websphere-liberty:kernel)> <Versioned image name (e.g. websphere-liberty:19.0.0.1-kernel)> <Dockerfile location>"
-      exit 1
-   else
-      echo "Dockerfile location not provided, using ."
-      dloc="."
-   fi
+  echo "Usage : build.sh <Image name (e.g. websphere-liberty:19.0.0.1-kernel)> <Dockerfile location> <optional: dockerfile name>"
+  exit 1
 fi
 
 # Default to podman where available, docker otherwise.
@@ -44,7 +38,11 @@ echo "**************************************************************************
 echo "           Starting docker build for $image                                   "
 echo "******************************************************************************"
 
-$DOCKER build --no-cache=true -t $image -t $versionimage $dloc  > build_$tag.log
+if [ $# -eq 3 ]; then
+  $DOCKER build --no-cache=true -t $image -f $dname $dloc  > build_$tag.log
+else 
+  $DOCKER build --no-cache=true -t $image $dloc  > build_$tag.log
+fi
 
 if [ $? = 0 ]
 then
