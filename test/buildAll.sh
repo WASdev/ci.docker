@@ -12,6 +12,7 @@
 
 currentRelease=$1
 readonly REPO="websphere-liberty"
+readonly IMAGE_ROOT="../ga/latest"
 
 # Default to podman where available, docker otherwise.
 # Override by setting the DOCKER environment variable.
@@ -57,24 +58,23 @@ do
   fi
 done < $currentRelease/"images.txt"
 
-if [[ $currentRelease == "../ga/19.0.0.12" || $currentRelease == "../ga/latest" ]]; then
-  tags=(kernel full)
-  for j in "${!tags[@]}"; do 
-    file_exts_ubi=(ubi.adoptopenjdk8 ubi.adoptopenjdk11 ubi.ibmjava8)
-    tag_exts_ubi=(java8-openj9-ubi java11-openj9-ubi java8-ibmjava-ubi)
+tags=(kernel full)
+for j in "${!tags[@]}"; do 
+  echo "${currentRelease}"
+  file_exts_ubi=(ubi.adoptopenjdk8 ubi.adoptopenjdk11 ubi.ibmjava8)
+  tag_exts_ubi=(java8-openj9-ubi java11-openj9-ubi java8-ibmjava-ubi)
 
-    for i in "${!tag_exts_ubi[@]}"; do
-        docker_dir="${currentRelease}/${tags[$j]}"
-        full_path="${docker_dir}/Dockerfile.${file_exts_ubi[$i]}"
-        if [[ -f "${full_path}" ]]; then
-            build_tag="${REPO}:${tags[$j]}-${tag_exts_ubi[$i]}"
+  for i in "${!tag_exts_ubi[@]}"; do
+      docker_dir="${IMAGE_ROOT}/${tags[$j]}"
+      full_path="${docker_dir}/Dockerfile.${file_exts_ubi[$i]}"
+      if [[ -f "${full_path}" ]]; then
+          build_tag="${REPO}:${tags[$j]}-${tag_exts_ubi[$i]}"
 
-            echo "****** Building image ${build_tag}..."
-            $DOCKER build --no-cache=true -t "${build_tag}" -f "${full_path}" "${docker_dir}"
-        else
-            echo "Could not find Dockerfile at path ${full_path}"
-            exit 1
-        fi
-    done
+          echo "****** Building image ${build_tag}..."
+          $DOCKER build --no-cache=true -t "${build_tag}" -f "${full_path}" "${docker_dir}"
+      else
+          echo "Could not find Dockerfile at path ${full_path}"
+          exit 1
+      fi
   done
-fi 
+done 
