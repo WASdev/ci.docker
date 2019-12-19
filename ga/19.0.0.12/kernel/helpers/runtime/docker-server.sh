@@ -35,7 +35,7 @@ then
   if [ ! -e $keystorePath ]
   then
     # Generate the keystore.xml
-    export KEYSTOREPWD=$(openssl rand -base64 32)
+    export KEYSTOREPWD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32 ; echo '')
     sed -i.bak "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml
     cp $SNIPPETS_SOURCE/keystore.xml $SNIPPETS_TARGET_DEFAULTS/keystore.xml
   fi
