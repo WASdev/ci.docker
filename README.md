@@ -181,4 +181,4 @@ For issues relating specifically to the Dockerfiles and scripts, please use the 
 
 # License
 
-The Dockerfiles and associated scripts found in this project are licensed under the [Apache License 2.0](LICENSE).
+The Dockerfiles and associated scripts found in this project are licensed under the [Apache License 2.0](LICENSE). 
