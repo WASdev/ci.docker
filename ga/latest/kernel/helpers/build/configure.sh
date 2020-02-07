@@ -1,4 +1,8 @@
 #!/bin/bash
+if [ "$VERBOSE" != "true" ]; then
+  exec &>/dev/null
+fi
+
 set -Eeox pipefail
 
 ##Define variables for XML snippets source and target paths
