@@ -13,8 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-ARG IMAGE=ibmcom/websphere-liberty:full-java8-openj9-ubi
-FROM ${IMAGE}
+FROM ibmcom/websphere-liberty:full-java8-openj9-ubi
 
 COPY --chown=1001:0 config /config/
 COPY --chown=1001:0 stock-quote-1.0-SNAPSHOT.war /config/apps/StockQuote.war
