@@ -47,6 +47,11 @@ if [ "$HTTP_ENDPOINT" == "true" ]; then
   fi
 fi
 
+# Social Login
+if [ "$SOCIAL_LOGIN" == "true" ]; then
+    cp $SNIPPETS_SOURCE/social-login.xml $SNIPPETS_TARGET/social-login.xml
+fi
+
 # Hazelcast Session Caching
 if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]
 then
