@@ -29,6 +29,9 @@ ARG MP_MONITORING=true
 # Add interim fixes (optional)
 COPY --chown=1001:0  interim-fixes /opt/ibm/fixes/
 
+# Default setting for the verbose option
+ARG VERBOSE=false
+
 # This script will add the requested XML snippets, grow image to be fit-for-purpose and apply interim fixes
 RUN configure.sh
 ```
@@ -37,7 +40,7 @@ This will result in a Docker image that has your application and configuration p
 
 ## Optional Enterprise Functionality
 
-This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular argument (`ARG`) or environment variable (`ENV`) and calling `RUN configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets, described below:
+This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular argument (`ARG`) or environment variable (`ENV`) and calling `RUN configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets (except for `VERBOSE`), described below:
 
 * `HTTP_ENDPOINT`
   *  Decription: Add configuration properties for an HTTP endpoint.
@@ -69,6 +72,8 @@ This section describes the optional enterprise functionality that can be enabled
 * `HZ_SESSION_CACHE`
   *  Decription: Enable the persistence of HTTP sessions using JCache by adding the `sessionCache-1.0` feature.
   *  XML Snippet Location: [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml)
+*  `VERBOSE`
+  * Description: When set to `true` it outputs the commands and results to stdout from `configure.sh`. Otherwise, default setting is `false` and `configure.sh` is silenced.
 
 
 ### Logging
@@ -105,6 +110,9 @@ COPY --from=hazelcast/hazelcast --chown=1001:0 /opt/hazelcast/lib/*.jar /opt/ibm
 # Instruct configure.sh to copy the client topology hazelcast.xml
 ARG HZ_SESSION_CACHE=client
 
+# Default setting for the verbose option
+ARG VERBOSE=false
+
 # Instruct configure.sh to copy the embedded topology hazelcast.xml and set the required system property
 #ARG HZ_SESSION_CACHE=embedded
 #ENV JAVA_TOOL_OPTIONS="-Dhazelcast.jcache.provider.type=server ${JAVA_TOOL_OPTIONS}"
@@ -122,6 +130,9 @@ Ensure that all features needed by your applications, apart from the ones that w
 ```dockerfile
 # Add interim fixes (optional)
 COPY --chown=1001:0  interim-fixes /opt/ibm/fixes/
+
+# Default setting for the verbose option
+ARG VERBOSE=false
 
 # This script will add the requested XML snippets, grow image to be fit-for-purpose and apply interim fixes
 RUN configure.sh
@@ -158,6 +169,7 @@ You can also set it through Dockerfile
 ```dockerfile
 FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 ARG FEATURE_REPO_URL=http://wlprepos:8080/19.0.0.x/repo.zip
+ARG VERBOSE=false
 RUN configure.sh
 ```
 
@@ -170,6 +182,7 @@ USER root
 RUN apt-get update && apt-get install -y curl
 USER 1001
 ARG FEATURE_REPO_URL=http://wlprepos:8080/19.0.0.x/repo.zip
+ARG VERBOSE=false
 RUN configure.sh
 ```
 
