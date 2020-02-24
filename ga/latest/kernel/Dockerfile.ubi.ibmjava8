@@ -32,7 +32,7 @@ ENV LIBERTY_VERSION 20.0.0_03
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
 
-RUN yum -y install unzip wget \
+RUN yum -y install unzip wget openssl \
     && yum clean all \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \

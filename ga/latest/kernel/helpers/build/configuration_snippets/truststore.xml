@@ -1,0 +1,4 @@
+<server description="Default Server">
+    <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="defaultTrustStore"/>
+    <keyStore id="defaultTrustStore" location="${server.output.dir}/resources/security/trust.p12" type="PKCS12" password="PWD_TRUST" />
+</server>
