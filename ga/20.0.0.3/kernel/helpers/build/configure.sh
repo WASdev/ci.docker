@@ -86,8 +86,8 @@ then
   then
     # Generate the keystore.xml
     export KEYSTOREPWD=$(openssl rand -base64 32)
-    sed -i.bak "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml
-    cp $SNIPPETS_SOURCE/keystore.xml $SNIPPETS_TARGET_DEFAULTS/keystore.xml
+    sed "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml > $SNIPPETS_TARGET_DEFAULTS/keystore.xml
+    chmod g+w $SNIPPETS_TARGET_DEFAULTS/keystore.xml
   fi
 fi
 
