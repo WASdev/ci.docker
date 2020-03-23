@@ -104,9 +104,12 @@ fi
 # Fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in /opt/ibm/fixes
 # Note: This step should be done once needed features are enabled and installed using installUtility.
 find /opt/ibm/fixes -type f -name "*.jar"  -print0 | sort -z | xargs -0 -n 1 -r -I {} java -jar {} --installLocation $WLP_INSTALL_DIR
-#Make sure that group write permissions are set correctly after installing new features 
+#Make sure that group write permissions are set correctly after installing new features
 find /opt/ibm/wlp -perm -g=w -print0 | xargs -0 -r chmod -R g+rw
-# Server start/stop to populate the /output/workarea and make subsequent server starts faster
-/opt/ibm/wlp/bin/server start && /opt/ibm/wlp/bin/server stop && rm -rf /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache /output/workarea && chmod -R g+rwx /opt/ibm/wlp/output/*
+# Create a new SCC layer
+if [ "$OPENJ9_SCC" == "true" ]
+then
+  populate_scc.sh
+fi
 #Make folder executable for a group
 find /opt/ibm/wlp -type d -perm -g=x -print0 | xargs -0 -r chmod -R g+rwx

@@ -3,7 +3,7 @@
 ## Docker Hub images
 
 There are two different supported WebSphere Liberty Docker image sets available on Docker Hub:
-1.  Our recommended set [here](https://hub.docker.com/r/ibmcom/websphere-liberty).  These are images using Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and are re-built daily.  
+1.  Our recommended set [here](https://hub.docker.com/r/ibmcom/websphere-liberty).  These are images using Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and are re-built daily.
 2.  Other sets can be found [here](https://hub.docker.com/_/websphere-liberty).  These are re-built automatically anytime something changes in the layers below.  There are tags with different combinations of Java and Operating System versions.
 
 
@@ -66,15 +66,26 @@ This section describes the optional enterprise functionality that can be enabled
   *  Decription: Enable OpenIdConnect Client function by adding the `openidConnectClient-1.0` feature.
   *  XML Snippet Location: [oidc.xml](ga/latest/kernel/helpers/build/configuration_snippets/oidc.xml)
 * `OIDC_CONFIG`
-  *  Decription: Enable OpenIdConnect Client configuration to be read from environment variables.  
+  *  Decription: Enable OpenIdConnect Client configuration to be read from environment variables.
   *  XML Snippet Location: [oidc-config.xml](ga/latest/kernel/helpers/build/configuration_snippets/oidc-config.xml)
-  *  Note: The following variables will be read:  OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_DISCOVERY_URL.  
+  *  Note: The following variables will be read:  OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_DISCOVERY_URL.
 * `HZ_SESSION_CACHE`
   *  Decription: Enable the persistence of HTTP sessions using JCache by adding the `sessionCache-1.0` feature.
   *  XML Snippet Location: [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml)
 *  `VERBOSE`
   * Description: When set to `true` it outputs the commands and results to stdout from `configure.sh`. Otherwise, default setting is `false` and `configure.sh` is silenced.
 
+## OpenJ9 Shared Class Cache (SCC)
+
+OpenJ9's SCC allows the VM to store Java classes in an optimized form that can be loaded very quickly, JIT compiled code, and profiling data. Deploying an SCC file together with your application can significantly improve start-up time. The SCC can also be shared by multiple VMs, thereby reducing total memory consumption.
+
+WebSphere Liberty Docker images contain an SCC and (by default) add your application's specific data to the SCC at image build time when your Dockerfile invokes `RUN configure.sh`.
+
+This feature can be controlled via the following variables:
+
+* `OPENJ9_SCC` (environment variable)
+  *  Decription: If `"true"`, cache application-specific in an SCC and include it in the image. A new SCC will be created if needed, otherwise data will be added to the existing SCC.
+  *  Default: `"true"`.
 
 ### Logging
 
