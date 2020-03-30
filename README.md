@@ -1,10 +1,9 @@
-# WebSphere Application Server Liberty Profile and Docker [![Build Status](https://travis-ci.org/WASdev/ci.docker.svg?branch=master)](https://travis-ci.org/WASdev/ci.docker)
+# WebSphere Application Server Liberty and Containers [![Build Status](https://travis-ci.org/WASdev/ci.docker.svg?branch=master)](https://travis-ci.org/WASdev/ci.docker)
 
-## Docker Hub images
+## Container images
 
-There are two different supported WebSphere Liberty Docker image sets available on Docker Hub:
-1.  Our recommended set [here](https://hub.docker.com/r/ibmcom/websphere-liberty).  These are images using Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and are re-built daily.
-2.  Other sets can be found [here](https://hub.docker.com/_/websphere-liberty).  These are re-built automatically anytime something changes in the layers below.  There are tags with different combinations of Java and Operating System versions.
+* Our recommended set uses Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and are re-built daily.  They can be found on [Docker Hub](https://hub.docker.com/r/ibmcom/websphere-libert) or [IBM Cloud](https://cloud.ibm.com/docs/services/Registry?topic=RegistryImages-ibmliberty).
+* Another set, using Ubuntu as the Operating System can be found [here](https://hub.docker.com/_/websphere-liberty).  These are re-built automatically anytime something changes in the layers below.
 
 
 ## Building an application image
@@ -21,10 +20,6 @@ FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 # Add my app and config
 COPY --chown=1001:0  Sample1.war /config/dropins/
 COPY --chown=1001:0  server.xml /config/
-
-# Optional functionality
-ARG SSL=true
-ARG MP_MONITORING=true
 
 # Add interim fixes (optional)
 COPY --chown=1001:0  interim-fixes /opt/ibm/fixes/
