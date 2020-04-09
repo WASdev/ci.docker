@@ -77,7 +77,7 @@ waitForServerStop()
 
 testDockerOnOpenShift()
 {
-   testLibertyStopsAndRestarts "OpenShift"
+   testLibertyStopsAndRestarts
 }
 
 testLibertyStopsAndRestarts()
