@@ -77,7 +77,7 @@ waitForServerStop()
 
 testDockerOnOpenShift()
 {
-   testLibertyStopsAndRestarts
+   testLibertyStopsAndRestarts "OpenShift"
 }
 
 testLibertyStopsAndRestarts()
@@ -94,13 +94,13 @@ testLibertyStopsAndRestarts()
     waitForServerStart "${cid}" \
         || handle_test_failure "${cid}" "starting"
     ## give server time to start up
-    sleep 30
+    sleep 60
 
     echo "Stopping server..."
     docker stop "${cid}" >/dev/null \
         || handle_test_failure "${cid}" "stopping"
     ## give server time to stop
-    sleep 30
+    sleep 60
 
     echo "Starting the server again..."
     docker restart "${cid}" >/dev/null \
