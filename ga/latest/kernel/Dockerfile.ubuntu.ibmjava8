@@ -99,7 +99,7 @@ RUN mkdir /logs \
 
 # Create a new SCC layer
 RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
-    && rm -rf /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache \
+    && rm -rf /output/messaging /output/resources/security /logs/* $WLP_OUTPUT_DIR/.classCache \
     && chown -R 1001:0 /opt/ibm/wlp/output \
     && chmod -R g+rwx /opt/ibm/wlp/output
 

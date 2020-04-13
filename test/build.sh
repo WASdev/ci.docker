@@ -39,9 +39,9 @@ echo "           Starting docker build for $image                               
 echo "******************************************************************************"
 
 if [ $# -eq 3 ]; then
-  $DOCKER build --no-cache=true -t $image -f $dname $dloc  > build_$tag.log
+  $DOCKER build --no-cache=true -t $image -f $dname $dloc > build_$tag.log
 else 
-  $DOCKER build --no-cache=true -t $image $dloc  > build_$tag.log
+  $DOCKER build --no-cache=true -t $image $dloc > build_$tag.log
 fi
 
 if [ $? = 0 ]
