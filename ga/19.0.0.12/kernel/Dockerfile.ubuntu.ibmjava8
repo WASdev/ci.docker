@@ -19,7 +19,12 @@ LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="19.0.0.12" \
-      org.opencontainers.image.revision="cl191220191120-0300"
+      org.opencontainers.image.revision="cl191220191120-0300" \
+      vendor="IBM" \
+      name="IBM WebSphere Liberty" \
+      version="19.0.0.12" \
+      summary="Image for WebSphere Liberty with IBM's Java and Ubuntu" \
+      description="This image contains the WebSphere Liberty runtime with IBM's Java and Ubuntu as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 19.0.0_12
