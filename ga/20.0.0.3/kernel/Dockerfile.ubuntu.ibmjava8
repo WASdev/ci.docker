@@ -23,11 +23,8 @@ LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="20.0.0.3" \
       org.opencontainers.image.revision="cl200320200305-1433" \
-      vendor="IBM" \
-      name="IBM WebSphere Liberty" \
-      version="20.0.0.3" \
-      summary="Image for WebSphere Liberty with IBM's Java and Ubuntu" \
-      description="This image contains the WebSphere Liberty runtime with IBM's Java and Ubuntu as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM's Java and Ubuntu as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image" \
+      org.opencontainers.image.title="IBM WebSphere Liberty"
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 20.0.0_03
