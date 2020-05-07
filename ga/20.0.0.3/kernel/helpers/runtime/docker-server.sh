@@ -56,7 +56,7 @@ function importKeyCert() {
   fi
   if [ -e $TRUSTSTORE_FILE ]; then
     sed "s|PWD_TRUST|$TRUSTSTORE_PASSWORD|g" $SNIPPETS_SOURCE/truststore.xml > $SNIPPETS_TARGET_OVERRIDES/truststore.xml
-  else
+  elif [ ! -z $SEC_TLS_TRUSTDEFAULTCERTS ]; then
     cp $SNIPPETS_SOURCE/trustDefault.xml $SNIPPETS_TARGET_OVERRIDES/trustDefault.xml  
   fi
 }
