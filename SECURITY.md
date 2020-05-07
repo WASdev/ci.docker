@@ -5,7 +5,7 @@
 ### Automatically trust known certificate authorities (`20.0.0.3+`)
 
 To enable trust certificates from known certificate authorities `SEC_TLS_TRUSTDEFAULTCERTS` environment variable can be set.
-Default value is `false`. If set to true, then the default certificates are used in addition to the configured truststore file to establish trust.
+If set to true, then the default certificates are used in addition to the configured truststore file to establish trust.
 
 ### Providing custom certificates (`20.0.0.3+`)
 
