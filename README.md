@@ -111,26 +111,89 @@ For security related configuration see [SECURITY.md](SECURITY.md).
 
 ### Session Caching
 
-The Liberty session caching feature builds on top of an existing technology called JCache (JSR 107), which provides an API for distributed in-memory caching. There are several providers of JCache implementations. One example is [Hazelcast In-Memory Data Grid](https://hazelcast.org/). Enabling Hazelcast session caching retrieves the Hazelcast client libraries from the [hazelcast/hazelcast](https://hub.docker.com/r/hazelcast/hazelcast/) Docker image, configures Hazelcast by copying a sample [hazelcast.xml](ga/latest/kernel/helpers/build/configuration_snippets/), and configures the Liberty server feature [sessionCache-1.0](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_admin_session_persistence_jcache.html) by including the XML snippet [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml). By default, the [Hazelcast Discovery Plugin for Kubernetes](https://github.com/hazelcast/hazelcast-kubernetes) will auto-discover its peers within the same Kubernetes namespace. To enable this functionality, the Docker image author can include the following Dockerfile snippet, and choose from either client-server or embedded [topology](https://docs.hazelcast.org/docs/latest-development/manual/html/Hazelcast_Overview/Hazelcast_Topology.html).
+The Liberty session caching feature builds on top of an existing technology called JCache (JSR 107), which provides an API for distributed in-memory caching. There are several providers of JCache implementations. The configuration for two such providers, Infinispan and Hazelcast, are outlined below.
 
-```dockerfile
-### Hazelcast Session Caching ###
-# Copy the Hazelcast libraries from the Hazelcast Docker image
-COPY --from=hazelcast/hazelcast --chown=1001:0 /opt/hazelcast/lib/*.jar /opt/ibm/wlp/usr/shared/resources/hazelcast/
+1. **Infinispan(Beta Feature)** - One JCache provider is the open source project [Infinispan](https://infinispan.org/), which is the basis for Red Hat Data Grid. Enabling Infinispan session caching retrieves the Infinispan client libraries from the [Infinispan JCACHE (JSR 107) Remote Implementation](https://mvnrepository.com/artifact/org.infinispan/infinispan-jcache-remote) maven repository, and configures the necessary infinispan.client.hotrod.* properties and the Liberty server feature [sessionCache-1.0](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_admin_session_persistence_jcache.html) by including the XML snippet [infinispan-client-sessioncache.xml](/releases/latest/kernel/helpers/build/configuration_snippets/infinispan-client-sessioncache.xml).
 
-# Instruct configure.sh to copy the client topology hazelcast.xml
-ARG HZ_SESSION_CACHE=client
+    *  **Setup Infinispan Service** - Configuring Liberty session caching with Infinispan depends on an Infinispan service being available in your Kubernetes environment. It is preferable to create your Infinispan service by utilizing the [Infinispan Operator](https://infinispan.org/infinispan-operator/master/operator.html). The [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/master/operator) provides a good example of getting started with Infinispan in OpenShift.
 
-# Default setting for the verbose option
-ARG VERBOSE=false
+    *  **Install Client Jars and Set INFINISPAN_SERVICE_NAME** - To enable Infinispan functionality in Liberty, the Docker image author can use the Dockerfile provided below. This Dockerfile assumes an Infinispan service name of `example-infinispan`, which is the default used in the [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/master/operator). To customize your Infinispan service see [Creating Infinispan Clusters](https://infinispan.org/infinispan-operator/master/operator.html#creating_minimal_clusters-start). The `INFINISPAN_SERVICE_NAME` environment variable must be set at build time as shown in the example Dockerfile, or overridden at image deploy time.
+        *  **TIP** - If your Infinispan deployment and Liberty deployment are in different namespaces/projects, you will need to set the `INFINISPAN_HOST`, `INFINISPAN_PORT`, `INFINISPAN_USER`, and `INFINISPAN_PASS` environment variables in addition to the `INFINISPAN_SERVICE_NAME` environment variable. This is due to the Liberty deployment not having the access to the Infinispan service environment variables it requires.
 
-# Instruct configure.sh to copy the embedded topology hazelcast.xml and set the required system property
-#ARG HZ_SESSION_CACHE=embedded
-#ENV JAVA_TOOL_OPTIONS="-Dhazelcast.jcache.provider.type=server ${JAVA_TOOL_OPTIONS}"
+    ```dockerfile
+    ### Infinispan Session Caching ###
+    FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi AS infinispan-client
+    
+    # Install Infinispan client jars
+    USER root
+    RUN infinispan-client-setup.sh
+    USER 1001
+    
+    FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi AS open-liberty-infinispan
+    
+    # Copy Infinispan client jars to Open Liberty shared resources
+    COPY --chown=1001:0 --from=infinispan-client /opt/ibm/wlp/usr/shared/resources/infinispan /opt/ibm/wlp/usr/shared/resources/infinispan
+    
+    # Instruct configure.sh to use Infinispan for session caching.
+    # This should be set to the Infinispan service name.
+    # TIP - Run the following oc/kubectl command with admin permissions to determine this value:
+    #       oc get infinispan -o jsonpath={.items[0].metadata.name}
+    ENV INFINISPAN_SERVICE_NAME=example-infinispan
+    
+    # Uncomment and set to override auto detected values.
+    # These are normally not needed if running in a Kubernetes environment.
+    # One such scenario would be when the Infinispan and Liberty deployments are in different namespaces/projects.
+    #ENV INFINISPAN_HOST=
+    #ENV INFINISPAN_PORT=
+    #ENV INFINISPAN_USER=
+    #ENV INFINISPAN_PASS=
+    
+    # This script will add the requested XML snippets and grow image to be fit-for-purpose
+    RUN configure.sh
+    ```
 
-## This script will add the requested XML snippets and grow image to be fit-for-purpose
-RUN configure.sh
-```
+    *  **Mount Infinispan Secret** - Finally, the Infinispan generated secret must be mounted as a volume under the mount point of `/platform/bindings/secret/` on Liberty containers. The default location of `/platform/bindings/secret/` can to be overridden by setting the `LIBERTY_INFINISPAN_SECRET_DIR` environment variable. When using the Infinispan Operator, this secret is automatically generated as part of the Infinispan service with the name of `<INFINISPAN_CLUSTER_NAME>-generated-secret`. For the mounting of this secret to succeed, the Infinispan Operator and Liberty must share the same namespace. If they do not share the same namespace, the `INFINISPAN_HOST`, `INFINISPAN_PORT`, `INFINISPAN_USER`, and `INFINISPAN_PASS` environment variables can be used instead(see the dockerfile example above). For an example of mounting this secret, review the `volumes` and `volumeMounts` portions of the YAML below.
+
+    ```yaml
+    ...
+        spec:
+          volumes:
+          - name: infinispan-secret-volume
+            secret:
+              secretName: example-infinispan-generated-secret
+          containers:
+          - name: servera-container
+            image: ol-runtime-infinispan-client:1.0.0
+            ports:
+            - containerPort: 9080
+            volumeMounts:
+            - name: infinispan-secret-volume
+              readOnly: true
+              mountPath: "/config/liberty-infinispan-secret"
+    ...
+
+    ```
+
+2. **Hazelcast** - Another JCache provider is [Hazelcast In-Memory Data Grid](https://hazelcast.org/). Enabling Hazelcast session caching retrieves the Hazelcast client libraries from the [hazelcast/hazelcast](https://hub.docker.com/r/hazelcast/hazelcast/) Docker image, configures Hazelcast by copying a sample [hazelcast.xml](/releases/latest/kernel/helpers/build/configuration_snippets/), and configures the Liberty server feature [sessionCache-1.0](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_admin_session_persistence_jcache.html) by including the XML snippet [hazelcast-sessioncache.xml](/releases/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml). By default, the [Hazelcast Discovery Plugin for Kubernetes](https://github.com/hazelcast/hazelcast-kubernetes) will auto-discover its peers within the same Kubernetes namespace. To enable this functionality, the Docker image author can include the following Dockerfile snippet, and choose from either client-server or embedded [topology](https://docs.hazelcast.org/docs/latest-dev/manual/html-single/#hazelcast-topology).
+
+    ```dockerfile
+    ### Hazelcast Session Caching ###
+    # Copy the Hazelcast libraries from the Hazelcast Docker image
+    COPY --from=hazelcast/hazelcast --chown=1001:0 /opt/hazelcast/lib/*.jar /opt/ibm/wlp/usr/shared/resources/hazelcast/
+    
+    # Instruct configure.sh to copy the client topology hazelcast.xml
+    ARG HZ_SESSION_CACHE=client
+    
+    # Default setting for the verbose option
+    ARG VERBOSE=false
+    
+    # Instruct configure.sh to copy the embedded topology hazelcast.xml and set the required system property
+    #ARG HZ_SESSION_CACHE=embedded
+    #ENV JAVA_TOOL_OPTIONS="-Dhazelcast.jcache.provider.type=server ${JAVA_TOOL_OPTIONS}"
+    
+    ## This script will add the requested XML snippets and grow image to be fit-for-purpose
+    RUN configure.sh
+    ```
 
 ### Applying interim fixes
 
