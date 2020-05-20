@@ -25,7 +25,6 @@
         clientSecret="${SEC_SSO_OIDC_CLIENTSECRET}"
         redirectToRPHostAndPort="${SEC_SSO_REDIRECTTORPHOSTANDPORT}"
         discoveryEndpoint="${SEC_SSO_OIDC_DISCOVERYENDPOINT}"
-
         groupNameAttribute="${SEC_SSO_OIDC_GROUPNAMEATTRIBUTE}"
         userNameAttribute="${SEC_SSO_OIDC_USERNAMEATTRIBUTE}"
         displayName="${SEC_SSO_OIDC_DISPLAYNAME}"

@@ -33,7 +33,6 @@
         redirectToRPHostAndPort="${SEC_SSO_REDIRECTTORPHOSTANDPORT}"
         tokenEndpoint="${SEC_SSO_OAUTH2_TOKENENDPOINT}"
         authorizationEndpoint="${SEC_SSO_OAUTH2_AUTHORIZATIONENDPOINT}"
-        userAPI="${SEC_SSO_OAUTH2_USERAPI}"
         groupNameAttribute="${SEC_SSO_OAUTH2_GROUPNAMEATTRIBUTE}"
         userNameAttribute="${SEC_SSO_OAUTH2_USERNAMEATTRIBUTE}"
         displayName="${SEC_SSO_OAUTH2_DISPLAYNAME}"        
