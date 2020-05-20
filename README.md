@@ -204,7 +204,7 @@ The Liberty session caching feature builds on top of an existing technology call
 
 This section describes the process to apply interim fixes via the Dockerfile during `build` time, by adding the interim fix JAR files to `/opt/ibm/fixes` directory and calling `RUN configure.sh`. Interim fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in the same directory.
 
-Ensure that all features needed by your applications, apart from the ones that will be automatically added for the [enterprise functionalities](#enterprise-functionality) you selected, are specified prior to calling `RUN configure.sh`, since interim fixes should only be applied once needed features are installed.
+Ensure that all features needed by your applications, apart from the ones that will be automatically added for the [enterprise functionalities](#optional-enterprise-functionality) you selected, are specified prior to calling `RUN configure.sh`, since interim fixes should only be applied once needed features are installed.
 
 ```dockerfile
 # Add interim fixes (optional)
