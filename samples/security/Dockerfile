@@ -1,4 +1,4 @@
-FROM websphere-liberty:20.0.0.5-kernel
+FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 
 # Add my app and config
 COPY --chown=1001:0  server.xml /config/
