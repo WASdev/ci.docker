@@ -92,6 +92,12 @@ function main() {
     fi
   fi
 
+  # SSO Support
+  if [[ -n "$SEC_SSO_PROVIDERS" ]]; then
+    cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
+    parseProviders $SEC_SSO_PROVIDERS
+  fi
+
   # Install needed features
   if [ "$FEATURE_REPO_URL" ]; then
     curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
@@ -114,11 +120,6 @@ function main() {
   fi
   #Make folder executable for a group
   find /opt/ibm/wlp -type d -perm -g=x -print0 | xargs -0 -r chmod -R g+rwx
-
-  if [[ -n "$SEC_SSO_PROVIDERS" ]]; then
-    cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
-    parseProviders $SEC_SSO_PROVIDERS
-  fi
 }
 
 ## parse provider list to generate files into configDropins
