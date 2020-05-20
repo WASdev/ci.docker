@@ -70,6 +70,11 @@ This section describes the optional enterprise functionality that can be enabled
 *  `VERBOSE`
   * Description: When set to `true` it outputs the commands and results to stdout from `configure.sh`. Otherwise, default setting is `false` and `configure.sh` is silenced.
 
+## Security 
+
+Single Sign-On can be optionally configured by adding Liberty server variables in an xml file, by passing environment variables (less secure),
+or by passing Liberty server variables in through the Liberty operator. See [SECURITY.md](SECURITY.md).
+
 ## OpenJ9 Shared Class Cache (SCC)
 
 OpenJ9's SCC allows the VM to store Java classes in an optimized form that can be loaded very quickly, JIT compiled code, and profiling data. Deploying an SCC file together with your application can significantly improve start-up time. The SCC can also be shared by multiple VMs, thereby reducing total memory consumption.

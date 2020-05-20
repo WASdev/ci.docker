@@ -26,7 +26,7 @@ A custom keystore can be provided during the application image's build phase by 
 
 You must then override the keystore's password by including your copy of the `keystore.xml` file inside the `/config/configDropins/defaults/` directory.
 
-## Single Sign-On configuration
+## Single Sign-On configuration (`20.0.0.5+`)
 The following variables configure container security for Single Sign-On using the socialLogin-1.0 feature.  
 
 ### Configuration needed at image build time:
