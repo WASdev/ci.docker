@@ -1,0 +1,53 @@
+apiVersion: openliberty.io/v1beta1
+kind: OpenLibertyApplication
+metadata:
+  name: sample
+  namespace: test
+spec:
+  applicationImage: SPECIFY-REQUIRED-VALUE
+  sso:
+    mapToUserRegistry: SPECIFY-OPTIONAL-VALUE
+    redirectToRPHostAndPort: SPECIFY-OPTIONAL-VALUE
+    github:
+      hostname: SPECIFY-OPTIONAL-VALUE
+    oauth2:
+      - authorizationEndpoint: SPECIFY-REQUIRED-VALUE
+        tokenEndpoint: SPECIFY-REQUIRED-VALUE
+        accessTokenHeaderName: SPECIFY-OPTIONAL-VALUE
+        accessTokenRequired: SPECIFY-OPTIONAL-VALUE
+        accessTokenSupported: SPECIFY-OPTIONAL-VALUE
+        displayName: SPECIFY-OPTIONAL-VALUE
+        groupNameAttribute: SPECIFY-OPTIONAL-VALUE
+        realmName: SPECIFY-OPTIONAL-VALUE
+        realmNameAttribute: SPECIFY-OPTIONAL-VALUE
+        scope: SPECIFY-OPTIONAL-VALUE
+        tokenEndpointAuthMethod: SPECIFY-OPTIONAL-VALUE
+        userNameAttribute: SPECIFY-OPTIONAL-VALUE
+        userApi: SPECIFY-OPTIONAL-VALUE
+        userApiType: SPECIFY-OPTIONAL-VALUE
+    oidc:
+      - discoveryEndpoint: SPECIFY-REQUIRED-VALUE
+        displayName: SPECIFY-OPTIONAL-VALUE
+        groupNameAttribute: SPECIFY-OPTIONAL-VALUE
+        hostNameVerificationEnabled: SPECIFY-OPTIONAL-VALUE
+        realmNameAttribute: SPECIFY-OPTIONAL-VALUE
+        scope: SPECIFY-OPTIONAL-VALUE
+        tokenEndpointAuthMethod: SPECIFY-OPTIONAL-VALUE
+        userInfoEndpointEnabled: SPECIFY-OPTIONAL-VALUE
+        userNameAttribute: SPECIFY-OPTIONAL-VALUE
+  service:
+    certificate:
+      isCA: true
+      issuerRef:
+        kind: ClusterIssuer
+        name: self-signed
+    port: 9443
+    type: ClusterIP
+  expose: true
+  route:
+    certificate:
+      isCA: true
+      issuerRef:
+        kind: ClusterIssuer
+        name: self-signed
+    termination: reencrypt
