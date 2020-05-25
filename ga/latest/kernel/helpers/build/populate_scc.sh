@@ -9,6 +9,11 @@ SCC_SIZE="80m"  # Default size of the SCC layer.
 ITERATIONS=2    # Number of iterations to run to populate it.
 TRIM_SCC=yes    # Trim the SCC to eliminate any wasted space.
 
+export IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,cacheDir=/output/.classCache/"
+CREATE_LAYER="$IBM_JAVA_OPTIONS,createLayer"
+DESTROY_LAYER="$IBM_JAVA_OPTIONS,destroy"
+PRINT_LAYER_STATS="$IBM_JAVA_OPTIONS,printTopLayerStats"
+
 while getopts ":i:s:tdh" OPT
 do
   case "$OPT" in
@@ -47,26 +52,20 @@ do
   esac
 done
 
-# Make sure the following Java commands don't disturb our class cache until we're ready to populate it
-# by unsetting IBM_JAVA_OPTIONS if it is currently defined.
-unset IBM_JAVA_OPTIONS
-
 # Explicity create a class cache layer for this image layer here rather than allowing
 # `server start` to do it, which will lead to problems because multiple JVMs will be started.
-java -Xshareclasses:name=liberty,cacheDir=/output/.classCache/,createLayer -Xscmx$SCC_SIZE -version
+java $CREATE_LAYER -Xscmx$SCC_SIZE -version
 
 if [ $TRIM_SCC == yes ]
 then
   echo "Calculating SCC layer upper bound, starting with initial size $SCC_SIZE."
   # Populate the newly created class cache layer.
-  export IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,cacheDir=/output/.classCache/"
   /opt/ibm/wlp/bin/server start && /opt/ibm/wlp/bin/server stop
   # Find out how full it is.
-  unset IBM_JAVA_OPTIONS
-  FULL=`( java -Xshareclasses:name=liberty,cacheDir=/output/.classCache/,printTopLayerStats || true ) 2>&1 | awk '/^Cache is [0-9.]*% .*full/ {print substr($3, 1, length($3)-1)}'`
+  FULL=`( java $PRINT_LAYER_STATS || true ) 2>&1 | awk '/^Cache is [0-9.]*% .*full/ {print substr($3, 1, length($3)-1)}'`
   echo "SCC layer is $FULL% full. Destroying layer."
   # Destroy the layer once we know roughly how much space we need.
-  java -Xshareclasses:name=liberty,cacheDir=/output/.classCache/,destroy || true
+  java $DESTROY_LAYER || true
   # Remove the m suffix.
   SCC_SIZE="${SCC_SIZE:0:-1}"
   # Calculate the new size based on how full the layer was (rounded to nearest m).
@@ -77,12 +76,10 @@ then
   SCC_SIZE="${SCC_SIZE}m"
   echo "Re-creating layer with size $SCC_SIZE."
   # Recreate the layer with the new size.
-  java -Xshareclasses:name=liberty,cacheDir=/output/.classCache/,createLayer -Xscmx$SCC_SIZE -version
+  java $CREATE_LAYER -Xscmx$SCC_SIZE -version
 fi
 
 # Populate the newly created class cache layer.
-export IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,cacheDir=/output/.classCache/"
-
 # Server start/stop to populate the /output/workarea and make subsequent server starts faster.
 for ((i=0; i<$ITERATIONS; i++))
 do
@@ -91,7 +88,6 @@ done
 
 rm -rf /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache && chmod -R g+rwx /opt/ibm/wlp/output/*
 
-unset IBM_JAVA_OPTIONS
 # Tell the user how full the final layer is.
-FULL=`( java -Xshareclasses:name=liberty,cacheDir=/output/.classCache/,printTopLayerStats || true ) 2>&1 | awk '/^Cache is [0-9.]*% .*full/ {print substr($3, 1, length($3)-1)}'`
+FULL=`( java $PRINT_LAYER_STATS || true ) 2>&1 | awk '/^Cache is [0-9.]*% .*full/ {print substr($3, 1, length($3)-1)}'`
 echo "SCC layer is $FULL% full."
