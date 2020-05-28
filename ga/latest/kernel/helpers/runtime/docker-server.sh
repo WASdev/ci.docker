@@ -107,12 +107,12 @@ if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
  echo "INFINISPAN_PORT: ${INFINISPAN_PORT:=11222}"
 
  if [[ -z "$INFINISPAN_USER" ]]; then
-  export INFINISPAN_USER=$(cat ${LIBERTY_INFINISPAN_SECRET_DIR:=/platform/bindings/secret}/identities.yaml | grep -m 1 username | sed 's/username://' | sed 's/[[:space:]]*//g' | sed 's/^-//')
+  export INFINISPAN_USER=$(cat ${LIBERTY_INFINISPAN_SECRET_DIR:=/platform/bindings/infinispan/secret}/identities.yaml | grep -m 1 username | sed 's/username://' | sed 's/[[:space:]]*//g' | sed 's/^-//')
  fi
  echo "INFINISPAN_USER: ${INFINISPAN_USER:=developer}"
 
  if [[ -z "$INFINISPAN_PASS" ]]; then
-  export INFINISPAN_PASS=$(cat ${LIBERTY_INFINISPAN_SECRET_DIR:=/platform/bindings/secret}/identities.yaml | grep -m 1 password | sed 's/password://' | sed 's/[[:space:]]*//g')
+  export INFINISPAN_PASS=$(cat ${LIBERTY_INFINISPAN_SECRET_DIR:=/platform/bindings/infinispan/secret}/identities.yaml | grep -m 1 password | sed 's/password://' | sed 's/[[:space:]]*//g')
  fi
  echo "INFINISPAN_PASS: ${INFINISPAN_PASS}"
 fi
