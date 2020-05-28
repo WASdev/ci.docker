@@ -76,6 +76,8 @@ OpenJ9's SCC allows the VM to store Java classes in an optimized form that can b
 
 WebSphere Liberty Docker images contain an SCC and (by default) add your application's specific data to the SCC at image build time when your Dockerfile invokes `RUN configure.sh`.
 
+Note that currently some content in the SCC is sensitive to heap geometry. If the server is started with options that cause heap geometry to significantly change from when the SCC was created that content will not be used and you may observe fluctuations in start-up performance. Specifying a smaller `-Xmx` value increases the chances of obtaining a heap geometry that's compatible with the AOT code.
+
 This feature can be controlled via the following variables:
 
 * `OPENJ9_SCC` (environment variable)
@@ -123,23 +125,23 @@ The Liberty session caching feature builds on top of an existing technology call
     ```dockerfile
     ### Infinispan Session Caching ###
     FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi AS infinispan-client
-    
+
     # Install Infinispan client jars
     USER root
     RUN infinispan-client-setup.sh
     USER 1001
-    
+
     FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi AS open-liberty-infinispan
-    
+
     # Copy Infinispan client jars to Open Liberty shared resources
     COPY --chown=1001:0 --from=infinispan-client /opt/ibm/wlp/usr/shared/resources/infinispan /opt/ibm/wlp/usr/shared/resources/infinispan
-    
+
     # Instruct configure.sh to use Infinispan for session caching.
     # This should be set to the Infinispan service name.
     # TIP - Run the following oc/kubectl command with admin permissions to determine this value:
     #       oc get infinispan -o jsonpath={.items[0].metadata.name}
     ENV INFINISPAN_SERVICE_NAME=example-infinispan
-    
+
     # Uncomment and set to override auto detected values.
     # These are normally not needed if running in a Kubernetes environment.
     # One such scenario would be when the Infinispan and Liberty deployments are in different namespaces/projects.
@@ -147,7 +149,7 @@ The Liberty session caching feature builds on top of an existing technology call
     #ENV INFINISPAN_PORT=
     #ENV INFINISPAN_USER=
     #ENV INFINISPAN_PASS=
-    
+
     # This script will add the requested XML snippets and grow image to be fit-for-purpose
     RUN configure.sh
     ```
@@ -180,17 +182,17 @@ The Liberty session caching feature builds on top of an existing technology call
     ### Hazelcast Session Caching ###
     # Copy the Hazelcast libraries from the Hazelcast Docker image
     COPY --from=hazelcast/hazelcast --chown=1001:0 /opt/hazelcast/lib/*.jar /opt/ibm/wlp/usr/shared/resources/hazelcast/
-    
+
     # Instruct configure.sh to copy the client topology hazelcast.xml
     ARG HZ_SESSION_CACHE=client
-    
+
     # Default setting for the verbose option
     ARG VERBOSE=false
-    
+
     # Instruct configure.sh to copy the embedded topology hazelcast.xml and set the required system property
     #ARG HZ_SESSION_CACHE=embedded
     #ENV JAVA_TOOL_OPTIONS="-Dhazelcast.jcache.provider.type=server ${JAVA_TOOL_OPTIONS}"
-    
+
     ## This script will add the requested XML snippets and grow image to be fit-for-purpose
     RUN configure.sh
     ```
