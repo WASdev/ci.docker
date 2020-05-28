@@ -9,7 +9,15 @@ SCC_SIZE="80m"  # Default size of the SCC layer.
 ITERATIONS=2    # Number of iterations to run to populate it.
 TRIM_SCC=yes    # Trim the SCC to eliminate any wasted space.
 
-export IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,cacheDir=/output/.classCache/"
+# For JDK8, as of OpenJ9 0.20.0 the criteria for determining the max heap size (-Xmx) has changed
+# and the JVM has freedom to choose larger max heap sizes.
+# Currently in compressedrefs mode there is a dependency between heap size and position and the AOT code stored in the
+# SCC, such that if the max heap size/position changes too drastically the AOT code in the SCC becomes invalid and will
+# not be loaded. Also, new AOT code will not be generated.
+# In order to reduce the chances of this happening we use the -XX:+OriginalJDK8HeapSizeCompatibilityMode
+# option to revert to the old criteria, which results in AOT code that is more compatible, on average, with typical heap sizes/positions.
+# The option has no effect on later JDKs.
+export IBM_JAVA_OPTIONS="-XX:+OriginalJDK8HeapSizeCompatibilityMode -Xshareclasses:name=liberty,cacheDir=/output/.classCache/"
 CREATE_LAYER="$IBM_JAVA_OPTIONS,createLayer"
 DESTROY_LAYER="$IBM_JAVA_OPTIONS,destroy"
 PRINT_LAYER_STATS="$IBM_JAVA_OPTIONS,printTopLayerStats"
