@@ -21,16 +21,16 @@ LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="20.0.0.6" \
-      org.opencontainers.image.revision="cl200620200528-0414" \
+      org.opencontainers.image.version="20.0.0.7" \
+      org.opencontainers.image.revision="cl200720200625-0300" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
-      version="20.0.0.6" \
+      version="20.0.0.7" \
       summary="Image for WebSphere Liberty with AdoptOpenJDK with OpenJ9 and Red Hat's UBI 8" \
       description="This image contains the WebSphere Liberty runtime with AdopOpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 20.0.0_06
+ENV LIBERTY_VERSION 20.0.0_07
 
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
@@ -54,8 +54,8 @@ ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="20.0.0.6" \
-      "BuildLabel"="cl200620200528-0414"
+      "ProductVersion"="20.0.0.7" \
+      "BuildLabel"="cl200720200625-0300"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
