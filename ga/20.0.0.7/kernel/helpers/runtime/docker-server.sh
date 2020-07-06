@@ -88,5 +88,35 @@ keystorePath="$SNIPPETS_TARGET_DEFAULTS/keystore.xml"
 
 importKeyCert
 
+# Infinispan Session Caching
+if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
+ echo "INFINISPAN_SERVICE_NAME(original): ${INFINISPAN_SERVICE_NAME}"
+ INFINISPAN_SERVICE_NAME=$(echo ${INFINISPAN_SERVICE_NAME} | sed 's/-/_/g' | sed 's/./\U&/g')
+ echo "INFINISPAN_SERVICE_NAME(normalized): ${INFINISPAN_SERVICE_NAME}"
+
+ if [[ -z "$INFINISPAN_HOST" ]]; then
+  eval INFINISPAN_HOST=\$${INFINISPAN_SERVICE_NAME}_SERVICE_HOST
+  export INFINISPAN_HOST
+ fi
+ echo "INFINISPAN_HOST: ${INFINISPAN_HOST}"
+
+ if [[ -z "$INFINISPAN_PORT" ]]; then
+  eval INFINISPAN_PORT=\$${INFINISPAN_SERVICE_NAME}_SERVICE_PORT
+  export INFINISPAN_PORT
+ fi
+ echo "INFINISPAN_PORT: ${INFINISPAN_PORT:=11222}"
+
+ if [[ -z "$INFINISPAN_USER" ]]; then
+  export INFINISPAN_USER=$(cat ${LIBERTY_INFINISPAN_SECRET_DIR:=/platform/bindings/infinispan/secret}/identities.yaml | grep -m 1 username | sed 's/username://' | sed 's/[[:space:]]*//g' | sed 's/^-//')
+ fi
+ echo "INFINISPAN_USER: ${INFINISPAN_USER:=developer}"
+
+ if [[ -z "$INFINISPAN_PASS" ]]; then
+  export INFINISPAN_PASS=$(cat ${LIBERTY_INFINISPAN_SECRET_DIR:=/platform/bindings/infinispan/secret}/identities.yaml | grep -m 1 password | sed 's/password://' | sed 's/[[:space:]]*//g')
+ fi
+ echo "INFINISPAN_PASS: ${INFINISPAN_PASS}"
+fi
+
+
 # Pass on to the real server run
 exec "$@"

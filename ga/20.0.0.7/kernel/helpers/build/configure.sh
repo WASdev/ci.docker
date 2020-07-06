@@ -56,6 +56,11 @@ function main() {
   cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
   fi
 
+  # Infinispan Session Caching
+  if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
+  cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
+  chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
+  fi
   # IIOP Endpoint
   if [ "$IIOP_ENDPOINT" == "true" ]; then
     if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
