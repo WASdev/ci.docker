@@ -1,4 +1,21 @@
-# WebSphere Application Server Liberty and Containers [![Build Status](https://travis-ci.org/WASdev/ci.docker.svg?branch=master)](https://travis-ci.org/WASdev/ci.docker)
+[![Build Status](https://travis-ci.org/WASdev/ci.docker.svg?branch=master)](https://travis-ci.org/WASdev/ci.docker)
+# WebSphere Application Server Liberty and Containers
+
+- [WebSphere Application Server Liberty and Containers](#websphere-application-server-liberty-and-containers)
+  - [Container images](#container-images)
+  - [Building an application image](#building-an-application-image)
+  - [Optional Enterprise Functionality](#optional-enterprise-functionality)
+  - [Security](#security)
+  - [OpenJ9 Shared Class Cache (SCC)](#openj9-shared-class-cache-scc)
+  - [Logging](#logging)
+  - [Session Caching](#session-caching)
+  - [Applying interim fixes](#applying-interim-fixes)
+  - [Installing Liberty Features from local repository (19.0.0.8+)](#installing-liberty-features-from-local-repository-19008)
+      - [Locally hosting feature repository](#locally-hosting-feature-repository)
+      - [Using locally hosted feautre repository in Dockerfile](#using-locally-hosted-feautre-repository-in-dockerfile)
+- [Known Issues](#known-issues)
+- [Issues and Contributions](#issues-and-contributions)
+- [License](#license)
 
 ## Container images
 
@@ -262,7 +279,9 @@ ARG VERBOSE=false
 RUN configure.sh
 ```
 
+# Known Issues
 
+For the list of known issues related to images, see the [Known Issues](https://github.com/OpenLiberty/ci.docker#known-issues) section for Open Liberty.
 
 # Issues and Contributions
 
