@@ -1,6 +1,0 @@
-websphere-liberty:websphere-liberty:20.0.0.7-kernel-java8-ibmjava              ../ga/20.0.0.7/kernel    ../ga/20.0.0.7/kernel/Dockerfile.ubuntu.ibmjava8
-websphere-liberty:websphere-liberty:20.0.0.7-full-java8-ibmjava               ../ga/20.0.0.7/full      ../ga/20.0.0.7/full/Dockerfile.ubuntu.ibmjava8
-websphere-liberty:beta                ../beta
-websphere-liberty:test-stock-quote    test-stock-quote
-websphere-liberty:test-stock-trader   test-stock-trader
-websphere-liberty:test-pet-clinic     test-pet-clinic
