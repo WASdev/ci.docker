@@ -12,21 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ibmcom/websphere-liberty:20.0.0.7-kernel-java8-ibmjava-ubi
-ARG VERBOSE=false
+FROM websphere-liberty:20.0.0.8-kernel
+
 ARG REPOSITORIES_PROPERTIES=""
 
 RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
   && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
-  && installUtility install --acceptLicense baseBundle \
+  && installUtility install --acceptLicense \
+    appSecurity-2.0 ldapRegistry-3.0 \
+    localConnector-1.0  \
+    samlWeb-2.0 \
+    openidConnectServer-1.0 \
+    socialLogin-1.0 \
+    openidConnectClient-1.0 \
   && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
   && rm -rf /output/workarea /output/logs \
   && chmod -R g+rwx /opt/ibm/wlp/output/*
 
 COPY --chown=1001:0 server.xml /config/
-
-# Create a new SCC layer
-RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
-    && rm -rf /output/messaging /output/resources/security /logs/* $WLP_OUTPUT_DIR/.classCache \
-    && chown -R 1001:0 /opt/ibm/wlp/output \
-    && chmod -R g+rwx /opt/ibm/wlp/output
