@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:20.0.0.8-kernel-java11
+FROM websphere-liberty:kernel-java11
 
 ARG REPOSITORIES_PROPERTIES=""
 
