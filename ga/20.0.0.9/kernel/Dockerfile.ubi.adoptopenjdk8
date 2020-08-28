@@ -27,7 +27,7 @@ LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       name="IBM WebSphere Liberty" \
       version="20.0.0.9" \
       summary="Image for WebSphere Liberty with AdoptOpenJDK with OpenJ9 and Red Hat's UBI 8" \
-      description="This image contains the WebSphere Liberty runtime with AdopOpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
+      description="This image contains the WebSphere Liberty runtime with AdoptOpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 20.0.0_09
