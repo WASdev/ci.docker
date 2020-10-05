@@ -30,10 +30,11 @@ TRIM_SCC=yes    # Trim the SCC to eliminate any wasted space.
 # In order to reduce the chances of this happening we use the -XX:+OriginalJDK8HeapSizeCompatibilityMode
 # option to revert to the old criteria, which results in AOT code that is more compatible, on average, with typical heap sizes/positions.
 # The option has no effect on later JDKs.
-export IBM_JAVA_OPTIONS="-XX:+OriginalJDK8HeapSizeCompatibilityMode -Xshareclasses:name=liberty,cacheDir=/output/.classCache/"
-CREATE_LAYER="$IBM_JAVA_OPTIONS,createLayer"
-DESTROY_LAYER="$IBM_JAVA_OPTIONS,destroy"
-PRINT_LAYER_STATS="$IBM_JAVA_OPTIONS,printTopLayerStats"
+export OPENJ9_JAVA_OPTIONS="-XX:+OriginalJDK8HeapSizeCompatibilityMode -Xshareclasses:name=liberty,cacheDir=/output/.classCache/"
+export IBM_JAVA_OPTIONS="${OPENJ9_JAVA_OPTIONS}"
+CREATE_LAYER="$OPENJ9_JAVA_OPTIONS,createLayer"
+DESTROY_LAYER="$OPENJ9_JAVA_OPTIONS,destroy"
+PRINT_LAYER_STATS="$OPENJ9_JAVA_OPTIONS,printTopLayerStats"
 
 while getopts ":i:s:tdh" OPT
 do
