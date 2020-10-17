@@ -43,6 +43,11 @@ RUN apt-get update \
     && rm /tmp/wlp.zip \
     && chown -R 1001:0 /opt/ibm/wlp \
     && chmod -R g+rw /opt/ibm/wlp \
+    && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
+    && LICENSE_BASE=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*license:\s//p' | sed 's/\(.*\)\/.*/\1\//' | tr -d '\r') \
+    && wget ${LICENSE_BASE}en.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/en.html \
+    && wget ${LICENSE_BASE}non_ibm_license.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/non_ibm_license.html \
+    && wget ${LICENSE_BASE}notices.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/notices.html \     
     && apt-get purge --auto-remove -y unzip \
     && apt-get purge --auto-remove -y wget \
     && rm -rf /var/lib/apt/lists/*
@@ -66,7 +71,6 @@ RUN /opt/ibm/wlp/bin/server create \
 
 COPY helpers/ /opt/ibm/helpers/
 COPY fixes/ /opt/ibm/fixes/
-COPY licenses/ /licenses/
 
 # Create symlinks && set permissions for non-root user
 RUN mkdir /logs \
