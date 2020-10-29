@@ -16,6 +16,9 @@ FROM ibmjava:8-jre
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
+ARG EN_SHA=599ca8e7111d46e921becde409080ebeef7422228faf821b12208276c50d35ec
+ARG NON_IBM_SHA=e686563763dab903db9e7a5fc63eb6a6c265a2f7b1fb0cd9a12b6c28c54810bc
+ARG NOTICES_SHA=2a3e941bd5d0302dcd026c012c1f4740b7cfad85ad132f091ba5201c6ef29f6d
 
 LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.vendor="IBM" \
@@ -47,7 +50,10 @@ RUN apt-get update \
     && LICENSE_BASE=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*license:\s//p' | sed 's/\(.*\)\/.*/\1\//' | tr -d '\r') \
     && wget ${LICENSE_BASE}en.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/en.html \
     && wget ${LICENSE_BASE}non_ibm_license.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/non_ibm_license.html \
-    && wget ${LICENSE_BASE}notices.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/notices.html \     
+    && wget ${LICENSE_BASE}notices.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/notices.html \    
+    && echo "$EN_SHA /licenses/en.html" | sha256sum -c --strict --check \
+    && echo "$NON_IBM_SHA /licenses/non_ibm_licenses.html" | sha256sum -c --strict --check \
+    && echo "$NOTICES_SHA /licenses/notices.html" | sha256sum -c --strict --check \
     && apt-get purge --auto-remove -y unzip \
     && apt-get purge --auto-remove -y wget \
     && rm -rf /var/lib/apt/lists/*
