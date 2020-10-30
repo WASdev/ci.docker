@@ -48,7 +48,7 @@ RUN yum -y install unzip wget openssl \
     && wget ${LICENSE_BASE}non_ibm_license.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/non_ibm_license.html \
     && wget ${LICENSE_BASE}notices.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/notices.html \    
     && echo "$EN_SHA /licenses/en.html" | sha256sum -c --strict --check \
-    && echo "$NON_IBM_SHA /licenses/non_ibm_licenses.html" | sha256sum -c --strict --check \
+    && echo "$NON_IBM_SHA /licenses/non_ibm_license.html" | sha256sum -c --strict --check \
     && echo "$NOTICES_SHA /licenses/notices.html" | sha256sum -c --strict --check \
     && chmod -R g+x /usr/bin \
     && unzip -q /tmp/wlp.zip -d /opt/ibm \
