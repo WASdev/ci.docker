@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2019.
+# (C) Copyright IBM Corporation 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ibmjava:8-jre
+FROM adoptopenjdk:11-jre-openj9
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
@@ -20,13 +20,13 @@ ARG EN_SHA=94d859d22ee00758a00b75f9ef52772ecf1c52b4055a9f997f4f99423b17c033
 ARG NON_IBM_SHA=e425adf53bb63f1c53060c1b05f6fb553af433f64460daee51f965cff230e285
 ARG NOTICES_SHA=aae32415dc8f4195b2b8393990fee937bd6d5836622ecce1c12c6d77cdb83ad4
 
-LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
+LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter, Christy Jesuraj" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="20.0.0.11" \
       org.opencontainers.image.revision="cl201120201014-1215" \
-      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM's Java and Ubuntu as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image" \
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with AdoptOpenJDK with OpenJ9 and Ubuntu as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image" \
       org.opencontainers.image.title="IBM WebSphere Liberty"
 
 # Install WebSphere Liberty
@@ -115,8 +115,7 @@ RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
     && chmod -R g+rwx /opt/ibm/wlp/output
 
 #These settings are needed so that we can run as a different user than 1001 after server warmup
-ENV RANDFILE=/tmp/.rnd \
-    IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/ ${IBM_JAVA_OPTIONS}"
+ENV RANDFILE=/tmp/.rnd
 
 USER 1001
 
