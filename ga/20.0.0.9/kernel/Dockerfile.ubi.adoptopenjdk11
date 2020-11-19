@@ -108,8 +108,7 @@ RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
     && chmod -R g+rwx /opt/ibm/wlp/output
 
 #These settings are needed so that we can run as a different user than 1001 after server warmup
-ENV RANDFILE=/tmp/.rnd \
-    OPENJ9_JAVA_OPTIONS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/"
+ENV RANDFILE=/tmp/.rnd
 
 USER 1001
 

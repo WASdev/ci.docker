@@ -22,6 +22,15 @@ SCC_SIZE="80m"  # Default size of the SCC layer.
 ITERATIONS=2    # Number of iterations to run to populate it.
 TRIM_SCC=yes    # Trim the SCC to eliminate any wasted space.
 
+# If this directory exists and has at least ug=rwx permissions, assume the base image includes an SCC called 'openj9_system_scc' and build on it.
+# If not, build on our own SCC.
+if [[ -d "/opt/java/.scc" ]] && [[ `stat -L -c "%a" "/opt/java/.scc" | cut -c 1,2` == "77" ]]
+then
+  SCC="-Xshareclasses:name=openj9_system_scc,cacheDir=/opt/java/.scc"
+else
+  SCC="-Xshareclasses:name=liberty,cacheDir=/output/.classCache"
+fi
+
 # For JDK8, as of OpenJ9 0.20.0 the criteria for determining the max heap size (-Xmx) has changed
 # and the JVM has freedom to choose larger max heap sizes.
 # Currently in compressedrefs mode there is a dependency between heap size and position and the AOT code stored in the
@@ -30,8 +39,8 @@ TRIM_SCC=yes    # Trim the SCC to eliminate any wasted space.
 # In order to reduce the chances of this happening we use the -XX:+OriginalJDK8HeapSizeCompatibilityMode
 # option to revert to the old criteria, which results in AOT code that is more compatible, on average, with typical heap sizes/positions.
 # The option has no effect on later JDKs.
-export OPENJ9_JAVA_OPTIONS="-XX:+OriginalJDK8HeapSizeCompatibilityMode -Xshareclasses:name=liberty,cacheDir=/output/.classCache/"
-export IBM_JAVA_OPTIONS="${OPENJ9_JAVA_OPTIONS}"
+export OPENJ9_JAVA_OPTIONS="-XX:+OriginalJDK8HeapSizeCompatibilityMode $SCC"
+export IBM_JAVA_OPTIONS="$OPENJ9_JAVA_OPTIONS"
 CREATE_LAYER="$OPENJ9_JAVA_OPTIONS,createLayer"
 DESTROY_LAYER="$OPENJ9_JAVA_OPTIONS,destroy"
 PRINT_LAYER_STATS="$OPENJ9_JAVA_OPTIONS,printTopLayerStats"
