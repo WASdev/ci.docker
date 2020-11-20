@@ -1,5 +1,7 @@
 # WebSphere Application Server Liberty Beta image for Docker
 
+**Important Notice: WebSphere Liberty beta is no longer available. The `beta` tag is now deprecated.** 
+
 The [Dockerfile](Dockerfile) in this directory is used to build the `websphere-liberty:beta` image on [Docker Hub](https://registry.hub.docker.com/_/websphere-liberty/). The resultant image contains IBM WebSphere Application Server Liberty Beta and an IBM Java Runtime Environment.
 
 # Usage

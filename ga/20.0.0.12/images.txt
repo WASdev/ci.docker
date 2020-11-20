@@ -1,6 +1,14 @@
-websphere-liberty:20.0.0.12-kernel              ../ga/20.0.0.12/kernel    ../ga/20.0.0.12/kernel/Dockerfile.ubuntu.ibmjava8
-websphere-liberty:20.0.0.12-full                ../ga/20.0.0.12/full      ../ga/20.0.0.12/full/Dockerfile.ubuntu.ibmjava8
-websphere-liberty:beta                ../beta
-websphere-liberty:test-stock-quote    test-stock-quote
-websphere-liberty:test-stock-trader   test-stock-trader
-websphere-liberty:test-pet-clinic     test-pet-clinic
+websphere-liberty:20.0.0.12-kernel                      ../ga/20.0.0.12/kernel     ../ga/20.0.0.12/kernel/Dockerfile.ubuntu.ibmjava8
+websphere-liberty:20.0.0.12-kernel-java11-openj9        ../ga/20.0.0.12/kernel     ../ga/20.0.0.12/kernel/Dockerfile.ubuntu.adoptopenjdk11
+websphere-liberty:20.0.0.12-kernel-java8-ibmjava-ubi    ../ga/20.0.0.12/kernel     ../ga/20.0.0.12/kernel/Dockerfile.ubi.ibmjava8
+websphere-liberty:20.0.0.12-kernel-java8-openj9-ubi     ../ga/20.0.0.12/kernel     ../ga/20.0.0.12/kernel/Dockerfile.ubi.adoptopenjdk8
+websphere-liberty:20.0.0.12-kernel-java11-openj9-ubi    ../ga/20.0.0.12/kernel     ../ga/20.0.0.12/kernel/Dockerfile.ubi.adoptopenjdk11
+websphere-liberty:20.0.0.12-full                        ../ga/20.0.0.12/full       ../ga/20.0.0.12/full/Dockerfile.ubuntu.ibmjava8
+websphere-liberty:20.0.0.12-full-java11-openj9          ../ga/20.0.0.12/full       ../ga/20.0.0.12/full/Dockerfile.ubuntu.adoptopenjdk11
+websphere-liberty:20.0.0.12-full-java8-ibmjava-ubi      ../ga/20.0.0.12/full       ../ga/20.0.0.12/full/Dockerfile.ubi.ibmjava8
+websphere-liberty:20.0.0.12-full-java8-openj9-ubi       ../ga/20.0.0.12/full       ../ga/20.0.0.12/full/Dockerfile.ubi.adoptopenjdk8
+websphere-liberty:20.0.0.12-full-java11-openj9-ubi      ../ga/20.0.0.12/full       ../ga/20.0.0.12/full/Dockerfile.ubi.adoptopenjdk11
+websphere-liberty:beta                                  ../beta
+websphere-liberty:test-stock-quote                      test-stock-quote
+websphere-liberty:test-stock-trader                     test-stock-trader
+websphere-liberty:test-pet-clinic                       test-pet-clinic
