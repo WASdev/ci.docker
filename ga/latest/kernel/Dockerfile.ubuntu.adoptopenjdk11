@@ -16,9 +16,9 @@ FROM adoptopenjdk:11-jre-openj9
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
-ARG EN_SHA=94d859d22ee00758a00b75f9ef52772ecf1c52b4055a9f997f4f99423b17c033
-ARG NON_IBM_SHA=e425adf53bb63f1c53060c1b05f6fb553af433f64460daee51f965cff230e285
-ARG NOTICES_SHA=aae32415dc8f4195b2b8393990fee937bd6d5836622ecce1c12c6d77cdb83ad4
+ARG EN_SHA=58eed6f817b4ecc5b464f355b0641938c83b95ac22d29b4f657378f887ff4d95
+ARG NON_IBM_SHA=454dca0329ea492fc2ddbc03b19031a7eb7a71b45f9e13c89c9fef0f5f51517b
+ARG NOTICES_SHA=498313e3f283eada744d1fbfd7626473d989d2df58be714f0df0ad561498520e
 
 LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter, Christy Jesuraj" \
       org.opencontainers.image.vendor="IBM" \
