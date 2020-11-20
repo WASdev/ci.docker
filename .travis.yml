@@ -8,9 +8,8 @@ services:
 before_install:
   - sudo apt-get update
 env:
-  - RELEASE=../ga/20.0.0.6
   - RELEASE=../ga/20.0.0.9
-  - RELEASE=../ga/20.0.0.10
+  - RELEASE=../ga/20.0.0.12
   - RELEASE=../ga/latest
 
 script:
