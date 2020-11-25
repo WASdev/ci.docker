@@ -134,7 +134,7 @@ function main() {
   # Create a new SCC layer
   if [ "$OPENJ9_SCC" == "true" ]
   then
-    populate_scc.sh
+    populate_scc.sh -i 1
   fi
   #Make folder executable for a group
   find /opt/ibm/wlp -type d -perm -g=x -print0 | xargs -0 -r chmod -R g+rwx
