@@ -49,7 +49,7 @@ RUN apt-get update \
     && LICENSE_BASE=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*license:\s//p' | sed 's/\(.*\)\/.*/\1\//' | tr -d '\r') \
     && wget ${LICENSE_BASE}en.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/en.html \
     && wget ${LICENSE_BASE}non_ibm_license.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/non_ibm_license.html \
-    && wget ${LICENSE_BASE}notices.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/notices.html \    
+    && wget ${LICENSE_BASE}notices.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/notices.html \
     && echo "$EN_SHA /licenses/en.html" | sha256sum -c --strict --check \
     && echo "$NON_IBM_SHA /licenses/non_ibm_license.html" | sha256sum -c --strict --check \
     && echo "$NOTICES_SHA /licenses/notices.html" | sha256sum -c --strict --check \
@@ -115,7 +115,8 @@ RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
     && chmod -R g+rwx /opt/ibm/wlp/output
 
 #These settings are needed so that we can run as a different user than 1001 after server warmup
-ENV RANDFILE=/tmp/.rnd
+ENV RANDFILE=/tmp/.rnd \
+    OPENJ9_JAVA_OPTIONS="-XX:+IgnoreUnrecognizedVMOptions -XX:+IdleTuningGcOnIdle -Xshareclasses:name=openj9_system_scc,cacheDir=/opt/java/.scc,readonly,nonFatal"
 
 USER 1001
 
