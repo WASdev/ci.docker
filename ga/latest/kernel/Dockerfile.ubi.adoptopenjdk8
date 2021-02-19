@@ -16,24 +16,24 @@ FROM adoptopenjdk/openjdk8-openj9:ubi
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
-ARG EN_SHA=010fb297a252511538e412763f850437f862318c438c2755babfb071374e8bc1
-ARG NON_IBM_SHA=17219608c92e0a457bc2e20ab59fae823c1d546440a6dbba538d84dfe219914b
-ARG NOTICES_SHA=0dc130362d45b6a64fc07650bba077a99cf4c8cab1d886b762fc978de347843d
+ARG EN_SHA=ad2a4f13dd58fe7735d749651b9cd07f6d9f07bf0abe637640f3fb3a7956e25e
+ARG NON_IBM__SHA=1505b50145f790fd4537b678134b46412dcbf130641cbd9a4e539eb41d4bb481
+ARG NOTICES_SHA=1b88caf341b053446b5ba92a75d9f1ee3cf040ae0f13a279fa2dbaec4360b6f7
 
 LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="21.0.0.1" \
-      org.opencontainers.image.revision="cl210120210113-1459" \
+      org.opencontainers.image.version="21.0.0.2" \
+      org.opencontainers.image.revision="cl210220210209-1100" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
-      version="21.0.0.1" \
+      version="21.0.0.2" \
       summary="Image for WebSphere Liberty with AdoptOpenJDK with OpenJ9 and Red Hat's UBI 8" \
       description="This image contains the WebSphere Liberty runtime with AdopOpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 21.0.0_01
+ENV LIBERTY_VERSION 21.0.0_02
 
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
@@ -64,8 +64,8 @@ ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="21.0.0.1" \
-      "BuildLabel"="cl210120210113-1459"
+      "ProductVersion"="21.0.0.2" \
+      "BuildLabel"="cl210220210209-1100"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \

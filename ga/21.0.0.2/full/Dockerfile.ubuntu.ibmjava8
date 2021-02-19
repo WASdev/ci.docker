@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ibmcom/websphere-liberty:21.0.0.1-kernel-java8-ibmjava-ubi
+FROM websphere-liberty:21.0.0.2-kernel-java8-ibmjava
 ARG VERBOSE=false
 ARG REPOSITORIES_PROPERTIES=""
 
