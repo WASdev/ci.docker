@@ -9,7 +9,7 @@ before_install:
   - sudo apt-get update
 env:
   - RELEASE=../ga/20.0.0.12
-  - RELEASE=../ga/21.0.0.3
+  - RELEASE=../ga/21.0.0.4
   - RELEASE=../ga/latest
 
 script:
