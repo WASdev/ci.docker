@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ibmjava:8-ubi
+FROM ibmjava:8-jre
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
@@ -26,11 +26,8 @@ LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="21.0.0.4" \
       org.opencontainers.image.revision="cl210420210407-0944" \
-      vendor="IBM" \
-      name="IBM WebSphere Liberty" \
-      version="21.0.0.4" \
-      summary="Image for WebSphere Liberty with IBM's Java and Red Hat's UBI 8" \
-      description="This image contains the WebSphere Liberty runtime with IBM's Java and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM's Java and Ubuntu as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image" \
+      org.opencontainers.image.title="IBM WebSphere Liberty"
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 21.0.0_04
@@ -38,11 +35,17 @@ ENV LIBERTY_VERSION 21.0.0_04
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
 
-RUN yum -y install unzip wget openssl \
-    && yum clean all \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends unzip wget openssl \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir /licenses/ \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
     && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
+    && unzip -q /tmp/wlp.zip -d /opt/ibm \
+    && rm /tmp/wlp.zip \
+    && chown -R 1001:0 /opt/ibm/wlp \
+    && chmod -R g+rw /opt/ibm/wlp \
     && LICENSE_BASE=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*license:\s//p' | sed 's/\(.*\)\/.*/\1\//' | tr -d '\r') \
     && wget ${LICENSE_BASE}en.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/en.html \
     && wget ${LICENSE_BASE}non_ibm_license.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/non_ibm_license.html \
@@ -50,13 +53,9 @@ RUN yum -y install unzip wget openssl \
     && echo "$EN_SHA /licenses/en.html" | sha256sum -c --strict --check \
     && echo "$NON_IBM_SHA /licenses/non_ibm_license.html" | sha256sum -c --strict --check \
     && echo "$NOTICES_SHA /licenses/notices.html" | sha256sum -c --strict --check \
-    && chmod -R g+x /usr/bin \
-    && unzip -q /tmp/wlp.zip -d /opt/ibm \
-    && rm /tmp/wlp.zip \
-    && chown -R 1001:0 /opt/ibm/wlp \
-    && chmod -R g+rw /opt/ibm/wlp \
-    && yum -y remove unzip wget \
-    && yum clean all
+    && apt-get purge --auto-remove -y unzip \
+    && apt-get purge --auto-remove -y wget \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 
@@ -117,7 +116,7 @@ RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
 
 #These settings are needed so that we can run as a different user than 1001 after server warmup
 ENV RANDFILE=/tmp/.rnd \
-    IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,readonly,nonfatal,cacheDir=/output/.classCache/ -Dosgi.checkConfiguration=false ${IBM_JAVA_OPTIONS}"
+    IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,nonfatal,cacheDir=/output/.classCache/ -Dosgi.checkConfiguration=false ${IBM_JAVA_OPTIONS}"
 
 USER 1001
 
