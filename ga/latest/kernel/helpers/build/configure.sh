@@ -128,16 +128,25 @@ function main() {
   # Apply interim fixes found in /opt/ibm/fixes
   # Fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in /opt/ibm/fixes
   # Note: This step should be done once needed features are enabled and installed using installUtility.
+
+  # Do not create a SCC
+  if [ -n "${IBM_JAVA_OPTIONS}" ]; then
+    IBM_JAVA_OPTIONS="${IBM_JAVA_OPTIONS} -Xshareclasses:none"
+  fi
+
+  if [ -n "${OPENJ9_JAVA_OPTIONS}" ]; then
+    OPENJ9_JAVA_OPTIONS="${OPENJ9_JAVA_OPTIONS} -Xshareclasses:none"
+  fi
+
   find /opt/ibm/fixes -type f -name "*.jar"  -print0 | sort -z | xargs -0 -n 1 -r -I {} java -jar {} --installLocation $WLP_INSTALL_DIR
   #Make sure that group write permissions are set correctly after installing new features
-  find /opt/ibm/wlp -perm -g=w -print0 | xargs -0 -r chmod -R g+rw
+  find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw
+
   # Create a new SCC layer
   if [ "$OPENJ9_SCC" == "true" ]
   then
     populate_scc.sh -i 1
   fi
-  #Make folder executable for a group
-  find /opt/ibm/wlp -type d -perm -g=x -print0 | xargs -0 -r chmod -R g+rwx
 }
 
 ## parse provider list to generate files into configDropins
