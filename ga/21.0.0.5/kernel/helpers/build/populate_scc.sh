@@ -41,7 +41,7 @@ fi
 # The option has no effect on later JDKs.
 export OPENJ9_JAVA_OPTIONS="-XX:+OriginalJDK8HeapSizeCompatibilityMode $SCC"
 export IBM_JAVA_OPTIONS="$OPENJ9_JAVA_OPTIONS"
-CREATE_LAYER="$OPENJ9_JAVA_OPTIONS,createLayer"
+CREATE_LAYER="$OPENJ9_JAVA_OPTIONS,createLayer,groupAccess"
 DESTROY_LAYER="$OPENJ9_JAVA_OPTIONS,destroy"
 PRINT_LAYER_STATS="$OPENJ9_JAVA_OPTIONS,printTopLayerStats"
 
@@ -83,6 +83,9 @@ do
   esac
 done
 
+OLD_UMASK=`umask`
+umask 002 # 002 is required to provide group rw permission to the cache when `-Xshareclasses:groupAccess` options is used
+
 # Explicity create a class cache layer for this image layer here rather than allowing
 # `server start` to do it, which will lead to problems because multiple JVMs will be started.
 java $CREATE_LAYER -Xscmx$SCC_SIZE -version
@@ -117,7 +120,15 @@ do
   /opt/ibm/wlp/bin/server start && /opt/ibm/wlp/bin/server stop
 done
 
-rm -rf /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache && chmod -R g+rwx /opt/ibm/wlp/output/*
+# restore umask
+umask ${OLD_UMASK}
+
+rm -rf /output/messaging /logs/* $WLP_OUTPUT_DIR/.classCache && chmod -R g+rwx /output/workarea
+
+if [[ -d "/output/resources" ]]
+then
+    chmod -R g+rwx /output/resources
+fi
 
 # Tell the user how full the final layer is.
 FULL=`( java $PRINT_LAYER_STATS || true ) 2>&1 | awk '/^Cache is [0-9.]*% .*full/ {print substr($3, 1, length($3)-1)}'`
