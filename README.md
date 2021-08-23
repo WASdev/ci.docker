@@ -54,6 +54,20 @@ This will result in a Docker image that has your application and configuration p
 
 This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular argument (`ARG`) or environment variable (`ENV`) and calling `RUN configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets (except for `VERBOSE`), described below:
 
+* `TLS` (`SSL` is deprecated)
+  *  Description: Enable Transport Security in Liberty by adding the `transportSecurity-1.0` feature (includes support for SSL).
+  *  XML Snippet Location:  [keystore.xml](ga/latest/kernel/helpers/build/configuration_snippets/keystore.xml).
+* `HZ_SESSION_CACHE`
+  *  Description: Enable the persistence of HTTP sessions using JCache by adding the `sessionCache-1.0` feature.
+  *  XML Snippet Location: [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml)
+* `VERBOSE`
+  *  Description: When set to `true` it outputs the commands and results to stdout from `configure.sh`. Otherwise, default setting is `false` and `configure.sh` is silenced.
+
+
+### Deprecated Enterprise Functionality
+
+The following enterprise functionalities are now **deprecated** and will be **removed** in a future release. You should **stop** using them :
+
 * `HTTP_ENDPOINT`
   *  Description: Add configuration properties for an HTTP endpoint.
   *  XML Snippet Location: [http-ssl-endpoint.xml](ga/latest/kernel/helpers/build/configuration_snippets/http-ssl-endpoint.xml) when SSL is enabled. Otherwise [http-endpoint.xml](ga/latest/kernel/helpers/build/configuration_snippets/http-endpoint.xml)
@@ -64,9 +78,6 @@ This section describes the optional enterprise functionality that can be enabled
   *  Description: Monitor the server runtime environment and application metrics by using Liberty features `mpMetrics-1.1` (implements [Microprofile Metrics](https://microprofile.io/project/eclipse/microprofile-metrics)) and `monitor-1.0`.
   *  XML Snippet Location: [mp-monitoring.xml](ga/latest/kernel/helpers/build/configuration_snippets/mp-monitoring.xml)
   *  Note: With this option, `/metrics` endpoint is configured without authentication to support the environments that do not yet support scraping secured endpoints.
-* `TLS` or `SSL` (SSL is being deprecated)
-  *  Description: Enable Transport Security in Liberty by adding the `transportSecurity-1.0` feature (includes support for SSL).
-  *  XML Snippet Location:  [keystore.xml](ga/latest/kernel/helpers/build/configuration_snippets/keystore.xml).
 * `IIOP_ENDPOINT`
   *  Description: Add configuration properties for an IIOP endpoint.
   *  XML Snippet Location: [iiop-ssl-endpoint.xml](ga/latest/kernel/helpers/build/configuration_snippets/iiop-ssl-endpoint.xml) when SSL is enabled. Otherwise, [iiop-endpoint.xml](ga/latest/kernel/helpers/build/configuration_snippets/iiop-endpoint.xml).
@@ -81,11 +92,6 @@ This section describes the optional enterprise functionality that can be enabled
   *  Description: Enable OpenIdConnect Client configuration to be read from environment variables.
   *  XML Snippet Location: [oidc-config.xml](ga/latest/kernel/helpers/build/configuration_snippets/oidc-config.xml)
   *  Note: The following variables will be read:  OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_DISCOVERY_URL.
-* `HZ_SESSION_CACHE`
-  *  Description: Enable the persistence of HTTP sessions using JCache by adding the `sessionCache-1.0` feature.
-  *  XML Snippet Location: [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml)
-*  `VERBOSE`
-  * Description: When set to `true` it outputs the commands and results to stdout from `configure.sh`. Otherwise, default setting is `false` and `configure.sh` is silenced.
 
 ## Security 
 
