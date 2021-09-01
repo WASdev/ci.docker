@@ -25,14 +25,14 @@
 
 ## Building an application image
 
-According to Docker's best practices you should create a new image (FROM ibmcom/websphere-liberty) which adds a single application and the corresponding configuration. You should avoid configuring the image manually, after it started (unless it is for debugging purposes), because such changes won't be present if you spawn a new container from the image.
+According to Docker's best practices you should create a new image (FROM icr.io/appcafe/websphere-liberty) which adds a single application and the corresponding configuration. You should avoid configuring the image manually, after it started (unless it is for debugging purposes), because such changes won't be present if you spawn a new container from the image.
 
 Even if you docker save the manually configured container, the steps to reproduce the image from `websphere-liberty` will be lost and you will hinder your ability to update that image.
 
 The key point to take-away from the sections below is that your application Dockerfile should always follow a pattern similar to:
 
 ```dockerfile
-FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi
 
 # Add my app and config
 COPY --chown=1001:0  Sample1.war /config/dropins/
@@ -147,14 +147,14 @@ The Liberty session caching feature builds on top of an existing technology call
 
     ```dockerfile
     ### Infinispan Session Caching ###
-    FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi AS infinispan-client
+    FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi AS infinispan-client
 
     # Install Infinispan client jars
     USER root
     RUN infinispan-client-setup.sh
     USER 1001
 
-    FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi AS open-liberty-infinispan
+    FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi AS open-liberty-infinispan
 
     # Copy Infinispan client jars to Open Liberty shared resources
     COPY --chown=1001:0 --from=infinispan-client /opt/ibm/wlp/usr/shared/resources/infinispan /opt/ibm/wlp/usr/shared/resources/infinispan
@@ -266,7 +266,7 @@ containing all the features. You will also need to make sure to call `RUN config
 You can also set it through Dockerfile
 
 ```dockerfile
-FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi
 ARG FEATURE_REPO_URL=http://wlprepos:8080/19.0.0.x/repo.zip
 ARG VERBOSE=false
 RUN configure.sh
@@ -276,7 +276,7 @@ Note: This feature requires a `curl ` command to be in the docker image.
 Some base images do not provide `curl`. You can add it before calling `confiure.sh` this way:
 
 ```dockerfile
-FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi
 USER root
 RUN apt-get update && apt-get install -y curl
 USER 1001
