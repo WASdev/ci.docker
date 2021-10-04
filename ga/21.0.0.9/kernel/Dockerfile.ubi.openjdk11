@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM adoptopenjdk/openjdk11-openj9:ubi
+FROM ibmsemeruruntime/open-11-jdk:ubi-jdk-latest
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
@@ -20,7 +20,7 @@ ARG EN_SHA=5531853803b16c250b8c785873c9b095a9f5c295b62106ef026e2546d596a11a
 ARG NON_IBM_SHA=1ebddca70b6f828f3c02b1bead777847da022dd2168c2f2448df0142321065a0
 ARG NOTICES_SHA=160afa9b79e037e552fb7901c30f9261b068d1be23ec7933b93206be02b3a755
 
-LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
+LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
@@ -29,8 +29,8 @@ LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
       version="21.0.0.9" \
-      summary="Image for WebSphere Liberty with AdoptOpenJDK with OpenJ9 and Red Hat's UBI 8" \
-      description="This image contains the WebSphere Liberty runtime with AdoptOpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
+      summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8" \
+      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 21.0.0_09
