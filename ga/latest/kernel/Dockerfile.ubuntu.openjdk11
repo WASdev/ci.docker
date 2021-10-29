@@ -16,21 +16,21 @@ FROM ibm-semeru-runtimes:open-11-jre-focal
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
-ARG EN_SHA=22d5722d306eaf9b5c658a81e7a9e301f1d956b820ea7497bb71cb61c5715d21
-ARG NON_IBM_SHA=163424d07846c44f428786fcaabeca1c9f24fde84e61e2a28f90858b968f3a72
-ARG NOTICES_SHA=da6cdfe101e6dd1d60c10df4fe74b85ac4e4c0a920cc5f12c27bba2be81912b2
+ARG EN_SHA=39558bcbc71aaa5c1489bc482387f8990e92f243d44947040ea42bde14570307
+ARG NON_IBM_SHA=da12daa83c49b6717a96130ba4c5ef693afe9128eee45f4d0a93aa5c4ae7049f
+ARG NOTICES_SHA=30b744fc9c35a76a5054af78e635a67188b8971d8649bbce95498af9c029a8c6
 
 LABEL org.opencontainers.image.authors="Arthur De Magalhaes, Chris Potter, Christy Jesuraj" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="21.0.0.10" \
-      org.opencontainers.image.revision="cl211020210920-1900" \
+      org.opencontainers.image.version="21.0.0.11" \
+      org.opencontainers.image.revision="cl21.0.0.11920-1900" \
       org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Ubuntu as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image" \
       org.opencontainers.image.title="IBM WebSphere Liberty"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 21.0.0_10
+ENV LIBERTY_VERSION 21.0.0_11
 
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
@@ -62,8 +62,8 @@ ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="21.0.0.10" \
-      "BuildLabel"="cl211020210920-1900"
+      "ProductVersion"="21.0.0.11" \
+      "BuildLabel"="cl21.0.0.11920-1900"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
