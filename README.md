@@ -19,17 +19,14 @@
 
 ## Container images
 
-* Our recommended set uses Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and are re-built daily.  They can be found on [Docker Hub](https://hub.docker.com/r/ibmcom/websphere-liberty) or [IBM Cloud](https://cloud.ibm.com/docs/services/Registry?topic=RegistryImages-ibmliberty).
-* Another set, using Ubuntu as the Operating System can be found [here](https://hub.docker.com/_/websphere-liberty).  These are re-built automatically anytime something changes in the layers below.
-
+* Our recommended set uses Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and are re-built daily. They are available from [IBM Container Registry](docs/icr-images.md) and [Docker Hub](https://hub.docker.com/r/ibmcom/websphere-liberty).
+* Another set, using Ubuntu as the Operating System can be found on [Docker Hub](https://hub.docker.com/_/websphere-liberty).  These are re-built automatically anytime something changes in the layers below.
 
 ## Building an application image
 
-According to Docker's best practices you should create a new image (FROM icr.io/appcafe/websphere-liberty) which adds a single application and the corresponding configuration. You should avoid configuring the image manually, after it started (unless it is for debugging purposes), because such changes won't be present if you spawn a new container from the image.
+According to best practices for container images, you should create a new image (`FROM icr.io/appcafe/websphere-liberty:`) which adds a single application and the corresponding configuration. You should avoid configuring the container manually once it started, unless it is for debugging purposes, because such changes won't persist if you spawn a new container from the image.
 
-Even if you docker save the manually configured container, the steps to reproduce the image from `websphere-liberty` will be lost and you will hinder your ability to update that image.
-
-The key point to take-away from the sections below is that your application Dockerfile should always follow a pattern similar to:
+Your application image template should follow a pattern similar to:
 
 ```dockerfile
 FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi
@@ -48,7 +45,7 @@ ARG VERBOSE=false
 RUN configure.sh
 ```
 
-This will result in a Docker image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
+This will result in a container image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
 
 ## Optional Enterprise Functionality
 
@@ -102,7 +99,7 @@ or by passing Liberty server variables in through the Liberty operator. See [SEC
 
 OpenJ9's SCC allows the VM to store Java classes in an optimized form that can be loaded very quickly, JIT compiled code, and profiling data. Deploying an SCC file together with your application can significantly improve start-up time. The SCC can also be shared by multiple VMs, thereby reducing total memory consumption.
 
-WebSphere Liberty Docker images contain an SCC and (by default) add your application's specific data to the SCC at image build time when your Dockerfile invokes `RUN configure.sh`.
+WebSphere Liberty container images contain an SCC and (by default) add your application's specific data to the SCC at image build time when your Dockerfile invokes `RUN configure.sh`.
 
 Note that currently some content in the SCC is sensitive to heap geometry. If the server is started with options that cause heap geometry to significantly change from when the SCC was created that content will not be used and you may observe fluctuations in start-up performance. Specifying a smaller `-Xmx` value increases the chances of obtaining a heap geometry that's compatible with the AOT code.
 
@@ -114,9 +111,9 @@ This feature can be controlled via the following variables:
 
 ## Logging
 
-It is important to be able to observe the logs emitted by WebSphere Liberty when it is running in docker. A best practice method would be to emit the logs in JSON and to then consume it with a logging stack of your choice.
+It is important to be able to observe the logs emitted by WebSphere Liberty when it is running in a container. A best practice method would be to emit the logs in JSON and to then consume it with a logging stack of your choice.
 
-Configure your WebSphere Liberty docker image to emit JSON formatted logs to the console/standard-out with your selection of liberty logging events by providing the following environment variables to your WebSphere Liberty DockerFile.
+Configure your WebSphere Liberty container image to emit JSON formatted logs to the console/standard-out with your selection of liberty logging events by providing the following environment variables to your WebSphere Liberty DockerFile.
 
 For example:
 ```
@@ -126,7 +123,7 @@ ENV WLP_LOGGING_CONSOLE_LOGLEVEL=info
 ENV WLP_LOGGING_CONSOLE_SOURCE=message,trace,accessLog,ffdc,audit
 ```
 
-These environment variables can be set during container invocation as well. This can be achieved by using the docker command's '-e' option to pass in an environment variable value.
+These environment variables can be set when running container as well. This can be achieved by using the run command's '-e' option to pass in an environment variable value.
 
 ```
 docker run -d -p 80:9080 -p 443:9443 -e WLP_LOGGING_CONSOLE_FORMAT=JSON -e WLP_LOGGING_CONSOLE_LOGLEVEL=info -e WLP_LOGGING_CONSOLE_SOURCE=message,trace,accessLog,ffdc,audit websphere-liberty:latest
@@ -142,7 +139,7 @@ The Liberty session caching feature builds on top of an existing technology call
 
     *  **Setup Infinispan Service** - Configuring Liberty session caching with Infinispan depends on an Infinispan service being available in your Kubernetes environment. It is preferable to create your Infinispan service by utilizing the [Infinispan Operator](https://infinispan.org/infinispan-operator/master/operator.html). The [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/master/operator) provides a good example of getting started with Infinispan in OpenShift.
 
-    *  **Install Client Jars and Set INFINISPAN_SERVICE_NAME** - To enable Infinispan functionality in Liberty, the Docker image author can use the Dockerfile provided below. This Dockerfile assumes an Infinispan service name of `example-infinispan`, which is the default used in the [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/master/operator). To customize your Infinispan service see [Creating Infinispan Clusters](https://infinispan.org/infinispan-operator/master/operator.html#creating_minimal_clusters-start). The `INFINISPAN_SERVICE_NAME` environment variable must be set at build time as shown in the example Dockerfile, or overridden at image deploy time.
+    *  **Install Client Jars and Set INFINISPAN_SERVICE_NAME** - To enable Infinispan functionality in Liberty, the container image author can use the Dockerfile provided below. This Dockerfile assumes an Infinispan service name of `example-infinispan`, which is the default used in the [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/master/operator). To customize your Infinispan service see [Creating Infinispan Clusters](https://infinispan.org/infinispan-operator/master/operator.html#creating_minimal_clusters-start). The `INFINISPAN_SERVICE_NAME` environment variable must be set at build time as shown in the example Dockerfile, or overridden at image deploy time.
         *  **TIP** - If your Infinispan deployment and Liberty deployment are in different namespaces/projects, you will need to set the `INFINISPAN_HOST`, `INFINISPAN_PORT`, `INFINISPAN_USER`, and `INFINISPAN_PASS` environment variables in addition to the `INFINISPAN_SERVICE_NAME` environment variable. This is due to the Liberty deployment not having the access to the Infinispan service environment variables it requires.
 
     ```dockerfile
@@ -199,11 +196,11 @@ The Liberty session caching feature builds on top of an existing technology call
 
     ```
 
-2. **Hazelcast** - Another JCache provider is [Hazelcast In-Memory Data Grid](https://hazelcast.org/). Enabling Hazelcast session caching retrieves the Hazelcast client libraries from the [hazelcast/hazelcast](https://hub.docker.com/r/hazelcast/hazelcast/) Docker image, configures Hazelcast by copying a sample [hazelcast.xml](/ga/latest/kernel/helpers/build/configuration_snippets/), and configures the Liberty server feature [sessionCache-1.0](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_admin_session_persistence_jcache.html) by including the XML snippet [hazelcast-sessioncache.xml](/ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml). By default, the [Hazelcast Discovery Plugin for Kubernetes](https://github.com/hazelcast/hazelcast-kubernetes) will auto-discover its peers within the same Kubernetes namespace. To enable this functionality, the Docker image author can include the following Dockerfile snippet, and choose from either client-server or embedded [topology](https://docs.hazelcast.org/docs/latest-dev/manual/html-single/#hazelcast-topology).
+2. **Hazelcast** - Another JCache provider is [Hazelcast In-Memory Data Grid](https://hazelcast.org/). Enabling Hazelcast session caching retrieves the Hazelcast client libraries from the [hazelcast/hazelcast](https://hub.docker.com/r/hazelcast/hazelcast/) container image, configures Hazelcast by copying a sample [hazelcast.xml](/ga/latest/kernel/helpers/build/configuration_snippets/), and configures the Liberty server feature [sessionCache-1.0](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_admin_session_persistence_jcache.html) by including the XML snippet [hazelcast-sessioncache.xml](/ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml). By default, the [Hazelcast Discovery Plugin for Kubernetes](https://github.com/hazelcast/hazelcast-kubernetes) will auto-discover its peers within the same Kubernetes namespace. To enable this functionality, the container image author can include the following Dockerfile snippet, and choose from either client-server or embedded [topology](https://docs.hazelcast.org/docs/latest-dev/manual/html-single/#hazelcast-topology).
 
     ```dockerfile
     ### Hazelcast Session Caching ###
-    # Copy the Hazelcast libraries from the Hazelcast Docker image
+    # Copy the Hazelcast libraries from the Hazelcast container image
     COPY --from=hazelcast/hazelcast --chown=1001:0 /opt/hazelcast/lib/*.jar /opt/ibm/wlp/usr/shared/resources/hazelcast/
 
     # Instruct configure.sh to copy the client topology hazelcast.xml
@@ -246,11 +243,11 @@ This section describes very simple way to speed up feature installation during b
 The repository files can be downloaded from [Fix Central](https://www-945.ibm.com/support/fixcentral).
 
 
-To host feature repository on-premises one of the easiest solutions could be using `nginx` docker image.
+To host feature repository on-premises one of the easiest solutions could be using `nginx` container image.
 
 `docker run --name repo-host -v /repo-host:/usr/share/nginx/html:ro -p 8080:80 -d nginx`
 
-You can mount and serve multiple zip files using a docker volume mount, for example repo-host folder mounted from host to nginx container above.
+You can mount and serve multiple zip files using a container volume mount, for example repo-host folder mounted from host to nginx container above.
 
 You can place each zip archive in versioned folders, for example repo-host/${LIBERTY_VERSION}/repo.zip
 
@@ -272,7 +269,7 @@ ARG VERBOSE=false
 RUN configure.sh
 ```
 
-Note: This feature requires a `curl ` command to be in the docker image.
+Note: This feature requires a `curl ` command to be in the container image.
 Some base images do not provide `curl`. You can add it before calling `confiure.sh` this way:
 
 ```dockerfile
