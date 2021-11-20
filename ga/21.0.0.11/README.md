@@ -1,6 +1,6 @@
-# WebSphere Application Server Developer Edition Liberty image for Docker
+# WebSphere Application Server Developer Edition Liberty Image
 
-Under this directory you can find build scripts for Docker images (Dockerfiles) for WebSphere Application Server Liberty. Currently resources are available for:
+Under this directory you can find build scripts for WebSphere Application Server Liberty container images:
 
 * [WebSphere Application Server Developer Edition Liberty, Kernel](kernel)
 * [WebSphere Application Server Developer Edition Liberty, Full](full)

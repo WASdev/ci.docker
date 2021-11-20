@@ -14,7 +14,7 @@
 # limitations under the License.
 #####################################################################################
 #                                                                                   #
-#  Script to build a docker image                                                   #
+#  Script to build a container image                                                   #
 #                                                                                   #
 #                                                                                   #
 #  Usage : build.sh <Image name> <Dockerfile location> <optional: dockerfile name>  #

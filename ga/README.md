@@ -1,7 +1,3 @@
-# WebSphere Application Server Liberty and Docker
+# WebSphere Application Server Liberty Container Images
 
-Under this directory you can find build scripts for Docker images (Dockerfiles) for WebSphere Application Server Liberty. Currently resources are available for:
-
-* [Dockerfiles](latest) for the latest (19.0.0.12) Docker Hub image.
-* [Dockerfiles](20.0.0.3) for 20.0.0.3 Docker Hub image.
-* [Dockerfiles](19.0.0.12) for 19.0.0.12 Docker Hub image.
+Under this directory you can find build scripts for WebSphere Application Server Liberty container images for latest fix pack and the last two quarterly releases.
