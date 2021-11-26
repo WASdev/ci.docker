@@ -1,4 +1,4 @@
-# WebSphere Application Server Developer Edition Liberty Image
+# WebSphere Application Server Developer Edition Liberty image
 
 Under this directory you can find build scripts for WebSphere Application Server Liberty container images:
 

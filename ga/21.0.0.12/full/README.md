@@ -1,4 +1,4 @@
-# WebSphere Application Server Developer Edition Liberty Image
+# WebSphere Application Server Developer Edition Liberty image
 
 The [Dockerfile.ubuntu.ibmjava8](Dockerfile.ubuntu.ibmjava8) in this directory is used to build the `websphere-liberty:full` image on [Docker Hub](https://registry.hub.docker.com/_/websphere-liberty/). The image contains IBM WebSphere Liberty with an extensive set of features for convenience.
 
