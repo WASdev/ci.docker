@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ibmsemeruruntime/open-8-jdk:ubi-jdk
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-8-jdk-ubi
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
