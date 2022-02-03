@@ -20,7 +20,7 @@ ARG EN_SHA=3e0b8b39a5c8000b0ad1458943454d8ad2e4b4712030cd0f96846a0aa1090078
 ARG NON_IBM_SHA=66d73b0d3e0cb314134e9fee966dbda6c388bf33645583921f63e00851242ff2
 ARG NOTICES_SHA=30a37bfd567f61c63daf4726d95ee3bf6d1c5f2b885678af4d52e44fa2f93e54
 
-LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Arthur De Magalhaes, Chris Potter" \
+LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Chris Potter, Melissa Lee" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
