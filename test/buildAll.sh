@@ -74,8 +74,8 @@ done < $currentRelease/"images.txt"
 tags=(kernel full)
 for j in "${!tags[@]}"; do 
   echo "${currentRelease}"
-  file_exts_ubi=(ubi.openjdk8 ubi.openjdk11 ubi.ibmjava8)
-  tag_exts_ubi=(java8-openj9-ubi java11-openj9-ubi java8-ibmjava-ubi)
+  file_exts_ubi=(ubi.openjdk8 ubi.openjdk11 ubi.openjdk17 ubi.ibmjava8)
+  tag_exts_ubi=(java8-openj9-ubi java11-openj9-ubi java17-openj9-ubi java8-ibmjava-ubi)
 
   for i in "${!tag_exts_ubi[@]}"; do
       docker_dir="${IMAGE_ROOT}/${tags[$j]}"

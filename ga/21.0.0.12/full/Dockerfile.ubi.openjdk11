@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM icr.io/appcafe/websphere-liberty:21.0.0.12-kernel-java11-openj9-ubi
+ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty
+FROM $PARENT_IMAGE:21.0.0.12-kernel-java11-openj9-ubi
 ARG VERBOSE=false
 ARG REPOSITORIES_PROPERTIES=""
 
