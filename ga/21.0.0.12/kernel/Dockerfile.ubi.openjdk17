@@ -25,7 +25,7 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Chris Potter, Melis
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="21.0.0.12" \
-      org.opencontainers.image.revision="cl21.0.0.12920-1900" \
+      org.opencontainers.image.revision="cl211220211117-1256" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
       version="21.0.0.12" \
@@ -65,7 +65,7 @@ ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
       "ProductVersion"="21.0.0.12" \
-      "BuildLabel"="cl21.0.0.12920-1900"
+      "BuildLabel"="cl211220211117-1256"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
