@@ -119,10 +119,10 @@ function main() {
   # Install needed features
   if [ "$FEATURE_REPO_URL" ]; then
     curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
-    installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || if [ $? -ne 22 ]; then exit $?; fi
+    installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
     rm -rf /tmp/repo.zip
   else
-    installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then exit $?; fi
+    installUtility install --acceptLicense defaultServer || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
   fi
 
   # Apply interim fixes found in /opt/ibm/fixes
