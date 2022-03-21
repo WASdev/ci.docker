@@ -12,7 +12,7 @@ Available image tags are listed below. The tags follow this naming convention:
 
 Append a tag to `icr.io/appcafe/websphere-liberty` to pull a specific image. For example, 
 ```
-icr.io/appcafe/websphere-liberty:21.0.0.12-kernel-java8-openj9-ubi
+icr.io/appcafe/websphere-liberty:22.0.0.3-kernel-java17-openj9-ubi
 ```
 
 Available images can also be listed using [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started). Log in with your IBMid prior to running this command: 
@@ -34,18 +34,18 @@ full-java11-openj9-ubi
 full-java17-openj9-ubi
 ```
 
-## 22.0.0.2
+## 22.0.0.3
 
 ```
-22.0.0.2-kernel-java8-openj9-ubi
-22.0.0.2-kernel-java8-ibmjava-ubi
-22.0.0.2-kernel-java11-openj9-ubi
-22.0.0.2-kernel-java17-openj9-ubi
+22.0.0.3-kernel-java8-openj9-ubi
+22.0.0.3-kernel-java8-ibmjava-ubi
+22.0.0.3-kernel-java11-openj9-ubi
+22.0.0.3-kernel-java17-openj9-ubi
 
-22.0.0.2-full-java8-openj9-ubi
-22.0.0.2-full-java8-ibmjava-ubi
-22.0.0.2-full-java11-openj9-ubi
-22.0.0.2-full-java17-openj9-ubi
+22.0.0.3-full-java8-openj9-ubi
+22.0.0.3-full-java8-ibmjava-ubi
+22.0.0.3-full-java11-openj9-ubi
+22.0.0.3-full-java17-openj9-ubi
 ```
 
 ## 21.0.0.12
@@ -60,16 +60,4 @@ full-java17-openj9-ubi
 21.0.0.12-full-java8-ibmjava-ubi
 21.0.0.12-full-java11-openj9-ubi
 21.0.0.12-full-java17-openj9-ubi
-```
-
-## 21.0.0.9
-
-```
-21.0.0.9-kernel-java8-openj9-ubi
-21.0.0.9-kernel-java8-ibmjava-ubi
-21.0.0.9-kernel-java11-openj9-ubi
-
-21.0.0.9-full-java8-openj9-ubi
-21.0.0.9-full-java8-ibmjava-ubi
-21.0.0.9-full-java11-openj9-ubi
 ```
