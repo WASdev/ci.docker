@@ -18,6 +18,9 @@ fi
 
 set -Eeox pipefail
 
+# 32-bit JVMs don't supported multi-layered SCCs.
+[ -e "$JAVA_HOME/lib/i386" -o -e "$JAVA_HOME/lib/ppc" -o -e "$JAVA_HOME/lib/s390" ] && exit 0
+
 SCC_SIZE="80m"  # Default size of the SCC layer.
 ITERATIONS=2    # Number of iterations to run to populate it.
 TRIM_SCC=yes    # Trim the SCC to eliminate any wasted space.
