@@ -116,13 +116,15 @@ function main() {
     parseProviders $SEC_SSO_PROVIDERS
   fi
 
-  # Install needed features
-  if [ "$FEATURE_REPO_URL" ]; then
-    curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
-    installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
-    rm -rf /tmp/repo.zip
-  else
-    installUtility install --acceptLicense defaultServer || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
+  if [ "$SKIP_FEATURE_INSTALL" != "true" ]; then
+    # Install needed features
+    if [ "$FEATURE_REPO_URL" ]; then
+      curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
+      installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
+      rm -rf /tmp/repo.zip
+    else
+      installUtility install --acceptLicense defaultServer || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
+    fi
   fi
 
   # Apply interim fixes found in /opt/ibm/fixes
