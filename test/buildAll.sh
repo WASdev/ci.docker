@@ -71,7 +71,7 @@ do
   fi
 done < $currentRelease/"images.txt"
 
-tags=(kernel full)
+tags=(kernel-slim full)
 for j in "${!tags[@]}"; do 
   echo "${currentRelease}"
   file_exts_ubi=(ubi.openjdk8 ubi.openjdk11 ubi.openjdk17 ubi.ibmjava8)
