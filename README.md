@@ -22,6 +22,8 @@
 * Our recommended set uses Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and are re-built daily. They are available from [IBM Container Registry](docs/icr-images.md) and [Docker Hub](https://hub.docker.com/r/ibmcom/websphere-liberty).
 * Another set, using Ubuntu as the Operating System can be found on [Docker Hub](https://hub.docker.com/_/websphere-liberty).  These are re-built automatically anytime something changes in the layers below.
 
+_**Important Notice:**_ The `kernel` **tag is now deprecated** and it will not be updated (starting with 22.0.0.8). The new tag, that provides kernel binary, is named `kernel-slim`.
+
 ## Building an application image
 
 According to best practices for container images, you should create a new image (`FROM icr.io/appcafe/websphere-liberty:`) which adds a single application and the corresponding configuration. You should avoid configuring the container manually once it started, unless it is for debugging purposes, because such changes won't persist if you spawn a new container from the image.
@@ -31,15 +33,8 @@ Your application image template should follow a pattern similar to:
 ```dockerfile
 FROM icr.io/appcafe/websphere-liberty:kernel-slim-java8-openj9-ubi
 
-# Default setting for the verbose option
-ARG VERBOSE=false
-
 # Add Liberty server configuration including all necessary features
 COPY --chown=1001:0  server.xml /config/
-
-# Modify feature repository (optional)
-# A sample is in the 'Getting Required Features' section below
-COPY --chown=1001:0 featureUtility.properties /opt/ol/wlp/etc/
 
 # This script will add the requested XML snippets to enable Liberty features and grow image to be fit-for-purpose using featureUtility. 
 # Only available in 'kernel-slim'. The 'full' tag already includes all features for convenience.
