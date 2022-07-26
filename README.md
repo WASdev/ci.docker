@@ -4,7 +4,7 @@
 - [WebSphere Application Server Liberty and Containers](#websphere-application-server-liberty-and-containers)
   - [Container images](#container-images)
   - [Building an application image](#building-an-application-image)
-  - [Optional Enterprise Functionality](#optional-enterprise-functionality)
+  - [Enterprise Functionality](#enterprise-functionality)
   - [Security](#security)
   - [OpenJ9 Shared Class Cache (SCC)](#openj9-shared-class-cache-scc)
   - [Logging](#logging)
