@@ -92,13 +92,14 @@ function main() {
     if [ ! -e $keystorePath ]; then
       # Generate the keystore.xml
       export KEYSTOREPWD=$(openssl rand -base64 32)
-      sed "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml >$SNIPPETS_TARGET_DEFAULTS/keystore.xml
+      sed "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml > $SNIPPETS_TARGET_DEFAULTS/keystore.xml
       chmod g+w $SNIPPETS_TARGET_DEFAULTS/keystore.xml
     fi
   fi
 
-  # SSO
+  # SSO Support
   if [[ -n "$SEC_SSO_PROVIDERS" ]]; then
+    cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
     parseProviders $SEC_SSO_PROVIDERS
   fi
 
@@ -111,11 +112,6 @@ function main() {
     else
       installUtility install --acceptLicense defaultServer || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
     fi
-  fi
-
-  if [[ -n "$SEC_SSO_PROVIDERS" ]]; then
-    cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
-    parseProviders $SEC_SSO_PROVIDERS
   fi
 
   # Apply interim fixes found in /opt/ibm/fixes
