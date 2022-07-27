@@ -4,7 +4,8 @@
 - [WebSphere Application Server Liberty and Containers](#websphere-application-server-liberty-and-containers)
   - [Container images](#container-images)
   - [Building an application image](#building-an-application-image)
-  - [Enterprise Functionality](#enterprise-functionality)
+  - [Optional Enterprise Functionality](#optional-enterprise-functionality)
+    - [Deprecated Enterprise Functionality](#deprecated-enterprise-functionality)
   - [Security](#security)
   - [OpenJ9 Shared Class Cache (SCC)](#openj9-shared-class-cache-scc)
   - [Logging](#logging)
@@ -52,7 +53,7 @@ RUN configure.sh
 
 This will result in a container image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
 
-## Enterprise Functionality
+## Optional Enterprise Functionality
 
 This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular argument (`ARG`) or environment variable (`ENV`) and calling `RUN configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets (except for `VERBOSE`), described below:
 
@@ -226,7 +227,7 @@ The Liberty session caching feature builds on top of an existing technology call
 
 This section describes the process to apply interim fixes via the Dockerfile during `build` time, by adding the interim fix JAR files to `/opt/ibm/fixes` directory and calling `RUN configure.sh`. Interim fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in the same directory.
 
-Ensure that all features needed by your applications, apart from the ones that will be automatically added for the [enterprise functionalities](#enterprise-functionality) you selected, are specified prior to calling `RUN configure.sh`, since interim fixes should only be applied once needed features are installed.
+Ensure that all features needed by your applications, apart from the ones that will be automatically added for the [enterprise functionalities](#optional-enterprise-functionality) you selected, are specified prior to calling `RUN configure.sh`, since interim fixes should only be applied once needed features are installed.
 
 ```dockerfile
 # Add interim fixes (optional)

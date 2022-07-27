@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) Copyright IBM Corporation 2020.
+# (C) Copyright IBM Corporation 2022.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ function main() {
   SNIPPETS_TARGET=/config/configDropins/overrides
   SNIPPETS_TARGET_DEFAULTS=/config/configDropins/defaults
   mkdir -p ${SNIPPETS_TARGET}
-
+  mkdir -p ${SNIPPETS_TARGET_DEFAULTS}
 
   #Check for each Liberty value-add functionality
 
@@ -42,16 +42,6 @@ function main() {
     cp $SNIPPETS_SOURCE/mp-monitoring.xml $SNIPPETS_TARGET/mp-monitoring.xml
   fi
 
-  # OpenIdConnect Client
-  if [ "$OIDC" == "true" ]  || [ "$OIDC_CONFIG" == "true" ]
-  then
-    cp $SNIPPETS_SOURCE/oidc.xml $SNIPPETS_TARGET/oidc.xml
-  fi
-
-  if [ "$OIDC_CONFIG" == "true" ]; then
-    cp $SNIPPETS_SOURCE/oidc-config.xml $SNIPPETS_TARGET/oidc-config.xml
-  fi
-
   # HTTP Endpoint
   if [ "$HTTP_ENDPOINT" == "true" ]; then
     if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
@@ -62,18 +52,18 @@ function main() {
   fi
 
   # Hazelcast Session Caching
-  if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]
-  then
-  cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
-  mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
-  cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
+  if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
+    cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
+    mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
+    cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
   fi
 
   # Infinispan Session Caching
   if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
-  cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
-  chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
+    cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
+    chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
   fi
+
   # IIOP Endpoint
   if [ "$IIOP_ENDPOINT" == "true" ]; then
     if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
@@ -94,25 +84,21 @@ function main() {
 
   # Key Store
   keystorePath="$SNIPPETS_TARGET_DEFAULTS/keystore.xml"
-  if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]
-  then
+  if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
     cp $SNIPPETS_SOURCE/tls.xml $SNIPPETS_TARGET/tls.xml
   fi
 
-  if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]
-  then
-    if [ ! -e $keystorePath ]
-    then
+  if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]; then
+    if [ ! -e $keystorePath ]; then
       # Generate the keystore.xml
       export KEYSTOREPWD=$(openssl rand -base64 32)
-      sed "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml > $SNIPPETS_TARGET_DEFAULTS/keystore.xml
+      sed "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml >$SNIPPETS_TARGET_DEFAULTS/keystore.xml
       chmod g+w $SNIPPETS_TARGET_DEFAULTS/keystore.xml
     fi
   fi
 
-  # SSO Support
+  # SSO
   if [[ -n "$SEC_SSO_PROVIDERS" ]]; then
-    cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
     parseProviders $SEC_SSO_PROVIDERS
   fi
 
@@ -125,6 +111,11 @@ function main() {
     else
       installUtility install --acceptLicense defaultServer || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
     fi
+  fi
+
+  if [[ -n "$SEC_SSO_PROVIDERS" ]]; then
+    cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
+    parseProviders $SEC_SSO_PROVIDERS
   fi
 
   # Apply interim fixes found in /opt/ibm/fixes

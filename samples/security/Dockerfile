@@ -1,4 +1,4 @@
-FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
+FROM ibmcom/websphere-liberty:kernel-slim-java8-openj9-ubi
 
 # Add my app and config
 COPY --chown=1001:0  server.xml /config/
@@ -17,6 +17,9 @@ ENV SEC_IMPORT_K8S_CERTS=true
 # Enable single sign on app security using an OIDC provider and Github.  
 # Further configuration is deferred until image deployment.
 ARG SEC_SSO_PROVIDERS="oidc github"
+
+# This script will add the requested XML snippets to enable Liberty features and grow image to be fit-for-purpose using featureUtility
+RUN features.sh
 
 # copy secured app
 COPY --chown=1001:0 formlogin.war /config/apps
