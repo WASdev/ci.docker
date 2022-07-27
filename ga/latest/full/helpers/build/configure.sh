@@ -51,6 +51,15 @@ function main() {
     fi
   fi
 
+  # OpenIdConnect Client
+  if [ "$OIDC" == "true" ]  || [ "$OIDC_CONFIG" == "true" ]; then
+    cp $SNIPPETS_SOURCE/oidc.xml $SNIPPETS_TARGET/oidc.xml
+  fi
+
+  if [ "$OIDC_CONFIG" == "true" ]; then
+    cp $SNIPPETS_SOURCE/oidc-config.xml $SNIPPETS_TARGET/oidc-config.xml
+  fi
+
   # Hazelcast Session Caching
   if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
     cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
