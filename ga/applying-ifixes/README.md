@@ -6,7 +6,7 @@ Ensure that all features needed by your applications, apart from the ones that w
 
 ```dockerfile
 # Add interim fixes (optional)
-COPY --chown=1001:0  interim-fixes /liberty/fixes/
+COPY --chown=1001:0  interim-fixes /fixes/
 
 # This script will add the requested XML snippets, grow image to be fit-for-purpose and apply interim fixes
 RUN configure.sh

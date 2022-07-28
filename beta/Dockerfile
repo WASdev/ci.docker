@@ -56,7 +56,8 @@ RUN mkdir /logs \
     && rm -rf /output \
     && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config \
-    && ln -s /opt/ibm /liberty \
+    && ln -s /opt/ibm/wlp /liberty \
+    && ln -s /opt/ibm/fixes /fixes \
     && ln -s /opt/ibm/wlp/usr/shared/resources/lib.index.cache /lib.index.cache \
     && mkdir -p /config/configDropins/defaults \
     && chown -R 1001:0 /config \
