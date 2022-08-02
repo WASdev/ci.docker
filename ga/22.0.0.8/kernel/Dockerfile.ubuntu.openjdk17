@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2019.
+# (C) Copyright IBM Corporation 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,38 +12,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-8-jdk-ubi
+FROM ibm-semeru-runtimes:open-17-jre-focal
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
-ARG EN_SHA=c204b6942dae91ff4b92bbb91ae2cc5ee4d4de7cbaa0c33136031264421f37e6
-ARG NON_IBM_SHA=4691b575a3a33c5beed2862c6fbb8e048ad0c4493685086f40dff7b1de20bc63
-ARG NOTICES_SHA=6e7708fec8d3709fcf179ede8ccde7f807e37032ff113c3c6546543cf326abe3
+ARG EN_SHA=1558244d39947a6f608f757be932356607a9f2be6c4d6ab7def29e54512d70d0
+ARG NON_IBM_SHA=c5edb6e93c6ac1f3ee6b74780a7b265efaaaaed625efccdd6f8597b844469a50
+ARG NOTICES_SHA=8f92b2e9c7dff626fb7f4cc360e29be26e3497bcc626aca216144589bf3f9715
 
-LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Arthur De Magalhaes, Chris Potter" \
+LABEL org.opencontainers.image.authors="Chris Potter, Christy Jesuraj, Melissa Lee" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="22.0.0.7" \
-      org.opencontainers.image.revision="cl220720220620-2217" \
-      vendor="IBM" \
-      name="IBM WebSphere Liberty" \
-      version="22.0.0.7" \
-      summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8" \
-      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
+      org.opencontainers.image.version="22.0.0.8" \
+      org.opencontainers.image.revision="cl220820220719-1056" \
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Ubuntu as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image" \
+      org.opencontainers.image.title="IBM WebSphere Liberty"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 22.0.0_07
+ENV LIBERTY_VERSION 22.0.0_08
 
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
 
-RUN yum -y install shadow-utils unzip wget findutils openssl \
-    && yum clean all \
-    && mkdir -p /licenses \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends unzip wget openssl \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /licenses/ \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
     && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
+    && unzip -q /tmp/wlp.zip -d /opt/ibm \
+    && rm /tmp/wlp.zip \
+    && chown -R 1001:0 /opt/ibm/wlp \
+    && chmod -R g+rw /opt/ibm/wlp \
     && LICENSE_BASE=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml  | grep $LIBERTY_VERSION -A 6 | sed -n 's/\s*license:\s//p' | sed 's/\(.*\)\/.*/\1\//' | tr -d '\r') \
     && wget ${LICENSE_BASE}en.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/en.html \
     && wget ${LICENSE_BASE}non_ibm_license.html -U UA-IBM-WebSphere-Liberty-Docker -O /licenses/non_ibm_license.html \
@@ -51,21 +53,17 @@ RUN yum -y install shadow-utils unzip wget findutils openssl \
     && echo "$EN_SHA /licenses/en.html" | sha256sum -c --strict --check \
     && echo "$NON_IBM_SHA /licenses/non_ibm_license.html" | sha256sum -c --strict --check \
     && echo "$NOTICES_SHA /licenses/notices.html" | sha256sum -c --strict --check \
-    && chmod -R g+x /usr/bin \
-    && unzip -q /tmp/wlp.zip -d /opt/ibm \
-    && rm /tmp/wlp.zip \
-    && chown -R 1001:0 /opt/ibm/wlp \
-    && chmod -R g+rw /opt/ibm/wlp \
-    && yum -y remove shadow-utils unzip wget \
-    && yum clean all
+    && apt-get purge --auto-remove -y unzip \
+    && apt-get purge --auto-remove -y wget \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="22.0.0.7" \
-      "BuildLabel"="cl220720220620-2217"
+      "ProductVersion"="22.0.0.8" \
+      "BuildLabel"="cl220820220719-1056"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
