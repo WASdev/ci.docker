@@ -18,12 +18,13 @@ fi
 
 set -Eeox pipefail 
 
+# Determine if featureUtility ran in an earlier build step
 if [ -f "/opt/ibm/wlp/configure-liberty.log" ]; then
     FEATURES_INSTALLED=true
 else
     FEATURES_INSTALLED=false
     # Resolve liberty server symlinks and creation for server name changes
-    /opt/ol/helpers/runtime/configure-liberty.sh
+    /opt/ibm/helpers/runtime/configure-liberty.sh
     if [ $? -ne 0 ]; then
         exit
     fi

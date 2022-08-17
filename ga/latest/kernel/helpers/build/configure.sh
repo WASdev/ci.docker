@@ -12,6 +12,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# Determine if featureUtility ran in an earlier build step
+if [ -f "/opt/ibm/wlp/configure-liberty.log" ]; then
+  FEATURES_INSTALLED=true
+else
+  FEATURES_INSTALLED=false
+  >&2 echo "WARNING: This is not an optimal build configuration. Although features in server.xml will continue to be installed correctly, the 'RUN features.sh' command should be added to the Dockerfile prior to configure.sh. See https://github.com/WASdev/ci.docker#building-an-application-image for a sample application image template."
+fi
+
 if [ "$VERBOSE" != "true" ]; then
   exec &>/dev/null
 fi
@@ -19,12 +28,9 @@ fi
 set -Eeox pipefail
 
 function main() {
-  if [ -f "/opt/ibm/wlp/configure-liberty.log" ]; then
-    FEATURES_INSTALLED=true
-  else
-    FEATURES_INSTALLED=false
+  if [ "$FEATURES_INSTALLED" == "false" ]; then
     # Resolve liberty server symlinks and creation for server name changes
-    /opt/ol/helpers/runtime/configure-liberty.sh
+    /opt/ibm/helpers/runtime/configure-liberty.sh
     if [ $? -ne 0 ]; then
       exit
     fi
@@ -83,6 +89,7 @@ function main() {
     # Otherwise, if features.sh did not run, install server features.
     elif [ "$FEATURES_INSTALLED" == "false" ]; then
       featureUtility installServerFeatures --acceptLicense defaultServer --noCache
+      find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw 
     fi
   fi
 
