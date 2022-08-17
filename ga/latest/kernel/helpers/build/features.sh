@@ -18,16 +18,10 @@ fi
 
 set -Eeox pipefail 
 
-# Determine if featureUtility ran in an earlier build step
-if [ -f "/opt/ibm/wlp/configure-liberty.log" ]; then
-    FEATURES_INSTALLED=true
-else
-    FEATURES_INSTALLED=false
-    # Resolve liberty server symlinks and creation for server name changes
-    /opt/ibm/helpers/runtime/configure-liberty.sh
-    if [ $? -ne 0 ]; then
-        exit
-    fi
+# Resolve liberty server symlinks and creation for server name changes
+/opt/ibm/helpers/runtime/configure-liberty.sh
+if [ $? -ne 0 ]; then
+  exit
 fi
 
 ##Define variables for XML snippets source and target paths
@@ -54,7 +48,5 @@ if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
 fi
 
 # Install necessary features using featureUtility
-if [ "$FEATURES_INSTALLED" == "false" ]; then
-  featureUtility installServerFeatures --acceptLicense defaultServer --noCache
-  find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw
-fi
+featureUtility installServerFeatures --acceptLicense defaultServer --noCache
+find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw
