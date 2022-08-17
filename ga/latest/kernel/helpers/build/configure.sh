@@ -151,6 +151,7 @@ function main() {
     # Otherwise, if features.sh did not run, install server features.
     elif [ "$FEATURES_INSTALLED" == "false" ]; then
       featureUtility installServerFeatures --acceptLicense defaultServer --noCache
+      find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw 
     fi
   fi
 
