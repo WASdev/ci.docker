@@ -17,6 +17,8 @@ FROM $PARENT_IMAGE:kernel-java11-openj9-ubi
 ARG VERBOSE=false
 ARG REPOSITORIES_PROPERTIES=""
 
+ENV IMAGE_TYPE=full
+
 RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
   && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
   && installUtility install --acceptLicense baseBundle \
