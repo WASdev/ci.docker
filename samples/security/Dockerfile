@@ -18,6 +18,9 @@ ENV SEC_IMPORT_K8S_CERTS=true
 # Further configuration is deferred until image deployment.
 ARG SEC_SSO_PROVIDERS="oidc github"
 
+# This script will add the requested XML snippets to enable Liberty features and grow image to be fit-for-purpose using featureUtility. 
+RUN features.sh
+
 # copy secured app
 COPY --chown=1001:0 formlogin.war /config/apps
 # copy another app
