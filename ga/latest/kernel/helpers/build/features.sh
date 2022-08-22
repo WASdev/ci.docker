@@ -1,5 +1,9 @@
 #!/bin/bash
+<<<<<<< HEAD
 # (C) Copyright IBM Corporation 2023.
+=======
+# (C) Copyright IBM Corporation 2022.
+>>>>>>> 34eeb1f (Update helpers to use features.sh)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +20,17 @@ if [ "$VERBOSE" != "true" ]; then
   exec &>/dev/null
 fi
 
+<<<<<<< HEAD
 set -Eeox pipefail
+=======
+set -Eeox pipefail 
+
+# Resolve liberty server symlinks and creation for server name changes
+/opt/ibm/helpers/runtime/configure-liberty.sh
+if [ $? -ne 0 ]; then
+  exit
+fi
+>>>>>>> 34eeb1f (Update helpers to use features.sh)
 
 ##Define variables for XML snippets source and target paths
 SNIPPETS_SOURCE=/opt/ibm/helpers/build/configuration_snippets
@@ -44,5 +58,8 @@ fi
 # Install necessary features using featureUtility
 featureUtility installServerFeatures --acceptLicense defaultServer --noCache
 find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw
+<<<<<<< HEAD
 
 echo "features.sh script has been run" > /logs/features.log
+=======
+>>>>>>> 34eeb1f (Update helpers to use features.sh)
