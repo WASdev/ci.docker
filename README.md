@@ -12,7 +12,7 @@
   - [Applying interim fixes](#applying-interim-fixes)
   - [Installing Liberty Features from local repository (19.0.0.8+)](#installing-liberty-features-from-local-repository-19008)
       - [Locally hosting feature repository](#locally-hosting-feature-repository)
-      - [Using locally hosted feautre repository in Dockerfile](#using-locally-hosted-feautre-repository-in-dockerfile)
+      - [Using locally hosted feature repository in Dockerfile](#using-locally-hosted-feautre-repository-in-dockerfile)
 - [Known Issues](#known-issues)
 - [Issues and Contributions](#issues-and-contributions)
 - [License](#license)
