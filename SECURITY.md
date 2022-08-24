@@ -49,7 +49,7 @@ Each Single Sign-On provider needs some additional configuration to be functiona
   * At build time, they can be variables in a server.xml file (`<variable name="foo" value="bar" />`).
   * At build time, they can be ENV variables in the Dockerfile, this is less secure (`ENV name=value`).
   * They can be passed as environment variables to the container when it is deployed. 
-  * They can be supplied in a deployment YAML file or by the [Liberty operator](https://github.com/OpenLiberty/open-liberty-operator/blob/master/doc/user-guide.adoc#single-sign-on-sso), which will pass them to the container at deploy time.
+  * They can be supplied in a deployment YAML file or by the [Liberty operator](https://github.com/OpenLiberty/open-liberty-operator/blob/main/doc/user-guide.adoc#single-sign-on-sso), which will pass them to the container at deploy time.
 
 Client ID and Client Secret are obtained from the provider.  RedirectToRPHostAndPort (`SEC_SSO_REDIRECTTORPHOSTANDPORT`) is the protocol, host, and port that the provider should send the browser back to after authentication, for example `https://myApp-myNamespace-myClusterHostname.mycompany.com`  (In some container environments, the pod cannot figure this out and it will need to be specified.) Other variables may be needed in some situations and are documented in detail in the [Open Liberty Documentation](https://openliberty.io/docs/ref/feature/#socialLogin-1.0.html) under each type of provider. The `oidc` and `oauth2` configurations are general purpose configurations for use with any provider that uses the OpenID Connect 1.0 or OAuth 2.0 specifications.
 

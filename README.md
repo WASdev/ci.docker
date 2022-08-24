@@ -1,10 +1,11 @@
-[![Build Status](https://travis-ci.org/WASdev/ci.docker.svg?branch=master)](https://travis-ci.org/WASdev/ci.docker)
+[![Build Status](https://travis-ci.org/WASdev/ci.docker.svg?branch=main)](https://travis-ci.org/WASdev/ci.docker)
 # WebSphere Application Server Liberty and Containers
 
 - [WebSphere Application Server Liberty and Containers](#websphere-application-server-liberty-and-containers)
   - [Container images](#container-images)
   - [Building an application image](#building-an-application-image)
   - [Optional Enterprise Functionality](#optional-enterprise-functionality)
+    - [Deprecated Enterprise Functionality](#deprecated-enterprise-functionality)
   - [Security](#security)
   - [OpenJ9 Shared Class Cache (SCC)](#openj9-shared-class-cache-scc)
   - [Logging](#logging)
@@ -12,7 +13,7 @@
   - [Applying interim fixes](#applying-interim-fixes)
   - [Installing Liberty Features from local repository (19.0.0.8+)](#installing-liberty-features-from-local-repository-19008)
       - [Locally hosting feature repository](#locally-hosting-feature-repository)
-      - [Using locally hosted feature repository in Dockerfile](#using-locally-hosted-feautre-repository-in-dockerfile)
+      - [Using locally hosted feature repository in Dockerfile](#using-locally-hosted-feature-repository-in-dockerfile)
 - [Known Issues](#known-issues)
 - [Issues and Contributions](#issues-and-contributions)
 - [License](#license)
@@ -137,9 +138,9 @@ The Liberty session caching feature builds on top of an existing technology call
 
 1. **Infinispan** - One JCache provider is the open source project [Infinispan](https://infinispan.org/), which is the basis for Red Hat Data Grid. Enabling Infinispan session caching retrieves the Infinispan client libraries from the [Infinispan JCACHE (JSR 107) Remote Implementation](https://mvnrepository.com/artifact/org.infinispan/infinispan-jcache-remote) maven repository, and configures the necessary infinispan.client.hotrod.* properties and the Liberty server feature [sessionCache-1.0](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_admin_session_persistence_jcache.html) by including the XML snippet [infinispan-client-sessioncache.xml](/ga/latest/kernel/helpers/build/configuration_snippets/infinispan-client-sessioncache.xml).
 
-    *  **Setup Infinispan Service** - Configuring Liberty session caching with Infinispan depends on an Infinispan service being available in your Kubernetes environment. It is preferable to create your Infinispan service by utilizing the [Infinispan Operator](https://infinispan.org/infinispan-operator/master/operator.html). The [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/master/operator) provides a good example of getting started with Infinispan in OpenShift.
+    *  **Setup Infinispan Service** - Configuring Liberty session caching with Infinispan depends on an Infinispan service being available in your Kubernetes environment. It is preferable to create your Infinispan service by utilizing the [Infinispan Operator](https://infinispan.org/infinispan-operator/main/operator.html). The [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/main/operator) provides a good example of getting started with Infinispan in OpenShift.
 
-    *  **Install Client Jars and Set INFINISPAN_SERVICE_NAME** - To enable Infinispan functionality in Liberty, the container image author can use the Dockerfile provided below. This Dockerfile assumes an Infinispan service name of `example-infinispan`, which is the default used in the [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/master/operator). To customize your Infinispan service see [Creating Infinispan Clusters](https://infinispan.org/infinispan-operator/master/operator.html#creating_minimal_clusters-start). The `INFINISPAN_SERVICE_NAME` environment variable must be set at build time as shown in the example Dockerfile, or overridden at image deploy time.
+    *  **Install Client Jars and Set INFINISPAN_SERVICE_NAME** - To enable Infinispan functionality in Liberty, the container image author can use the Dockerfile provided below. This Dockerfile assumes an Infinispan service name of `example-infinispan`, which is the default used in the [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/main/operator). To customize your Infinispan service see [Creating Infinispan Clusters](https://infinispan.org/infinispan-operator/main/operator.html#creating_minimal_clusters-start). The `INFINISPAN_SERVICE_NAME` environment variable must be set at build time as shown in the example Dockerfile, or overridden at image deploy time.
         *  **TIP** - If your Infinispan deployment and Liberty deployment are in different namespaces/projects, you will need to set the `INFINISPAN_HOST`, `INFINISPAN_PORT`, `INFINISPAN_USER`, and `INFINISPAN_PASS` environment variables in addition to the `INFINISPAN_SERVICE_NAME` environment variable. This is due to the Liberty deployment not having the access to the Infinispan service environment variables it requires.
 
     ```dockerfile
@@ -253,7 +254,7 @@ You can place each zip archive in versioned folders, for example repo-host/${LIB
 
 You will need a hostname/IP and mapped port to generate `FEATURE_REPO_URL`, for example above port 8080 is used.
 
-#### Using locally hosted feautre repository in Dockerfile
+#### Using locally hosted feature repository in Dockerfile
 
 Using `FEATURE_REPO_URL` build argument it is possible to provide a link to a feature repo zip file
 containing all the features. You will also need to make sure to call `RUN configure.sh` in your Dockerfile
@@ -288,7 +289,7 @@ For the list of known issues related to images, see the [Known Issues](https://g
 
 # Issues and Contributions
 
-For issues relating specifically to the Dockerfiles and scripts, please use the [GitHub issue tracker](https://github.com/WASdev/ci.docker/issues). For more general issue relating to IBM WebSphere Application Server Liberty you can [get help](https://developer.ibm.com/wasdev/help/) through the WASdev community or, if you have production licenses for WebSphere Application Server, via the usual support channels. We welcome contributions following [our guidelines](https://github.com/WASdev/wasdev.github.io/blob/master/CONTRIBUTING.md).
+For issues relating specifically to the Dockerfiles and scripts, please use the [GitHub issue tracker](https://github.com/WASdev/ci.docker/issues). For more general issue relating to IBM WebSphere Application Server Liberty you can [get help](https://community.ibm.com/community/user/wasdevops/communities/websphere-home) through the WASdev community or, if you have production licenses for WebSphere Application Server, via the usual support channels. We welcome contributions following [our guidelines](https://github.com/WASdev/wasdev.github.io/blob/main/CONTRIBUTING.md).
 
 # License
 
