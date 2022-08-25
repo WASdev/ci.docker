@@ -36,6 +36,20 @@ full-java11-openj9-ubi
 full-java17-openj9-ubi
 ```
 
+## 22.0.0.8
+
+```
+22.0.0.8-kernel-java8-openj9-ubi
+22.0.0.8-kernel-java8-ibmjava-ubi
+22.0.0.8-kernel-java11-openj9-ubi
+22.0.0.8-kernel-java17-openj9-ubi
+
+22.0.0.8-full-java8-openj9-ubi
+22.0.0.8-full-java8-ibmjava-ubi
+22.0.0.8-full-java11-openj9-ubi
+22.0.0.8-full-java17-openj9-ubi
+```
+
 ## 22.0.0.6
 
 ```
