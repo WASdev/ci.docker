@@ -56,7 +56,7 @@ if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
 fi
 
 # Install necessary features using featureUtility
-featureUtility installServerFeatures --acceptLicense defaultServer --noCache
+featureUtility installServerFeatures --acceptLicense ${SERVER_NAME} --noCache
 find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw
 <<<<<<< HEAD
 
