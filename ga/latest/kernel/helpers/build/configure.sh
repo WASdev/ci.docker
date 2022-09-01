@@ -139,7 +139,8 @@ function main() {
       curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
       installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
       rm -rf /tmp/repo.zip
-    else
+    # Otherwise, if features.sh did not run, install server features.
+    elif [ "$FEATURES_INSTALLED" == "false" ]; then
       installUtility install --acceptLicense defaultServer || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
     fi
   fi

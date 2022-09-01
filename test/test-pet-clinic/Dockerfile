@@ -20,4 +20,6 @@ COPY --from=staging /config/server.xml /config/server.xml
 COPY --from=staging /staging/lib.index.cache /lib.index.cache
 COPY --from=staging /staging/myThinApp.jar /config/dropins/spring/myThinApp.jar
 
-RUN features.sh && configure.sh
+RUN features.sh
+
+RUN configure.sh
