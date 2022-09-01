@@ -137,8 +137,9 @@ function main() {
     fi
   fi
 
-  # SSO
+  # SSO Support
   if [[ -n "$SEC_SSO_PROVIDERS" ]]; then
+    cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
     parseProviders $SEC_SSO_PROVIDERS
   fi
 
@@ -148,10 +149,8 @@ function main() {
       curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
       installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
       rm -rf /tmp/repo.zip
-    # Otherwise, if features.sh did not run, install server features.
-    elif [ "$FEATURES_INSTALLED" == "false" ]; then
-      featureUtility installServerFeatures --acceptLicense defaultServer --noCache
-      find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw 
+    else
+      installUtility install --acceptLicense defaultServer || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
     fi
   fi
 
