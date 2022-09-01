@@ -109,19 +109,13 @@ function main() {
     fi
   fi
 
-  # Hazelcast Session Caching
-  if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
-    cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
-    mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
-    cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
-  fi
-
   # Key Store
   keystorePath="$SNIPPETS_TARGET_DEFAULTS/keystore.xml"
   if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]
   then
     cp $SNIPPETS_SOURCE/tls.xml $SNIPPETS_TARGET/tls.xml
   fi
+  
   if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]
   then
     if [ ! -e $keystorePath ]
