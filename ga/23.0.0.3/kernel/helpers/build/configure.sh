@@ -115,7 +115,7 @@ function main() {
   then
     cp $SNIPPETS_SOURCE/tls.xml $SNIPPETS_TARGET/tls.xml
   fi
-  
+
   if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]
   then
     if [ ! -e $keystorePath ]
