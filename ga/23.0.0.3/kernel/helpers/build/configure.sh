@@ -14,11 +14,10 @@
 # limitations under the License.
 
 # Determine if featureUtility ran in an earlier build step
-if [ -f "/opt/ibm/wlp/configure-liberty.log" ]; then
+if /opt/ibm/helpers/build/features_installed.sh; then
   FEATURES_INSTALLED=true
 else
   FEATURES_INSTALLED=false
-  >&2 echo "WARNING: This is not an optimal build configuration. Although features in server.xml will continue to be installed correctly, the 'RUN features.sh' command should be added to the Dockerfile prior to configure.sh. See https://github.com/WASdev/ci.docker#building-an-application-image for a sample application image template."
 fi
 
 if [ "$VERBOSE" != "true" ]; then
