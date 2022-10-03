@@ -119,9 +119,14 @@ function main() {
   if [ "$SKIP_FEATURE_INSTALL" != "true" ]; then
     # Install needed features
     if [ "$FEATURE_REPO_URL" ]; then
-      curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
-      installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
-      rm -rf /tmp/repo.zip
+      if [[ $FEATURE_REPO_URL == *.zip ]]; then
+        curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
+        installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
+        rm -rf /tmp/repo.zip
+      else
+	featureUtility installServerFeatures --acceptLicense defaultServer --noCache
+        find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw
+      fi
     else
       installUtility install --acceptLicense defaultServer || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
     fi
