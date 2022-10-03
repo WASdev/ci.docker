@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # Determine if featureUtility ran in an earlier build step
-if /opt/ibm/helpers/build/features_installed.sh; then
+if /opt/ibm/helpers/build/features-installed.sh; then
   FEATURES_INSTALLED=true
 else
   FEATURES_INSTALLED=false

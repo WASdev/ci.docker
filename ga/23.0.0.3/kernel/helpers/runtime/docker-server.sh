@@ -84,12 +84,6 @@ function importKeyCert() {
   fi
 }
 
-# Resolve liberty server symlinks and creation for server name changes
-/opt/ibm/helpers/runtime/configure-liberty.sh
-if [ $? -ne 0 ]; then
-    exit
-fi
-
 case "${LICENSE,,}" in
   "accept" ) # Suppress license message in logs
     grep -s -F "com.ibm.ws.logging.hideMessage" /config/bootstrap.properties \
@@ -146,8 +140,6 @@ if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
  echo "INFINISPAN_PASS: ${INFINISPAN_PASS}"
 fi
 
-# Remove generated metadata
-rm /opt/ibm/wlp/configure-liberty.log
 
 # Pass on to the real server run
 exec "$@"

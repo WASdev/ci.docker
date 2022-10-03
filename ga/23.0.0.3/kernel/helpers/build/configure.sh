@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) Copyright IBM Corporation 2022.
+# (C) Copyright IBM Corporation 2020.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# Determine if featureUtility ran in an earlier build step
-if /opt/ibm/helpers/build/features_installed.sh; then
-  FEATURES_INSTALLED=true
-else
-  FEATURES_INSTALLED=false
-fi
-
 if [ "$VERBOSE" != "true" ]; then
   exec &>/dev/null
 fi
@@ -27,14 +19,6 @@ fi
 set -Eeox pipefail
 
 function main() {
-  if [ "$FEATURES_INSTALLED" == "false" ]; then
-    # Resolve liberty server symlinks and creation for server name changes
-    /opt/ibm/helpers/runtime/configure-liberty.sh
-    if [ $? -ne 0 ]; then
-      exit
-    fi
-  fi
-
   ##Define variables for XML snippets source and target paths
   WLP_INSTALL_DIR=/opt/ibm/wlp
   SHARED_CONFIG_DIR=${WLP_INSTALL_DIR}/usr/shared/config
@@ -44,7 +28,7 @@ function main() {
   SNIPPETS_TARGET=/config/configDropins/overrides
   SNIPPETS_TARGET_DEFAULTS=/config/configDropins/defaults
   mkdir -p ${SNIPPETS_TARGET}
-  mkdir -p ${SNIPPETS_TARGET_DEFAULTS}
+
 
   #Check for each Liberty value-add functionality
 
@@ -114,7 +98,7 @@ function main() {
   then
     cp $SNIPPETS_SOURCE/tls.xml $SNIPPETS_TARGET/tls.xml
   fi
-  
+
   if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]
   then
     if [ ! -e $keystorePath ]
@@ -138,8 +122,7 @@ function main() {
       curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
       installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
       rm -rf /tmp/repo.zip
-    # Otherwise, if features.sh did not run, install server features.
-    elif [ "$FEATURES_INSTALLED" == "false" ]; then
+    else
       installUtility install --acceptLicense defaultServer || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
     fi
   fi
