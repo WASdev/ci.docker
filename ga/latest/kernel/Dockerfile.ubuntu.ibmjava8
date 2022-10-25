@@ -16,21 +16,21 @@ FROM ibmjava:8-jre
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
-ARG EN_SHA=44a2cb9704f0ed8e871e9d1a8faa55563d093d0c34af3c248492dd1790a794eb
-ARG NON_IBM_SHA=9e1ddbc876eb5fd3182799b2ccf6619f23acfe6d4b0b8ee82c72e3944ad15b34
-ARG NOTICES_SHA=1f852693234e6b9fabccb4218a21a88b485300dccd76ee089fb007aaf3180725
+ARG EN_SHA=1ce31500fa2422ed1410137cd50d33e18cf42ad0ae0b5a3e545183ae801869e0
+ARG NON_IBM_SHA=1f032aeb46b5f5f4262f123cb2339230e2755cac039cb1bf0285cbb0f37fe7c8
+ARG NOTICES_SHA=46056efcb4c0e11e1cc9a33104c4d2ae9b42d566ec74885804914c4eb41ef2ec
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="22.0.0.10" \
-      org.opencontainers.image.revision="cl221020220912-1100" \
+      org.opencontainers.image.version="22.0.0.11" \
+      org.opencontainers.image.revision="cl221120221010-1540" \
       org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM's Java and Ubuntu as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image" \
       org.opencontainers.image.title="IBM WebSphere Liberty"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 22.0.0_10
+ENV LIBERTY_VERSION 22.0.0_11
 
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
@@ -62,8 +62,8 @@ ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="22.0.0.10" \
-      "BuildLabel"="cl221020220912-1100"
+      "ProductVersion"="22.0.0.11" \
+      "BuildLabel"="cl221120221010-1540"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
