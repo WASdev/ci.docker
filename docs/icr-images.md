@@ -12,7 +12,7 @@ Available image tags are listed below. The tags follow this naming convention:
 
 Append a tag to `icr.io/appcafe/websphere-liberty` to pull a specific image. For example, 
 ```
-icr.io/appcafe/websphere-liberty:22.0.0.9-kernel-java17-openj9-ubi
+icr.io/appcafe/websphere-liberty:22.0.0.12-kernel-java17-openj9-ubi
 ```
 
 Available images can be listed using [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started). Log in with your IBMid prior to running the following commands. Note that authentication is only required to list the images. **Images can be pulled from ICR without authentication** : 
