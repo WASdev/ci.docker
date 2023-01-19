@@ -57,7 +57,7 @@ RUN apt-get update \
     && apt-get purge --auto-remove -y wget \
     && rm -rf /var/lib/apt/lists/*
 
-ENV PATH=/opt/ibm/wlp/bin:/opt/ibm/helpers/build:$PATH
+ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build
 
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \

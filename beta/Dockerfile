@@ -35,7 +35,7 @@ RUN LIBERTY_URL=$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/softw
     && rm /tmp/wlp-beta.zip \
     && chown -R 1001:0 /opt/ibm/wlp \
     && chmod -R g+rw /opt/ibm/wlp
-ENV PATH=/opt/ibm/wlp/bin:$PATH
+ENV PATH=$PATH:/opt/ibm/wlp/bin
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
