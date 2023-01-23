@@ -19,7 +19,7 @@ fi
 set -Eeox pipefail 
 
 # Resolve liberty server symlinks and creation for server name changes
-/opt/ibm/helpers/runtime/configure-liberty.sh
+/opt/ibm/helpers/build/configure-liberty.sh
 if [ $? -ne 0 ]; then
   exit
 fi
