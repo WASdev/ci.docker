@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) Copyright IBM Corporation 2022.
+# (C) Copyright IBM Corporation 2020, 2023.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ function main() {
   if [ "$FEATURES_INSTALLED" == "false" ]; then
     # Resolve liberty server symlinks and creation for server name changes
     /opt/ibm/helpers/build/configure-liberty.sh
+    rm /opt/ibm/wlp/configure-liberty.log
     if [ $? -ne 0 ]; then
       exit
     fi
