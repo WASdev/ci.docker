@@ -96,7 +96,7 @@ RUN mkdir /logs \
     && chown -R 1001:0 /config \
     && chmod -R g+rw /config \
     && chown -R 1001:0 /opt/ibm/helpers \
-    && chmod -R g+rw /opt/ibm/helpers \
+    && chmod -R g+rwx /opt/ibm/helpers \
     && chown -R 1001:0 /opt/ibm/fixes \
     && chmod -R g+rwx /opt/ibm/fixes \
     && chown -R 1001:0 /opt/ibm/wlp/usr \
