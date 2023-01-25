@@ -56,8 +56,6 @@ RUN yum -y install shadow-utils unzip wget findutils openssl \
     && rm /tmp/wlp.zip \
     && chown -R 1001:0 /opt/ibm/wlp \
     && chmod -R g+rw /opt/ibm/wlp \
-    && chown -R 0:0 /opt/ibm/wlp/bin \
-    && chmod -R go-w /opt/ibm/wlp/bin \
     && yum -y remove shadow-utils unzip wget \
     && yum clean all
 
@@ -97,8 +95,8 @@ RUN mkdir /logs \
     && mkdir -p /config/configDropins/overrides \
     && chown -R 1001:0 /config \
     && chmod -R g+rw /config \
-    && chown -R 0:0 /opt/ibm/helpers \
-    && chmod -R go-w /opt/ibm/helpers \
+    && chown -R 1001:0 /opt/ibm/helpers \
+    && chmod -R g+rw /opt/ibm/helpers \
     && chown -R 1001:0 /opt/ibm/fixes \
     && chmod -R g+rwx /opt/ibm/fixes \
     && chown -R 1001:0 /opt/ibm/wlp/usr \
