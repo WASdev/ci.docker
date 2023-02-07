@@ -90,7 +90,7 @@ The following enterprise functionalities are now **deprecated** and will be **re
   *  XML Snippet Location: [oidc-config.xml](ga/latest/kernel/helpers/build/configuration_snippets/oidc-config.xml)
   *  Note: The following variables will be read:  OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_DISCOVERY_URL.
 
-## Security 
+## Security
 
 Single Sign-On can be optionally configured by adding Liberty server variables in an xml file, by passing environment variables (less secure),
 or by passing Liberty server variables in through the Liberty operator. See [SECURITY.md](SECURITY.md).
@@ -108,6 +108,12 @@ This feature can be controlled via the following variables:
 * `OPENJ9_SCC` (environment variable)
   *  Description: If `"true"`, cache application-specific in an SCC and include it in the image. A new SCC will be created if needed, otherwise data will be added to the existing SCC.
   *  Default: `"true"`.
+* `TRIM_SCC` (environment variable)
+  * Description: If `"true"`, the application-specific SCC layer will be sized-down to accomodate only the data populated during image build process. To allow the application to add more data to the SCC at runtime, set this variable to `"false"`, but also ensure the SCC is not marked read-only. This can be done by setting the OPENJ9_JAVA_OPTIONS environment variable in your application Dockerfile like so: `ENV OPENJ9_JAVA_OPTIONS="-XX:+IgnoreUnrecognizedVMOptions -XX:+IdleTuningGcOnIdle -Xshareclasses:name=openj9_system_scc,cacheDir=/opt/java/.scc,nonFatal -Dosgi.checkConfiguration=false"`. Note that OPENJ9_JAVA_OPTIONS is already defined in the base Liberty image dockerfile, but includes the `readonly` sub-option.
+  * Default: `"true"`.
+* `SCC_SIZE` (environment variable)
+  * Description: The size of the application-specific SCC layer in the image. This value is only used if `TRIM_SCC` is set to `"false"`.
+  * Default: `"80m"`.
 
 ## Logging
 
