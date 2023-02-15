@@ -30,12 +30,22 @@ function importKeyCert() {
   if [ -f "${CERT_FOLDER}/${KEY_FILE}" ] && [ -f "${CERT_FOLDER}/${CRT_FILE}" ]; then
     echo "Found mounted TLS certificates, generating keystore"
     mkdir -p /output/resources/security
-    openssl pkcs12 -export \
-      -name "defaultKeyStore" \
-      -inkey "${CERT_FOLDER}/${KEY_FILE}" \
-      -in "${CERT_FOLDER}/${CRT_FILE}" \
-      -out "${KEYSTORE_FILE}" \
-      -password pass:"${PASSWORD}" >&/dev/null
+    if [ -f "${CERT_FOLDER}/${CA_FILE}" ]; then
+      openssl pkcs12 -export \
+        -name "defaultKeyStore" \
+        -inkey "${CERT_FOLDER}/${KEY_FILE}" \
+        -in "${CERT_FOLDER}/${CRT_FILE}" \
+        -certfile "${CERT_FOLDER}/${CA_FILE}" \
+        -out "${KEYSTORE_FILE}" \
+        -password pass:"${PASSWORD}" >&/dev/null
+    else
+      openssl pkcs12 -export \
+        -name "defaultKeyStore" \
+        -inkey "${CERT_FOLDER}/${KEY_FILE}" \
+        -in "${CERT_FOLDER}/${CRT_FILE}" \
+        -out "${KEYSTORE_FILE}" \
+        -password pass:"${PASSWORD}" >&/dev/null
+    fi
 
      # Since we are creating new keystore, always write new password to a file
     sed "s|REPLACE|$PASSWORD|g" $SNIPPETS_SOURCE/keystore.xml > $SNIPPETS_TARGET_DEFAULTS/keystore.xml
