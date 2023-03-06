@@ -145,9 +145,15 @@ function main() {
   find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw
 
   # Create a new SCC layer
-  if [ "$OPENJ9_SCC" == "true" ]
-  then
-    populate_scc.sh -i 1
+  if [ "$OPENJ9_SCC" == "true" ]; then
+    cmd="populate_scc.sh -i 1"
+    if [ "$TRIM_SCC" == "false" ]; then
+      cmd+=" -d"
+    fi
+    if [ ! "$SCC_SIZE" = "" ]; then
+      cmd+=" -s $SCC_SIZE"
+    fi
+    eval $cmd
   fi
 }
 
