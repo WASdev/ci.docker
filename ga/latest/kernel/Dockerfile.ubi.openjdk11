@@ -16,24 +16,24 @@ FROM icr.io/appcafe/ibm-semeru-runtimes:open-11-jdk-ubi
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
-ARG EN_SHA=dd3e1f52b274ac7551192d7ff07a2858396132ece9a26e8d3e8e28830e84183e
-ARG NON_IBM_SHA=0a41a7fa840ccd132d68f0fc6138f573fe110dafaa36f2bcdeab9f2b495876a5
-ARG NOTICES_SHA=d4e03fe4b7d7492aba18a7ed449c0a5666258e4318c1a929042f53ed87abafa1
+ARG EN_SHA=2d77600f393a32877305f82957968c41d1e140ad4ebd3a2c07f5d77f601d5614
+ARG NON_IBM_SHA=565db37df01346ca4f611c4fc58431e845f1c4002908e1a4c696230d7f396d9c
+ARG NOTICES_SHA=c08df1e3fdf99be6f02fcf458e4533119a4785a92994d5950528f02f349ada4b
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="23.0.0.1" \
-      org.opencontainers.image.revision="cl230120230123-2118" \
+      org.opencontainers.image.version="23.0.0.2" \
+      org.opencontainers.image.revision="cl230220230222-1257" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
-      version="23.0.0.1" \
+      version="23.0.0.2" \
       summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8" \
       description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 23.0.0_1
+ENV LIBERTY_VERSION 23.0.0.2
 
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
@@ -64,8 +64,8 @@ ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="23.0.0.1" \
-      "BuildLabel"="cl230120230123-2118"
+      "ProductVersion"="23.0.0.2" \
+      "BuildLabel"="cl230220230222-1257"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
