@@ -32,6 +32,35 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Arthur De Magalhaes
       summary="Image for WebSphere Liberty with IBM's Java and Red Hat's UBI 8" \
       description="This image contains the WebSphere Liberty runtime with IBM's Java and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
 
+# Install dumb-init
+RUN set -eux; \
+    ARCH="$(uname -m)"; \
+    case "${ARCH}" in \
+       aarch64|arm64) \
+         DUMB_INIT_URL='https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_aarch64'; \
+         DUBM_INIT_SHA256=b7d648f97154a99c539b63c55979cd29f005f88430fb383007fe3458340b795e; \
+         ;; \
+       amd64|x86_64) \
+         DUMB_INIT_URL='https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64'; \
+         DUBM_INIT_SHA256=e874b55f3279ca41415d290c512a7ba9d08f98041b28ae7c2acb19a545f1c4df; \
+         ;; \
+       ppc64el|ppc64le) \
+         DUMB_INIT_URL='https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_ppc64le'; \
+         DUBM_INIT_SHA256=3d15e80e29f0f4fa1fc686b00613a2220bc37e83a35283d4b4cca1fbd0a5609f; \
+         ;; \
+       s390x) \
+         DUMB_INIT_URL='https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_s390x'; \
+         DUBM_INIT_SHA256=47e4601b152fc6dcb1891e66c30ecc62a2939fd7ffd1515a7c30f281cfec53b7; \
+         ;;\
+       *) \
+         echo "Unsupported arch: ${ARCH}"; \
+         exit 1; \
+         ;; \
+    esac; \
+    curl -LfsSo /usr/bin/dumb-init ${DUMB_INIT_URL}; \
+    echo "${DUBM_INIT_SHA256} */usr/bin/dumb-init" | sha256sum -c -; \
+    chmod +x /usr/bin/dumb-init;
+
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 23.0.0_05
 
@@ -75,6 +104,7 @@ ENV LOG_DIR=/logs \
 RUN /opt/ibm/wlp/bin/server create \
     && rm -rf $WLP_OUTPUT_DIR/.classCache /output/workarea
 
+COPY NOTICES /opt/NOTICES
 COPY helpers/ /opt/ibm/helpers/
 COPY fixes/ /opt/ibm/fixes/
 
