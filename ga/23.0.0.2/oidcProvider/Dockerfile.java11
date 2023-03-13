@@ -12,26 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-<<<<<<<< HEAD:ga/23.0.0.3/full/Dockerfile.ubuntu.ibmjava8
-FROM websphere-liberty:23.0.0.3-kernel-java8-ibmjava
-========
-FROM websphere-liberty:23.0.0.2-kernel-java8-ibmjava
->>>>>>>> e880e18 (Merge main into kirby-patch-kernel, update to 23.0.0.2):ga/23.0.0.2/full/Dockerfile.ubuntu.ibmjava8
-ARG VERBOSE=false
+FROM websphere-liberty:kernel-java11
+
 ARG REPOSITORIES_PROPERTIES=""
 
 RUN if [ ! -z $REPOSITORIES_PROPERTIES ]; then mkdir /opt/ibm/wlp/etc/ \
   && echo $REPOSITORIES_PROPERTIES > /opt/ibm/wlp/etc/repositories.properties; fi \
-  && installUtility install --acceptLicense baseBundle \
+  && installUtility install --acceptLicense \
+    appSecurity-2.0 ldapRegistry-3.0 \
+    localConnector-1.0  \
+    samlWeb-2.0 \
+    openidConnectServer-1.0 \
+    socialLogin-1.0 \
+    openidConnectClient-1.0 \
   && if [ ! -z $REPOSITORIES_PROPERTIES ]; then rm /opt/ibm/wlp/etc/repositories.properties; fi \
   && rm -rf /output/workarea /output/logs \
-  && find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw
+  && chmod -R g+rwx /opt/ibm/wlp/output/*
 
-COPY helpers/build/features-installed.sh /opt/ibm/helpers/build/
 COPY --chown=1001:0 server.xml /config/
-
-# Create a new SCC layer
-RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
-    && rm -rf /output/messaging /output/resources/security /logs/* $WLP_OUTPUT_DIR/.classCache \
-    && find /opt/ibm/wlp/output ! -path "*.classCache*" ! -perm -g=rwx -print0 | xargs -0 -r chmod g+rwx
-
