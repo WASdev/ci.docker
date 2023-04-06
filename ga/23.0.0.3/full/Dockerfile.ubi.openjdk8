@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty
-FROM $PARENT_IMAGE:kernel-java8-openj9-ubi
+FROM $PARENT_IMAGE:23.0.0.3-kernel-java8-openj9-ubi
 ARG VERBOSE=false
 ARG REPOSITORIES_PROPERTIES=""
 
