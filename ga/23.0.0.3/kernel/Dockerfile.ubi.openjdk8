@@ -33,7 +33,7 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Arthur De Magalhaes
       description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 23.0.0.3
+ENV LIBERTY_VERSION 23.0.0_3
 
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
