@@ -30,7 +30,7 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Arthur De Magalhaes
       org.opencontainers.image.title="IBM WebSphere Liberty"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 23.0.0_3
+ENV LIBERTY_VERSION 23.0.0_03
 
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
