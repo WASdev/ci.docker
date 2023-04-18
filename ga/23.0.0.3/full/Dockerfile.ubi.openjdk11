@@ -13,11 +13,7 @@
 # limitations under the License.
 
 ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty
-<<<<<<<< HEAD:ga/23.0.0.3/full/Dockerfile.ubi.openjdk11
 FROM $PARENT_IMAGE:23.0.0.3-kernel-java11-openj9-ubi
-========
-FROM $PARENT_IMAGE:23.0.0.2-kernel-java11-openj9-ubi
->>>>>>>> e880e18 (Merge main into kirby-patch-kernel, update to 23.0.0.2):ga/23.0.0.2/full/Dockerfile.ubi.openjdk11
 ARG VERBOSE=false
 ARG REPOSITORIES_PROPERTIES=""
 

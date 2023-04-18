@@ -12,11 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-<<<<<<<< HEAD:ga/23.0.0.3/full/Dockerfile.ubuntu.openjdk17
 FROM websphere-liberty:23.0.0.3-kernel-java17-openj9
-========
-FROM websphere-liberty:23.0.0.2-kernel-java17-openj9
->>>>>>>> e880e18 (Merge main into kirby-patch-kernel, update to 23.0.0.2):ga/23.0.0.2/full/Dockerfile.ubuntu.openjdk17
 ARG VERBOSE=false
 ARG REPOSITORIES_PROPERTIES=""
 
