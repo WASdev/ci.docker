@@ -32,7 +32,7 @@ mkdir -p ${SNIPPETS_TARGET}
 mkdir -p ${SNIPPETS_TARGET_DEFAULTS}
 
 # MicroProfile Health
-if [ "$MP_HEALTH_CHECK" == "true" ] && [ "$FEATURES_INSTALLED" == "false" ]; then
+if [ "$MP_HEALTH_CHECK" == "true" ]; then
   cp $SNIPPETS_SOURCE/mp-health-check.xml $SNIPPETS_TARGET/mp-health-check.xml
 fi
 
