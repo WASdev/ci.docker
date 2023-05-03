@@ -30,7 +30,7 @@ function main() {
   if [ "$FEATURES_INSTALLED" == "false" ]; then
     # Resolve liberty server symlinks and creation for server name changes
     /opt/ibm/helpers/build/configure-liberty.sh
-    rm /opt/ibm/wlp/configure-liberty.log
+    rm /logs/configure-liberty.log
     if [ $? -ne 0 ]; then
       exit
     fi

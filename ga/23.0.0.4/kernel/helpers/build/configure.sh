@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) Copyright IBM Corporation 2020.
+# (C) Copyright IBM Corporation 2020, 2023.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# Determine if featureUtility ran in an earlier build step
+if /opt/ibm/helpers/build/features-installed.sh; then
+  FEATURES_INSTALLED=true
+else
+  FEATURES_INSTALLED=false
+fi
+
 if [ "$VERBOSE" != "true" ]; then
   exec &>/dev/null
 fi
@@ -19,6 +27,15 @@ fi
 set -Eeox pipefail
 
 function main() {
+  if [ "$FEATURES_INSTALLED" == "false" ]; then
+    # Resolve liberty server symlinks and creation for server name changes
+    /opt/ibm/helpers/build/configure-liberty.sh
+    rm /logs/configure-liberty.log
+    if [ $? -ne 0 ]; then
+      exit
+    fi
+  fi
+
   ##Define variables for XML snippets source and target paths
   WLP_INSTALL_DIR=/opt/ibm/wlp
   SHARED_CONFIG_DIR=${WLP_INSTALL_DIR}/usr/shared/config
@@ -28,24 +45,28 @@ function main() {
   SNIPPETS_TARGET=/config/configDropins/overrides
   SNIPPETS_TARGET_DEFAULTS=/config/configDropins/defaults
   mkdir -p ${SNIPPETS_TARGET}
-
+  mkdir -p ${SNIPPETS_TARGET_DEFAULTS}
 
   #Check for each Liberty value-add functionality
 
   # MicroProfile Health
-  if [ "$MP_HEALTH_CHECK" == "true" ]; then
+  if [ "$MP_HEALTH_CHECK" == "true" ] && [ "$FEATURES_INSTALLED" == "false" ]; then
     cp $SNIPPETS_SOURCE/mp-health-check.xml $SNIPPETS_TARGET/mp-health-check.xml
   fi
 
   # MicroProfile Monitoring
   if [ "$MP_MONITORING" == "true" ]; then
+    if [ "$FEATURES_INSTALLED" == "false" ]; then
+      cp $SNIPPETS_SOURCE/mp-monitoring-features.xml $SNIPPETS_TARGET/mp-monitoring-features.xml
+    fi
     cp $SNIPPETS_SOURCE/mp-monitoring.xml $SNIPPETS_TARGET/mp-monitoring.xml
   fi
 
   # OpenIdConnect Client
-  if [ "$OIDC" == "true" ]  || [ "$OIDC_CONFIG" == "true" ]
-  then
-    cp $SNIPPETS_SOURCE/oidc.xml $SNIPPETS_TARGET/oidc.xml
+  if [ "$FEATURES_INSTALLED" == "false" ]; then
+    if [ "$OIDC" == "true" ]  || [ "$OIDC_CONFIG" == "true" ]; then
+      cp $SNIPPETS_SOURCE/oidc.xml $SNIPPETS_TARGET/oidc.xml
+    fi
   fi
 
   if [ "$OIDC_CONFIG" == "true" ]; then
@@ -62,18 +83,25 @@ function main() {
   fi
 
   # Hazelcast Session Caching
-  if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]
-  then
-  cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
-  mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
-  cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
+  if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
+    if [ "$FEATURES_INSTALLED" == "false" ]; then
+      cp ${SNIPPETS_SOURCE}/sessioncache-features.xml ${SNIPPETS_TARGET}/sessioncache-features.xml
+    fi 
+    cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
+    mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
+    cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
   fi
 
   # Infinispan Session Caching
   if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
-  cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
-  chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
+    if [ "$FEATURES_INSTALLED" == "false" ]; then
+      cp ${SNIPPETS_SOURCE}/sessioncache-features.xml ${SNIPPETS_TARGET}/sessioncache-features.xml
+      chmod g+rw $SNIPPETS_TARGET/sessioncache-features.xml
+    fi
+    cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
+    chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
   fi
+
   # IIOP Endpoint
   if [ "$IIOP_ENDPOINT" == "true" ]; then
     if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
@@ -94,15 +122,14 @@ function main() {
 
   # Key Store
   keystorePath="$SNIPPETS_TARGET_DEFAULTS/keystore.xml"
-  if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]
-  then
-    cp $SNIPPETS_SOURCE/tls.xml $SNIPPETS_TARGET/tls.xml
+  if [ "$FEATURES_INSTALLED" == "false" ]; then
+    if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
+      cp $SNIPPETS_SOURCE/tls.xml $SNIPPETS_TARGET/tls.xml
+    fi
   fi
 
-  if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]
-  then
-    if [ ! -e $keystorePath ]
-    then
+  if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]; then
+    if [ ! -e $keystorePath ]; then
       # Generate the keystore.xml
       export KEYSTOREPWD=$(openssl rand -base64 32)
       sed "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml > $SNIPPETS_TARGET_DEFAULTS/keystore.xml
@@ -116,7 +143,7 @@ function main() {
     parseProviders $SEC_SSO_PROVIDERS
   fi
 
-  if [ "$SKIP_FEATURE_INSTALL" != "true" ]; then
+  if [ "$SKIP_FEATURE_INSTALL" != "true" ] && [ "$FEATURES_INSTALLED" == "false" ]; then
     # Install needed features
     if [ "$FEATURE_REPO_URL" ]; then
       curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
