@@ -46,19 +46,7 @@ if [ "$OIDC" == "true" ]  || [ "$OIDC_CONFIG" == "true" ]; then
   cp $SNIPPETS_SOURCE/oidc.xml $SNIPPETS_TARGET/oidc.xml
 fi
 
-# Hazelcast Session Caching
-if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
-  cp ${SNIPPETS_SOURCE}/sessioncache-features.xml ${SNIPPETS_TARGET}/sessioncache-features.xml
-  chmod g+rw $SNIPPETS_TARGET/sessioncache-features.xml
-fi
-
-# Infinispan Session Caching
-if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
-  cp ${SNIPPETS_SOURCE}/sessioncache-features.xml ${SNIPPETS_TARGET}/sessioncache-features.xml
-  chmod g+rw $SNIPPETS_TARGET/sessioncache-features.xml
-fi
-
-# Session Caching
+# Hazelcast & Infinispan Session Caching
 if [ -n "$INFINISPAN_SERVICE_NAME" ] || [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
   cp ${SNIPPETS_SOURCE}/sessioncache-features.xml ${SNIPPETS_TARGET}/sessioncache-features.xml
   chmod g+rw $SNIPPETS_TARGET/sessioncache-features.xml
