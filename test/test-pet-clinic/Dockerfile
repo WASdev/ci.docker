@@ -1,6 +1,5 @@
 
-#ARG IMAGE=ibmcom/websphere-liberty:kernel-java8-openj9-ubi
-ARG IMAGE=testjava
+ARG IMAGE=ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 FROM ${IMAGE} as staging
 
 COPY --chown=1001:0 server.xml /config
