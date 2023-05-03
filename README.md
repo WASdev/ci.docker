@@ -4,6 +4,9 @@
 - [WebSphere Application Server Liberty and Containers](#websphere-application-server-liberty-and-containers)
   - [Container images](#container-images)
   - [Building an application image](#building-an-application-image)
+  - [Alternative image builds using Buildah and Podman](#alternative-image-builds-using-buildah-and-podman)
+  - [Building custom application images on OpenShift Container Platform](#building-custom-application-images-on-openshift-container-platform)
+    - [Building from a Git repository](#building-from-a-git-repository)
   - [Optional Enterprise Functionality](#optional-enterprise-functionality)
   - [Security](#security)
   - [OpenJ9 Shared Class Cache (SCC)](#openj9-shared-class-cache-scc)
@@ -46,6 +49,76 @@ RUN configure.sh
 ```
 
 This will result in a container image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
+
+## Alternative image builds using Buildah and Podman
+
+For users without a Docker-based environment, there are alternative ways to build an application image such as through Buildah. This can be achieved using the `buildah` CLI by emulating the Dockerfile in [Building an application image](#building-an-application-image) through a series of commands as listed below:
+  
+```bash
+buildah from icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi
+
+# Add my app and config
+buildah copy --chown 1001:0 websphere-liberty-working-container Sample1.war /config/dropins
+buildah copy --chown 1001:0 websphere-liberty-working-container server.xml /config/
+
+# Add interim fixes (optional)
+buildah copy --chown 1001:0 websphere-liberty-working-container interim-fixes /fixes/
+
+# This script will add the requested XML snippets, grow image to be fit-for-purpose and apply interim fixes
+buildah run websphere-liberty-working-container configure.sh 
+
+buildah commit websphere-liberty-working-container websphere-liberty:my-patch
+```
+
+The committed image can be run locally through a container management tool such as Podman and pushed to a container registry.  
+
+```
+podman run -d -p 80:9080 -p 443:9443 websphere-liberty:my-patch
+```
+
+## Building custom application images on OpenShift Container Platform
+
+OpenShift Container Platform (OCP) makes it easy for users to build and run custom images through a couple CRDs using it's internal container registry.
+This can be achieved through a variety of build inputs such as via Git repository or directly from the local filesystem. See more on [Creating build inputs](https://docs.openshift.com/container-platform/4.6/builds/creating-build-inputs.html).
+
+### Building from a Git repository
+
+Here is an example using our Pet Clinic application, pulled directly from this repository.
+
+1. Login to your OCP cluster through the `oc` CLI.
+2. Create the custom resources below. An `ImageStream` is created to be able to later reference the container image.
+
+```
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: pet-clinic-imagestream
+  labels:
+    name: pet-clinic
+```
+Then a `BuildConfig` is added to specify how the custom Liberty application should be built.
+```
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: pet-clinic-buildconfig
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/WASdev/ci.docker
+    contextDir: test/test-pet-clinic
+  strategy:
+    type: Docker
+  output:
+    to:
+      kind: ImageStreamTag
+      name: pet-clinic-imagestream:latest
+```
+
+3. Trigger a build manually by running the command `oc start-build pet-clinic-buildconfig`.
+4. In the OpenShift UI under "Builds" > "ImageStreams", click on `pet-clinic-imagestream`, which should show an "Image count" of "1" indicating a successful build.
+5. Run the newly generated Liberty image (similar to `image-registry.openshift-image-registry.svc:5000/<your-namespace>/pet-clinic-imagestream`) directly as a Pod, Deployment, or through our other product offerings such as the [WebSphere Liberty Operator](https://www.ibm.com/docs/en/was-liberty/base?topic=operator-websphere-liberty-overview) (recommended).
 
 ## Optional Enterprise Functionality
 
