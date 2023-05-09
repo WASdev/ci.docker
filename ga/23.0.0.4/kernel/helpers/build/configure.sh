@@ -27,15 +27,6 @@ fi
 set -Eeox pipefail
 
 function main() {
-  if [ "$FEATURES_INSTALLED" == "false" ]; then
-    # Resolve liberty server symlinks and creation for server name changes
-    /opt/ibm/helpers/build/configure-liberty.sh
-    rm /logs/configure-liberty.log
-    if [ $? -ne 0 ]; then
-      exit
-    fi
-  fi
-
   ##Define variables for XML snippets source and target paths
   WLP_INSTALL_DIR=/opt/ibm/wlp
   SHARED_CONFIG_DIR=${WLP_INSTALL_DIR}/usr/shared/config
@@ -47,77 +38,66 @@ function main() {
   mkdir -p ${SNIPPETS_TARGET}
   mkdir -p ${SNIPPETS_TARGET_DEFAULTS}
 
-  #Check for each Liberty value-add functionality
-
-  # MicroProfile Health
-  if [ "$MP_HEALTH_CHECK" == "true" ] && [ "$FEATURES_INSTALLED" == "false" ]; then
-    cp $SNIPPETS_SOURCE/mp-health-check.xml $SNIPPETS_TARGET/mp-health-check.xml
-  fi
-
-  # MicroProfile Monitoring
-  if [ "$MP_MONITORING" == "true" ]; then
-    if [ "$FEATURES_INSTALLED" == "false" ]; then
-      cp $SNIPPETS_SOURCE/mp-monitoring-features.xml $SNIPPETS_TARGET/mp-monitoring-features.xml
-    fi
-    cp $SNIPPETS_SOURCE/mp-monitoring.xml $SNIPPETS_TARGET/mp-monitoring.xml
-  fi
-
-  # OpenIdConnect Client
+  # Check for each Liberty value-add functionality
+  # Make deprecated features available with configure.sh only
   if [ "$FEATURES_INSTALLED" == "false" ]; then
+    # HTTP Endpoint
+    if [ "$HTTP_ENDPOINT" == "true" ]; then
+      if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
+        cp $SNIPPETS_SOURCE/http-ssl-endpoint.xml $SNIPPETS_TARGET/http-ssl-endpoint.xml
+      else
+        cp $SNIPPETS_SOURCE/http-endpoint.xml $SNIPPETS_TARGET/http-endpoint.xml
+      fi
+    fi
+
+    # MicroProfile Health
+    if [ "$MP_HEALTH_CHECK" == "true" ] && [ "$FEATURES_INSTALLED" == "false" ]; then
+      cp $SNIPPETS_SOURCE/mp-health-check.xml $SNIPPETS_TARGET/mp-health-check.xml
+    fi
+
+    # MicroProfile Monitoring
+    if [ "$MP_MONITORING" == "true" ]; then
+      cp $SNIPPETS_SOURCE/mp-monitoring.xml $SNIPPETS_TARGET/mp-monitoring.xml
+    fi
+
+    # IIOP Endpoint
+    if [ "$IIOP_ENDPOINT" == "true" ]; then
+      if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
+        cp $SNIPPETS_SOURCE/iiop-ssl-endpoint.xml $SNIPPETS_TARGET/iiop-ssl-endpoint.xml
+      else
+        cp $SNIPPETS_SOURCE/iiop-endpoint.xml $SNIPPETS_TARGET/iiop-endpoint.xml
+      fi
+    fi
+
+    # JMS Endpoint
+    if [ "$JMS_ENDPOINT" == "true" ]; then
+      if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
+        cp $SNIPPETS_SOURCE/jms-ssl-endpoint.xml $SNIPPETS_TARGET/jms-ssl-endpoint.xml
+      else
+        cp $SNIPPETS_SOURCE/jms-endpoint.xml $SNIPPETS_TARGET/jms-endpoint.xml
+      fi
+    fi
+
+    # OpenIdConnect Client
     if [ "$OIDC" == "true" ]  || [ "$OIDC_CONFIG" == "true" ]; then
       cp $SNIPPETS_SOURCE/oidc.xml $SNIPPETS_TARGET/oidc.xml
     fi
-  fi
-
-  if [ "$OIDC_CONFIG" == "true" ]; then
-    cp $SNIPPETS_SOURCE/oidc-config.xml $SNIPPETS_TARGET/oidc-config.xml
-  fi
-
-  # HTTP Endpoint
-  if [ "$HTTP_ENDPOINT" == "true" ]; then
-    if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
-      cp $SNIPPETS_SOURCE/http-ssl-endpoint.xml $SNIPPETS_TARGET/http-ssl-endpoint.xml
-    else
-      cp $SNIPPETS_SOURCE/http-endpoint.xml $SNIPPETS_TARGET/http-endpoint.xml
+    if [ "$OIDC_CONFIG" == "true" ]; then
+      cp $SNIPPETS_SOURCE/oidc-config.xml $SNIPPETS_TARGET/oidc-config.xml
     fi
-  fi
-
-  # Hazelcast Session Caching
-  if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
-    if [ "$FEATURES_INSTALLED" == "false" ]; then
-      cp ${SNIPPETS_SOURCE}/sessioncache-features.xml ${SNIPPETS_TARGET}/sessioncache-features.xml
-    fi 
-    cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
-    mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
-    cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
-  fi
+  fi 
 
   # Infinispan Session Caching
   if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
-    if [ "$FEATURES_INSTALLED" == "false" ]; then
-      cp ${SNIPPETS_SOURCE}/sessioncache-features.xml ${SNIPPETS_TARGET}/sessioncache-features.xml
-      chmod g+rw $SNIPPETS_TARGET/sessioncache-features.xml
-    fi
     cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
     chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
   fi
 
-  # IIOP Endpoint
-  if [ "$IIOP_ENDPOINT" == "true" ]; then
-    if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
-      cp $SNIPPETS_SOURCE/iiop-ssl-endpoint.xml $SNIPPETS_TARGET/iiop-ssl-endpoint.xml
-    else
-      cp $SNIPPETS_SOURCE/iiop-endpoint.xml $SNIPPETS_TARGET/iiop-endpoint.xml
-    fi
-  fi
-
-  # JMS Endpoint
-  if [ "$JMS_ENDPOINT" == "true" ]; then
-    if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
-      cp $SNIPPETS_SOURCE/jms-ssl-endpoint.xml $SNIPPETS_TARGET/jms-ssl-endpoint.xml
-    else
-      cp $SNIPPETS_SOURCE/jms-endpoint.xml $SNIPPETS_TARGET/jms-endpoint.xml
-    fi
+  # Hazelcast Session Caching
+  if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
+    cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
+    mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
+    cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
   fi
 
   # Key Store
@@ -139,7 +119,9 @@ function main() {
 
   # SSO Support
   if [[ -n "$SEC_SSO_PROVIDERS" ]]; then
-    cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
+    if [ "$FEATURES_INSTALLED" == "false" ]; then
+      cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
+    fi
     parseProviders $SEC_SSO_PROVIDERS
   fi
 

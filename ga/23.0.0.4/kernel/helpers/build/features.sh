@@ -31,22 +31,7 @@ SNIPPETS_TARGET_DEFAULTS=/config/configDropins/defaults
 mkdir -p ${SNIPPETS_TARGET}
 mkdir -p ${SNIPPETS_TARGET_DEFAULTS}
 
-# MicroProfile Health
-if [ "$MP_HEALTH_CHECK" == "true" ]; then
-  cp $SNIPPETS_SOURCE/mp-health-check.xml $SNIPPETS_TARGET/mp-health-check.xml
-fi
-
-# MicroProfile Monitoring
-if [ "$MP_MONITORING" == "true" ]; then
-  cp $SNIPPETS_SOURCE/mp-monitoring-features.xml $SNIPPETS_TARGET/mp-monitoring-features.xml
-fi
-
-# OpenIdConnect Client
-if [ "$OIDC" == "true" ]  || [ "$OIDC_CONFIG" == "true" ]; then
-  cp $SNIPPETS_SOURCE/oidc.xml $SNIPPETS_TARGET/oidc.xml
-fi
-
-# Hazelcast & Infinispan Session Caching
+# Session Caching
 if [ -n "$INFINISPAN_SERVICE_NAME" ] || [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
   cp ${SNIPPETS_SOURCE}/sessioncache-features.xml ${SNIPPETS_TARGET}/sessioncache-features.xml
   chmod g+rw $SNIPPETS_TARGET/sessioncache-features.xml
