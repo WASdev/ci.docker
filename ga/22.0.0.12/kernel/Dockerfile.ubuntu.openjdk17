@@ -26,7 +26,7 @@ LABEL org.opencontainers.image.authors="Chris Potter, Christy Jesuraj, Melissa L
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="22.0.0.12" \
       org.opencontainers.image.revision="cl221220221107-1900" \
-      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Ubuntu as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image" \
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Ubuntu as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
       org.opencontainers.image.title="IBM WebSphere Liberty"
 
 # Install WebSphere Liberty
