@@ -39,7 +39,6 @@ function main() {
   mkdir -p ${SNIPPETS_TARGET_DEFAULTS}
 
   # Check for each Liberty value-add functionality
-  # Make deprecated features available with configure.sh only
   if [ "$FEATURES_INSTALLED" == "false" ]; then
     # HTTP Endpoint
     if [ "$HTTP_ENDPOINT" == "true" ]; then
@@ -85,29 +84,47 @@ function main() {
     if [ "$OIDC_CONFIG" == "true" ]; then
       cp $SNIPPETS_SOURCE/oidc-config.xml $SNIPPETS_TARGET/oidc-config.xml
     fi
-  fi 
 
-  # Infinispan Session Caching
-  if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
-    cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
-    chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
-  fi
+    # Infinispan Session Caching (Full)
+    if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
+      cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache-full.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache-full.xml
+      chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache-full.xml
+    fi
 
-  # Hazelcast Session Caching
-  if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
-    cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
-    mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
-    cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
+    # Hazelcast Session Caching (Full)
+    if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
+      cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache-full.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache-full.xml
+      mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
+      cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
+    fi
+
+    # SSO
+    if [[ -n "$SEC_SSO_PROVIDERS" ]]; then
+      cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
+    fi
+
+    # Key Store
+    if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
+      cp $SNIPPETS_SOURCE/tls.xml $SNIPPETS_TARGET/tls.xml
+    fi
+  else
+    # Otherwise, load XML for addons that have features already installed
+    # Infinispan Session Caching
+    if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
+      cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
+      chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
+    fi
+
+    # Hazelcast Session Caching
+    if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
+      cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
+      mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
+      cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
+    fi
   fi
 
   # Key Store
   keystorePath="$SNIPPETS_TARGET_DEFAULTS/keystore.xml"
-  if [ "$FEATURES_INSTALLED" == "false" ]; then
-    if [ "$SSL" == "true" ] || [ "$TLS" == "true" ]; then
-      cp $SNIPPETS_SOURCE/tls.xml $SNIPPETS_TARGET/tls.xml
-    fi
-  fi
-
   if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]; then
     if [ ! -e $keystorePath ]; then
       # Generate the keystore.xml
@@ -117,11 +134,8 @@ function main() {
     fi
   fi
 
-  # SSO Support
+  # SSO
   if [[ -n "$SEC_SSO_PROVIDERS" ]]; then
-    if [ "$FEATURES_INSTALLED" == "false" ]; then
-      cp $SNIPPETS_SOURCE/sso-features.xml $SNIPPETS_TARGET_DEFAULTS
-    fi
     parseProviders $SEC_SSO_PROVIDERS
   fi
 

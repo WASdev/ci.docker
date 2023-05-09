@@ -1,4 +1,6 @@
 <server>
+  <featureManager>
+    <feature>sessionCache-1.0</feature>
   <httpSessionCache libraryRef="HazelcastLib">
     <properties hazelcast.config.location="file:${shared.config.dir}/hazelcast/hazelcast.xml"/>
   </httpSessionCache>
