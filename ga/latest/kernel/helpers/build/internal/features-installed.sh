@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -f "/logs/configure-liberty.log" ]; then
-  rm /logs/configure-liberty.log
+if [ -f "/logs/features.log" ]; then
+  rm /logs/features.log
   exit 0
 fi  
   
