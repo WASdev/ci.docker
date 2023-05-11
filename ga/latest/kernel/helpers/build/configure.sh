@@ -87,13 +87,13 @@ function main() {
 
     # Infinispan Session Caching (Full)
     if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
-      cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache-full.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache-full.xml
-      chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache-full.xml
+      cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
+      chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
     fi
 
     # Hazelcast Session Caching (Full)
     if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
-      cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache-full.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache-full.xml
+      cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
       mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
       cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
     fi
@@ -111,13 +111,13 @@ function main() {
     # Otherwise, load XML for addons that have features already installed
     # Infinispan Session Caching
     if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
-      cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
-      chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
+      cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache-config.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache-config.xml
+      chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache-config.xml
     fi
 
     # Hazelcast Session Caching
     if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
-      cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
+      cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache-config.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache-config.xml
       mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
       cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
     fi
