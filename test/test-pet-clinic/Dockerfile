@@ -15,12 +15,12 @@ RUN configure.sh
 
 FROM ${IMAGE}
 
-RUN mkdir /config/dropins/spring 
 COPY --from=staging /config/server.xml /config/server.xml
 
 RUN features.sh
 
 COPY --from=staging /staging/lib.index.cache /lib.index.cache
+RUN mkdir /config/dropins/spring 
 COPY --from=staging /staging/myThinApp.jar /config/dropins/spring/myThinApp.jar
 
 RUN configure.sh
