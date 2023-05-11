@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # Determine if featureUtility ran in an earlier build step
-if /opt/ibm/helpers/build/features-installed.sh; then
+if /opt/ibm/helpers/build/internal/features-installed.sh; then
   FEATURES_INSTALLED=true
 else
   FEATURES_INSTALLED=false
@@ -50,7 +50,7 @@ function main() {
     fi
 
     # MicroProfile Health
-    if [ "$MP_HEALTH_CHECK" == "true" ] && [ "$FEATURES_INSTALLED" == "false" ]; then
+    if [ "$MP_HEALTH_CHECK" == "true" ]; then
       cp $SNIPPETS_SOURCE/mp-health-check.xml $SNIPPETS_TARGET/mp-health-check.xml
     fi
 

@@ -18,8 +18,9 @@ FROM ${IMAGE}
 RUN mkdir /config/dropins/spring 
 COPY --from=staging /config/server.xml /config/server.xml
 COPY --from=staging /staging/lib.index.cache /lib.index.cache
-COPY --from=staging /staging/myThinApp.jar /config/dropins/spring/myThinApp.jar
 
 RUN features.sh
+
+COPY --from=staging /staging/myThinApp.jar /config/dropins/spring/myThinApp.jar
 
 RUN configure.sh
