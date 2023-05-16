@@ -16,13 +16,7 @@ if [ "$VERBOSE" != "true" ]; then
   exec &>/dev/null
 fi
 
-set -Eeox pipefail 
-
-# Resolve liberty server symlinks and creation for server name changes
-/opt/ibm/helpers/build/configure-liberty.sh
-if [ $? -ne 0 ]; then
-  exit
-fi
+set -Eeox pipefail
 
 ##Define variables for XML snippets source and target paths
 SNIPPETS_SOURCE=/opt/ibm/helpers/build/configuration_snippets
