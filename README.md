@@ -19,7 +19,7 @@
 
 ## Container images
 
-* Our recommended set uses Red Hat's [Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) as the Operating System and are re-built daily. They are available from [IBM Container Registry](docs/icr-images.md) and [Docker Hub](https://hub.docker.com/r/ibmcom/websphere-liberty).
+* Our recommended set uses Red Hat's Universal Base Image (UBI) as the Operating System and are re-built daily. They are available from [IBM Container Registry (ICR)](docs/icr-images.md) and [Docker Hub](https://hub.docker.com/r/ibmcom/websphere-liberty). We stronly recommend to use the images in ICR. Unlike Docker Hub, pulls from ICR are not rate limited.
 * Another set, using Ubuntu as the Operating System can be found on [Docker Hub](https://hub.docker.com/_/websphere-liberty).  These are re-built automatically anytime something changes in the layers below.
 
 ## Building an application image
@@ -29,26 +29,44 @@ According to best practices for container images, you should create a new image 
 Your application image template should follow a pattern similar to:
 
 ```dockerfile
-FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
+
+# Default setting for the verbose option. Set it to true to debug the application container image build failures
+ARG VERBOSE=false
 
 # Add Liberty server configuration including all necessary features
 COPY --chown=1001:0  server.xml /config/
 
-# This script will add the requested XML snippets to enable Liberty features and grow image to be fit-for-purpose using featureUtility. 
-# Only available in 'kernel'. The 'full' tag already includes all features for convenience.
+# Modify feature repository (optional)
+# A sample is in the 'Getting Required Features' section below
+COPY --chown=1001:0 featureUtility.properties /opt/ibm/wlp/etc/
+
+# This script will add the requested XML snippets to enable Liberty features and grow the image to be fit-for-purpose using featureUtility.
 RUN features.sh
 
 # Add interim fixes (optional)
 COPY --chown=1001:0  interim-fixes /opt/ibm/fixes/
 
-# Add app
+# Add application
 COPY --chown=1001:0  Sample1.war /config/dropins/
 
-# This script will add the requested XML snippets, grow image to be fit-for-purpose and apply interim fixes
+# This script will add the requested server configurations, apply any interim fixes and populate caches to optimize runtime
 RUN configure.sh
 ```
 
 This will result in a container image that has your application and configuration pre-loaded, which means you can spawn new fully-configured containers at any time.
+
+### Getting Required Features
+
+The `kernel` tag provides just the bare minimum server. You can grow it to include the features needed by your application by invoking `features.sh`.
+Liberty features are downloaded from Maven Central repository by default. But you can specify alternatives using `/opt/ibm/wlp/etc/featureUtility.properties`:
+```
+remoteRepo.url=https://my-remote-server/secure/maven2
+remoteRepo.user=operator
+remoteRepo.password={aes}KM8dhwcv892Ss1sawu9R+
+```
+
+Refer to [Repository and proxy modifications](https://openliberty.io/docs/ref/command/featureUtility-modifications.html) for more information.
 
 ## Optional Enterprise Functionality
 
@@ -153,14 +171,14 @@ The Liberty session caching feature builds on top of an existing technology call
 
     ```dockerfile
     ### Infinispan Session Caching ###
-    FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi AS infinispan-client
+    FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi AS infinispan-client
 
     # Install Infinispan client jars
     USER root
     RUN infinispan-client-setup.sh
     USER 1001
 
-    FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi AS open-liberty-infinispan
+    FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi AS open-liberty-infinispan
 
     # Copy Infinispan client jars to Open Liberty shared resources
     COPY --chown=1001:0 --from=infinispan-client /opt/ibm/wlp/usr/shared/resources/infinispan /opt/ibm/wlp/usr/shared/resources/infinispan
@@ -272,7 +290,7 @@ containing all the features. You will also need to make sure to call `RUN config
 You can also set it through Dockerfile
 
 ```dockerfile
-FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 ARG FEATURE_REPO_URL=http://wlprepos:8080/19.0.0.x/repo.zip
 ARG VERBOSE=false
 RUN configure.sh
@@ -282,7 +300,7 @@ Note: This feature requires a `curl` command to be in the container image.
 Some base images do not provide `curl`. You can add it before calling `confiure.sh` this way:
 
 ```dockerfile
-FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
 USER root
 RUN apt-get update && apt-get install -y curl
 USER 1001
