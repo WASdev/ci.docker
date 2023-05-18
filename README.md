@@ -19,7 +19,7 @@
 
 ## Container images
 
-* Our recommended set uses Red Hat's Universal Base Image (UBI) as the Operating System and are re-built daily. They are available from [IBM Container Registry (ICR)](docs/icr-images.md) and [Docker Hub](https://hub.docker.com/r/ibmcom/websphere-liberty). We stronly recommend to use the images in ICR. Unlike Docker Hub, pulls from ICR are not rate limited.
+* Our recommended set uses Red Hat's Universal Base Image (UBI) as the Operating System and are re-built daily. They are available from [IBM Container Registry (ICR)](docs/icr-images.md) and [Docker Hub](https://hub.docker.com/r/ibmcom/websphere-liberty). We strongly recommend using the images in ICR. Unlike Docker Hub, pulls from ICR are not rate limited.
 * Another set, using Ubuntu as the Operating System can be found on [Docker Hub](https://hub.docker.com/_/websphere-liberty).  These are re-built automatically anytime something changes in the layers below.
 
 ## Building an application image
