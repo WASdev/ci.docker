@@ -31,15 +31,18 @@ Your application image template should follow a pattern similar to:
 ```dockerfile
 FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi
 
-# Add my app and config
-COPY --chown=1001:0  Sample1.war /config/dropins/
+# Add Liberty server configuration including all necessary features
 COPY --chown=1001:0  server.xml /config/
+
+# This script will add the requested XML snippets to enable Liberty features and grow image to be fit-for-purpose using featureUtility. 
+# Only available in 'kernel'. The 'full' tag already includes all features for convenience.
+RUN features.sh
 
 # Add interim fixes (optional)
 COPY --chown=1001:0  interim-fixes /opt/ibm/fixes/
 
-# Default setting for the verbose option
-ARG VERBOSE=false
+# Add app
+COPY --chown=1001:0  Sample1.war /config/dropins/
 
 # This script will add the requested XML snippets, grow image to be fit-for-purpose and apply interim fixes
 RUN configure.sh
@@ -275,7 +278,7 @@ ARG VERBOSE=false
 RUN configure.sh
 ```
 
-Note: This feature requires a `curl ` command to be in the container image.
+Note: This feature requires a `curl` command to be in the container image.
 Some base images do not provide `curl`. You can add it before calling `confiure.sh` this way:
 
 ```dockerfile

@@ -1,5 +1,5 @@
 
-#       Copyright 2017-2019 IBM Corp All Rights Reserved
+#       Copyright 2017-2023 IBM Corp All Rights Reserved
 
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -13,11 +13,14 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-FROM ibmcom/websphere-liberty:full-java8-openj9-ubi
+FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 
 COPY --chown=1001:0 config /config/
-COPY --chown=1001:0 stock-quote-1.0-SNAPSHOT.war /config/apps/StockQuote.war
 
 ARG VERBOSE=false
+
+RUN features.sh
+
+COPY --chown=1001:0 stock-quote-1.0-SNAPSHOT.war /config/apps/StockQuote.war
 
 RUN configure.sh

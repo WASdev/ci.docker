@@ -30,7 +30,7 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Chris Potter, Melis
       name="IBM WebSphere Liberty" \
       version="23.0.0.4" \
       summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8" \
-      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://github.com/WASdev/ci.docker#building-an-application-image"
+      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
 
 # Install WebSphere Liberty
 ENV LIBERTY_VERSION 23.0.0_04
@@ -116,7 +116,7 @@ RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
     && chown -R 1001:0 /opt/ibm/wlp/output \
     && chmod -R g+rwx /opt/ibm/wlp/output
 
-#These settings are needed so that we can run as a different user than 1001 after server warmup
+# These settings are needed so that we can run as a different user than 1001 after server warmup
 ENV RANDFILE=/tmp/.rnd \
     OPENJ9_JAVA_OPTIONS="-XX:+IgnoreUnrecognizedVMOptions -XX:+IdleTuningGcOnIdle -Xshareclasses:name=openj9_system_scc,cacheDir=/opt/java/.scc,readonly,nonFatal -Dosgi.checkConfiguration=false"
 
