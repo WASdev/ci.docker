@@ -16,21 +16,21 @@ FROM ibm-semeru-runtimes:open-17-jre-focal
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
-ARG EN_SHA=d7580938d35387110e39c3c8b3bb5c1f8dc9f0418a2f77799dbcf69a2ab63093
-ARG NON_IBM_SHA=0d97a3e5cf5403a9b3be514509977f4e9be4a2ac4258e692ef8e64761910f4c0
-ARG NOTICES_SHA=71f58dc38b4c9b60beaec4459b97b0d08228ad8e5fe5e3a0f4fd7e7c66285925
+ARG EN_SHA=16669604ed86a6ad4bd60b99ca85fad2a819ae3ff3e68d5585a64f3d51504ee3
+ARG NON_IBM_SHA=89faf793b9e068a80bda72d6c1cbf9b4e1362c699525710ae3247a6c135a0b11
+ARG NOTICES_SHA=f02cefd8eb429cd471b9f494c2ac7f3df10ef042f1b7e8271895afd2a46ae997
 
 LABEL org.opencontainers.image.authors="Chris Potter, Christy Jesuraj, Melissa Lee" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="http://wasdev.net" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="23.0.0.4" \
-      org.opencontainers.image.revision="cl230420230418-0035" \
+      org.opencontainers.image.version="23.0.0.5" \
+      org.opencontainers.image.revision="cl230520230514-1901" \
       org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Ubuntu as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
       org.opencontainers.image.title="IBM WebSphere Liberty"
 
 # Install WebSphere Liberty
-ENV LIBERTY_VERSION 23.0.0_04
+ENV LIBERTY_VERSION 23.0.0_05
 
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
@@ -62,8 +62,8 @@ ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="23.0.0.4" \
-      "BuildLabel"="cl230420230418-0035"
+      "ProductVersion"="23.0.0.5" \
+      "BuildLabel"="cl230520230514-1901"
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
