@@ -27,6 +27,14 @@ fi
 set -Eeox pipefail
 
 function main() {
+  if [ "$FEATURES_INSTALLED" == "false" ]; then
+    # Resolve liberty server symlinks and creation for server name changes
+    /opt/ibm/helpers/build/configure-liberty.sh
+    if [ $? -ne 0 ]; then
+      exit
+    fi
+  fi
+
   ##Define variables for XML snippets source and target paths
   WLP_INSTALL_DIR=/opt/ibm/wlp
   SHARED_CONFIG_DIR=${WLP_INSTALL_DIR}/usr/shared/config
@@ -143,10 +151,10 @@ function main() {
     # Install needed features
     if [ "$FEATURE_REPO_URL" ]; then
       curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
-      installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
+      installUtility install --acceptLicense $SERVER_NAME --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
       rm -rf /tmp/repo.zip
     else
-      installUtility install --acceptLicense defaultServer || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
+      installUtility install --acceptLicense $SERVER_NAME || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
     fi
   fi
 

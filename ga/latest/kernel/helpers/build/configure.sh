@@ -1,9 +1,5 @@
 #!/bin/bash
-<<<<<<< HEAD
 # (C) Copyright IBM Corporation 2020, 2023.
-=======
-# (C) Copyright IBM Corporation 2022.
->>>>>>> 34eeb1f (Update helpers to use features.sh)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,18 +14,10 @@
 # limitations under the License.
 
 # Determine if featureUtility ran in an earlier build step
-<<<<<<< HEAD
 if /opt/ibm/helpers/build/internal/features-installed.sh; then
   FEATURES_INSTALLED=true
 else
   FEATURES_INSTALLED=false
-=======
-if [ -f "/opt/ibm/wlp/configure-liberty.log" ]; then
-  FEATURES_INSTALLED=true
-else
-  FEATURES_INSTALLED=false
-  >&2 echo "WARNING: This is not an optimal build configuration. Although features in server.xml will continue to be installed correctly, the 'RUN features.sh' command should be added to the Dockerfile prior to configure.sh. See https://github.com/WASdev/ci.docker#building-an-application-image for a sample application image template."
->>>>>>> 34eeb1f (Update helpers to use features.sh)
 fi
 
 if [ "$VERBOSE" != "true" ]; then
@@ -41,7 +29,7 @@ set -Eeox pipefail
 function main() {
   if [ "$FEATURES_INSTALLED" == "false" ]; then
     # Resolve liberty server symlinks and creation for server name changes
-    /opt/ibm/helpers/runtime/configure-liberty.sh
+    /opt/ibm/helpers/build/configure-liberty.sh
     if [ $? -ne 0 ]; then
       exit
     fi
@@ -58,7 +46,6 @@ function main() {
   mkdir -p ${SNIPPETS_TARGET}
   mkdir -p ${SNIPPETS_TARGET_DEFAULTS}
 
-<<<<<<< HEAD
   # Check for each Liberty value-add functionality
   if [ "$FEATURES_INSTALLED" == "false" ]; then
     # HTTP Endpoint
@@ -142,34 +129,12 @@ function main() {
       mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
       cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
     fi
-=======
-  #Check for each Liberty value-add functionality
-
-  # Infinispan Session Caching
-  if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
-    cp ${SNIPPETS_SOURCE}/infinispan-client-sessioncache.xml ${SNIPPETS_TARGET}/infinispan-client-sessioncache.xml
-    chmod g+rw $SNIPPETS_TARGET/infinispan-client-sessioncache.xml
-  fi
-
-  # Hazelcast Session Caching
-  if [ "${HZ_SESSION_CACHE}" == "client" ] || [ "${HZ_SESSION_CACHE}" == "embedded" ]; then
-    cp ${SNIPPETS_SOURCE}/hazelcast-sessioncache.xml ${SNIPPETS_TARGET}/hazelcast-sessioncache.xml
-    mkdir -p ${SHARED_CONFIG_DIR}/hazelcast
-    cp ${SNIPPETS_SOURCE}/hazelcast-${HZ_SESSION_CACHE}.xml ${SHARED_CONFIG_DIR}/hazelcast/hazelcast.xml
->>>>>>> 34eeb1f (Update helpers to use features.sh)
   fi
 
   # Key Store
   keystorePath="$SNIPPETS_TARGET_DEFAULTS/keystore.xml"
-<<<<<<< HEAD
   if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]; then
     if [ ! -e $keystorePath ]; then
-=======
-  if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]
-  then
-    if [ ! -e $keystorePath ]
-    then
->>>>>>> 34eeb1f (Update helpers to use features.sh)
       # Generate the keystore.xml
       export KEYSTOREPWD=$(openssl rand -base64 32)
       sed "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml > $SNIPPETS_TARGET_DEFAULTS/keystore.xml
@@ -186,11 +151,11 @@ function main() {
     # Install needed features
     if [ "$FEATURE_REPO_URL" ]; then
       curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
-      installUtility install --acceptLicense ${SERVER_NAME} --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
+      installUtility install --acceptLicense $SERVER_NAME --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
       rm -rf /tmp/repo.zip
     # Otherwise, if features.sh did not run, install server features.
     elif [ "$FEATURES_INSTALLED" == "false" ]; then
-      featureUtility installServerFeatures --acceptLicense ${SERVER_NAME} --noCache
+      featureUtility installServerFeatures --acceptLicense $SERVER_NAME --noCache
       find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw 
     fi
   fi
