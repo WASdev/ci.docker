@@ -27,12 +27,10 @@ fi
 set -Eeox pipefail
 
 function main() {
-  if [ "$FEATURES_INSTALLED" == "false" ]; then
-    # Resolve liberty server symlinks and creation for server name changes
-    /opt/ibm/helpers/build/configure-liberty.sh
-    if [ $? -ne 0 ]; then
-      exit
-    fi
+  # Resolve liberty server symlinks and creation for server name changes
+  /opt/ibm/helpers/build/configure-liberty.sh
+  if [ $? -ne 0 ]; then
+    exit
   fi
 
   ##Define variables for XML snippets source and target paths
