@@ -146,8 +146,6 @@ if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
  echo "INFINISPAN_PASS: ${INFINISPAN_PASS}"
 fi
 
-# Remove generated metadata
-rm /opt/ibm/wlp/configure-liberty.log
 
 # Pass on to the real server run
 if [ -d "/output/workarea/checkpoint/image" ]; then
