@@ -15,6 +15,9 @@ RUN configure.sh
 
 FROM ${IMAGE}
 
+# Provide a custom Liberty server name other than "defaultServer"
+ENV SERVER_NAME=petclinic
+
 COPY --from=staging /config/server.xml /config/server.xml
 
 RUN features.sh

@@ -14,6 +14,9 @@
 
 FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
 
+# Provide a custom Liberty server name other than "defaultServer"
+ENV SERVER_NAME=stock-trader
+
 COPY --chown=1001:0 config /config/
 
 ARG VERBOSE=false
