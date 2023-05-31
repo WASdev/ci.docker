@@ -1,7 +1,6 @@
 #!/bin/bash
 
 OPT_PREFIX="/opt/ibm"
-ORIGINAL_WLP_OUTPUT_DIR="$OPT_PREFIX/wlp/output"
 ORIGINAL_SERVER_NAME="defaultServer"
 IS_KERNEL=false
 
@@ -34,7 +33,7 @@ if [ "$SERVER_NAME" != "$ORIGINAL_SERVER_NAME" ] && [ -d "$OPT_PREFIX/wlp/usr/se
 
   # Add new output folder symlink and resolve group write permissions
   SERVER_OUTPUT_DIR=$WLP_OUTPUT_DIR/$SERVER_NAME
-  ORIGINAL_SERVER_OUTPUT_DIR=$ORIGINAL_WLP_OUTPUT_DIR/$ORIGINAL_SERVER_NAME
+  ORIGINAL_SERVER_OUTPUT_DIR=$WLP_OUTPUT_DIR/$ORIGINAL_SERVER_NAME
   mkdir -p $SERVER_OUTPUT_DIR
   ln -s $SERVER_OUTPUT_DIR $OPT_PREFIX/links/output
 
