@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2019.
+# (C) Copyright IBM Corporation 2019, 2023.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -126,4 +126,4 @@ USER 1001
 EXPOSE 9080 9443
 
 ENTRYPOINT ["/opt/ibm/helpers/runtime/docker-server.sh"]
-CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
+CMD ["/opt/ibm/wlp/bin/server", "run"]

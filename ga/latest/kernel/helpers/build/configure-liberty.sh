@@ -1,9 +1,18 @@
 #!/bin/bash
 
+OPT_PREFIX="/opt/ibm"
+ORIGINAL_WLP_OUTPUT_DIR="$OPT_PREFIX/wlp/output"
+ORIGINAL_SERVER_NAME="defaultServer"
+IS_KERNEL=false
+
 # If the Liberty server name is not defaultServer and defaultServer still exists migrate the contents
-if [ "$SERVER_NAME" != "defaultServer" ] && [ -d "/opt/ibm/wlp/usr/servers/defaultServer" ]; then
+if [ "$SERVER_NAME" != "$ORIGINAL_SERVER_NAME" ] && [ -d "$OPT_PREFIX/wlp/usr/servers/$ORIGINAL_SERVER_NAME" ]; then
   # Create new Liberty server
-  /opt/ibm/wlp/bin/server create >/tmp/serverOutput
+  if $IS_KERNEL; then
+    $OPT_PREFIX/wlp/bin/server create >/tmp/serverOutput
+  else
+    $OPT_PREFIX/wlp/bin/server create --template=javaee8 >/tmp/serverOutput 
+  fi
   rc=$?
   if [ $rc -ne 0 ]; then
     cat /tmp/serverOutput
@@ -13,42 +22,40 @@ if [ "$SERVER_NAME" != "defaultServer" ] && [ -d "/opt/ibm/wlp/usr/servers/defau
   rm /tmp/serverOutput
 
   # Verify server creation
-  if [ ! -d "/opt/ibm/wlp/usr/servers/$SERVER_NAME" ]; then
+  if [ ! -d "$OPT_PREFIX/wlp/usr/servers/$SERVER_NAME" ]; then
     echo "The server name contains a character that is not valid."
     exit 1
   fi
-  chmod -R g+w /opt/ibm/wlp/usr/servers/$SERVER_NAME
+  chmod -R g+w $OPT_PREFIX/wlp/usr/servers/$SERVER_NAME
 
   # Delete old symlinks
-  rm /opt/ibm/links/output
-  rm /opt/ibm/links/config
+  rm $OPT_PREFIX/links/output
+  rm $OPT_PREFIX/links/config
 
   # Add new output folder symlink and resolve group write permissions
-  mkdir -p $WLP_OUTPUT_DIR/$SERVER_NAME
-  ln -s $WLP_OUTPUT_DIR/$SERVER_NAME /opt/ibm/links/output
-  chmod g+w $WLP_OUTPUT_DIR/$SERVER_NAME
-  mkdir -p $WLP_OUTPUT_DIR/$SERVER_NAME/resources
-  mkdir -p $WLP_OUTPUT_DIR/$SERVER_NAME/workarea
-  mkdir -p $WLP_OUTPUT_DIR/$SERVER_NAME/logs
-  chmod -R g+w $WLP_OUTPUT_DIR/$SERVER_NAME/workarea
-  chmod -R g+w,o-rwx $WLP_OUTPUT_DIR/$SERVER_NAME/resources
-  chmod -R g+w,o-rwx $WLP_OUTPUT_DIR/$SERVER_NAME/logs
+  SERVER_OUTPUT_DIR=$WLP_OUTPUT_DIR/$SERVER_NAME
+  ORIGINAL_SERVER_OUTPUT_DIR=$ORIGINAL_WLP_OUTPUT_DIR/$ORIGINAL_SERVER_NAME
+  mkdir -p $SERVER_OUTPUT_DIR
+  ln -s $SERVER_OUTPUT_DIR $OPT_PREFIX/links/output
 
-  # Hand over the SCC
-  if [ "$OPENJ9_SCC" = "true" ] && [ -d "/opt/ibm/wlp/output/defaultServer/.classCache" ]; then
-    mv /opt/ibm/wlp/output/defaultServer/.classCache $WLP_OUTPUT_DIR/$SERVER_NAME/
-  fi
-  rm -rf /opt/ibm/wlp/output/defaultServer
+  # Copy old /output folder contents
+  cp -r $ORIGINAL_SERVER_OUTPUT_DIR/. $SERVER_OUTPUT_DIR/ 2>/dev/null
+  rm -rf $ORIGINAL_SERVER_OUTPUT_DIR
+  chmod -R g+rw $SERVER_OUTPUT_DIR
+  setfacl -R -dm g:root:rw $SERVER_OUTPUT_DIR
 
-  # Add new server symlink and populate folder
-  mv /opt/ibm/wlp/usr/servers/defaultServer/* /opt/ibm/wlp/usr/servers/$SERVER_NAME/
-  ln -s /opt/ibm/wlp/usr/servers/$SERVER_NAME /opt/ibm/links/config
+  # Add new server symlink and copy over old /config folder contents
+  cp -r $OPT_PREFIX/wlp/usr/servers/$ORIGINAL_SERVER_NAME/. $OPT_PREFIX/wlp/usr/servers/$SERVER_NAME/ 2>/dev/null
+  ln -s $OPT_PREFIX/wlp/usr/servers/$SERVER_NAME $OPT_PREFIX/links/config
   mkdir -p /config/configDropins/defaults
   mkdir -p /config/configDropins/overrides
-  chmod -R g+w /config
-
-  rm -rf /opt/ibm/wlp/usr/servers/defaultServer
+  if $IS_KERNEL; then
+    mkdir -p /config/dropins
+    mkdir -p /config/apps
+  fi
+  chmod -R g+rw /config
+  setfacl -R -dm g:root:rw /config
+  rm -rf $OPT_PREFIX/wlp/usr/servers/$ORIGINAL_SERVER_NAME
 fi
 
-echo "configure-liberty.sh script has been run" > /opt/ibm/wlp/configure-liberty.log
 exit 0
