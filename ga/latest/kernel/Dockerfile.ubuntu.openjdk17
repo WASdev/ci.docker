@@ -103,7 +103,7 @@ ENV LOG_DIR=/logs \
 RUN /opt/ibm/wlp/bin/server create \
     && rm -rf $WLP_OUTPUT_DIR/.classCache /output/workarea
 
-COPY NOTICES /opt/NOTICES
+COPY NOTICES /opt/ibm/NOTICES
 COPY helpers/ /opt/ibm/helpers/
 COPY fixes/ /opt/ibm/fixes/
 
@@ -137,7 +137,8 @@ RUN mkdir /logs \
     && chown -R 1001:0 /etc/wlp \
     && chmod -R g+rw /etc/wlp \
     && chown -R 1001:0 /home/default \
-    && chmod -R g+rw /home/default
+    && chmod -R g+rw /home/default \
+    && sed -i "s|@LIBERTY_VERSION@|$LIBERTY_VERSION|g" /opt/ibm/NOTICES
 
 # Create a new SCC layer
 RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
