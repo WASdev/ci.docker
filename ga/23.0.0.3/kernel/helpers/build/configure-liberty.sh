@@ -1,10 +1,16 @@
 #!/bin/bash
 
 OPT_PREFIX="/opt/ibm"
-ORIGINAL_SERVER_NAME="defaultServer"
 IS_KERNEL=false
 
-# If the Liberty server name is not defaultServer and defaultServer still exists migrate the contents
+# Get the original server name
+NUM_SERVERS=$(ls -t $OPT_PREFIX/wlp/usr/servers/ | wc -l)
+if [ $NUM_SERVERS -gt 0 ]; then
+  ORIGINAL_SERVER_NAME=$(ls -t $OPT_PREFIX/wlp/usr/servers/ | head -1)
+fi
+ORIGINAL_SERVER_NAME=${ORIGINAL_SERVER_NAME:-defaultServer}
+
+# If the Liberty server name does not match the original server name then migrate the contents
 if [ "$SERVER_NAME" != "$ORIGINAL_SERVER_NAME" ] && [ -d "$OPT_PREFIX/wlp/usr/servers/$ORIGINAL_SERVER_NAME" ]; then
   # Create new Liberty server
   if $IS_KERNEL; then
