@@ -1,0 +1,2 @@
+PODMAN_SYSTEM_CONNECTION=$(podman system connection list | grep "default-root")
+CONTAINER_HOST=$(echo $PODMAN_SYSTEM_CONNECTION | awk '{print $2}') CONTAINER_SSHKEY=$(echo $PODMAN_SYSTEM_CONNECTION | awk '{print $3}') ginkgo -r
