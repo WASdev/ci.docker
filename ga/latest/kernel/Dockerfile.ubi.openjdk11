@@ -14,6 +14,8 @@
 
 FROM icr.io/appcafe/ibm-semeru-runtimes:open-11-jdk-ubi
 
+USER root
+
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 ARG EN_SHA=16669604ed86a6ad4bd60b99ca85fad2a819ae3ff3e68d5585a64f3d51504ee3
