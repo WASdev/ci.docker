@@ -14,6 +14,8 @@
 
 FROM ibm-semeru-runtimes:open-11-jre-focal
 
+USER root
+
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 ARG EN_SHA=366618db4b733337adc71ec30b1f33d36cf78a81858636360061036a926f373f
