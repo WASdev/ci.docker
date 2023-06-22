@@ -30,8 +30,8 @@ RUN set -eux; \
     echo "$REPOSITORIES_PROPERTIES" > /opt/ibm/wlp/etc/repositories.properties; \
     installUtility install --acceptLicense baseBundle; \
     rm /opt/ibm/wlp/etc/repositories.properties; \
-  elif [ -d /tmp/wlpRepo ]; then \
-    installUtility install --acceptLicense baseBundle --from=/tmp/wlpRepo; \
+  elif [ -f /tmp/wlpRepo.zip ]; then \
+    installUtility install --acceptLicense baseBundle --from=/tmp/wlpRepo.zip; \
   else \
     installUtility install --acceptLicense baseBundle; \
   fi; \
