@@ -46,6 +46,7 @@ ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
 ARG LIBERTY_VERSION=23.0.0.6
+ARG LIBERTY_BUILD_LABEL=cl230620230612-1100
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
