@@ -102,6 +102,8 @@ RUN set -eux; \
 COPY --from=getRuntime /opt/ibm/wlp /opt/ibm/wlp
 COPY --from=getRuntime /licenses /licenses
 
+RUN apt-get install -y --no-install-recommends openssl
+
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
