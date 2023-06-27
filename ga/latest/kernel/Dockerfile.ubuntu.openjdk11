@@ -104,7 +104,8 @@ RUN adduser -u 1001 -r -g root -s /usr/sbin/nologin default \
 COPY --from=getRuntime --chown=1001:0 /opt/ibm/wlp /opt/ibm/wlp
 COPY --from=getRuntime /licenses /licenses
 
-RUN apt-get install -y --no-install-recommends openssl
+RUN apt-get install -y --no-install-recommends openssl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
