@@ -35,7 +35,7 @@ RUN set -eux; \
   rm -rf /output/workarea /output/logs; \
   find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw;
 
-ARG PARENT_IMAGE=websphere-liberty:23.0.0.6-kernel
+ARG PARENT_IMAGE=websphere-liberty:23.0.0.6-kernel-java8-ibmjava
 FROM $PARENT_IMAGE
 ARG VERBOSE=false
 
