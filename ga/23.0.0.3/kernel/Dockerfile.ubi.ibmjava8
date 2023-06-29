@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ibmjava:8-ubi
+FROM icr.io/appcafe/ibmjava:8-sdk-ubi8
 
 USER root
 
