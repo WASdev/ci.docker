@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG PARENT_IMAGE=websphere-liberty:kernel-java11-openj9
-FROM $PARENT_IMAGE AS installBundle
+ARG PARENT_IMAGE=websphere-liberty
+FROM $PARENT_IMAGE:kernel-java11-openj9 AS installBundle
 
 USER root
 
@@ -38,8 +38,8 @@ RUN set -eux; \
   rm -rf /output/workarea /output/logs; \
   find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw;
 
-ARG PARENT_IMAGE=websphere-liberty:kernel-java11-openj9
-FROM $PARENT_IMAGE
+ARG PARENT_IMAGE=websphere-liberty
+FROM $PARENT_IMAGE:kernel-java11-openj9
 ARG VERBOSE=false
 
 # Copy the runtime
