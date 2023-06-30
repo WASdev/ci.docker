@@ -99,7 +99,7 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*;
 
 # Add default user 1001 and create wlp with right user/permissions before copying
-RUN adduser -u 1001 -r -g root -s /usr/sbin/nologin default \
+RUN useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && mkdir -p /opt/ibm/wlp \
     && chown -R 1001:0 /opt/ibm/wlp \
     && chmod -R g+rw /opt/ibm/wlp
