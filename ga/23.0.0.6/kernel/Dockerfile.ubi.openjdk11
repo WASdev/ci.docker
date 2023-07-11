@@ -48,6 +48,8 @@ ARG OPENJ9_SCC=true
 ARG LIBERTY_VERSION=23.0.0.6
 ARG LIBERTY_BUILD_LABEL=cl230620230612-1100
 
+ENV SERVER_NAME=defaultServer
+
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="https://github.com/WASdev/ci.docker" \
@@ -161,7 +163,7 @@ RUN mkdir -p $WLP_OUTPUT_DIR/defaultServer \
     && mkdir -p /opt/ibm/links/config/configDropins/overrides
 
 # Create first-level symlinks as root user
-USER 0
+USER root
 
 RUN mkdir /output \
     && chmod -t /output \
