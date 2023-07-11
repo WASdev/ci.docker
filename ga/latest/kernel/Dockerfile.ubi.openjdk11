@@ -19,7 +19,7 @@ USER root
 ARG VERBOSE=false
 
 # Install WebSphere Liberty
-ARG LIBERTY_VERSION=23.0.0.6
+ARG LIBERTY_VERSION=23.0.0.7
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
 
@@ -45,8 +45,8 @@ USER root
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
-ARG LIBERTY_VERSION=23.0.0.6
-ARG LIBERTY_BUILD_LABEL=cl230620230612-1100
+ARG LIBERTY_VERSION=23.0.0.7
+ARG LIBERTY_BUILD_LABEL=cl230720230710-1201
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
