@@ -1,7 +1,7 @@
 #!/bin/bash
 
 OPT_PREFIX="/opt/ibm"
-IS_KERNEL=false
+IS_KERNEL=true
 
 # Get the original server name
 NUM_SERVERS=$(ls -t $OPT_PREFIX/wlp/usr/servers/ | wc -l)

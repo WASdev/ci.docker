@@ -151,7 +151,6 @@ function main() {
       curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
       installUtility install --acceptLicense $SERVER_NAME --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
       rm -rf /tmp/repo.zip
-    # Otherwise, if features.sh did not run, install server features.
     else
       featureUtility installServerFeatures --acceptLicense $SERVER_NAME --noCache
       find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw 

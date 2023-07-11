@@ -84,12 +84,6 @@ function importKeyCert() {
   fi
 }
 
-# Resolve liberty server symlinks and creation for server name changes
-/opt/ibm/helpers/build/configure-liberty.sh
-if [ $? -ne 0 ]; then
-    exit
-fi
-
 case "${LICENSE,,}" in
   "accept" ) # Suppress license message in logs
     grep -s -F "com.ibm.ws.logging.hideMessage" /config/bootstrap.properties \
