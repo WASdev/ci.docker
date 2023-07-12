@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:kernel AS installBundle
+FROM websphere-liberty:23.0.0.7-kernel-java8-ibmjava AS installBundle
 ARG VERBOSE=false
 ARG REPOSITORIES_PROPERTIES=""
 
@@ -34,7 +34,7 @@ RUN set -eux; \
   rm -rf /output/workarea /output/logs; \
   find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw;
 
-FROM websphere-liberty:kernel
+FROM websphere-liberty:23.0.0.7-kernel-java8-ibmjava
 ARG VERBOSE=false
 
 # Copy the runtime
