@@ -72,7 +72,7 @@ RUN set -eux; \
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends unzip wget \
+    && apt-get install -y --no-install-recommends unzip openssl wget \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /licenses/ \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
