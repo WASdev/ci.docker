@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:kernel-java8-ibmjava
+FROM websphere-liberty:23.0.0.6-kernel-java8-ibmjava
 
 USER root
 
