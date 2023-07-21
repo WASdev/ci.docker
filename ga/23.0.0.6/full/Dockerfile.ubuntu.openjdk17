@@ -14,8 +14,6 @@
 
 FROM websphere-liberty:23.0.0.6-kernel-java17-openj9
 
-USER root
-
 ARG VERBOSE=false
 ARG REPOSITORIES_PROPERTIES=""
 
