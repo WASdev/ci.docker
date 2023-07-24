@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2019.
+# (C) Copyright IBM Corporation 2019, 2023.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ ARG OPENJ9_SCC=true
 ARG EN_SHA=366618db4b733337adc71ec30b1f33d36cf78a81858636360061036a926f373f
 ARG NON_IBM_SHA=d349f6ea3acd71910348904dd48f81940b86ca5f879737206ae37f858767ad0f
 ARG NOTICES_SHA=e7031658e09e2442279db72eed9238fb30d98c06dabb112fb21b8618b7e810ee
+
+ENV SERVER_NAME=defaultServer
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Arthur De Magalhaes, Chris Potter" \
       org.opencontainers.image.vendor="IBM" \
@@ -84,18 +86,9 @@ RUN mkdir /logs \
     && mkdir /etc/wlp \
     && mkdir -p /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
     && mkdir -p /home/default \
-    && mkdir /output \
-    && chmod -t /output \
-    && rm -rf /output \
-    && ln -s $WLP_OUTPUT_DIR/defaultServer /output \
-    && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config \
     && ln -s /opt/ibm /liberty \
     && ln -s /opt/ibm/fixes /fixes \
     && ln -s /opt/ibm/wlp/usr/shared/resources/lib.index.cache /lib.index.cache \
-    && mkdir -p /config/configDropins/defaults \
-    && mkdir -p /config/configDropins/overrides \
-    && chown -R 1001:0 /config \
-    && chmod -R g+rw /config \
     && chown -R 1001:0 /opt/ibm/helpers \
     && chmod -R g+rwx /opt/ibm/helpers \
     && chown -R 1001:0 /opt/ibm/fixes \
@@ -109,7 +102,36 @@ RUN mkdir /logs \
     && chown -R 1001:0 /etc/wlp \
     && chmod -R g+rw /etc/wlp \
     && chown -R 1001:0 /home/default \
-    && chmod -R g+rw /home/default
+    && chmod -R g+rw /home/default \
+    && mkdir -p /opt/ibm/links \
+    && chown -R 1001:0 /opt/ibm/links \
+    && chmod -R g+rw /opt/ibm/links
+
+# Create second-level symlinks as non-root user
+USER 1001
+
+RUN mkdir -p $WLP_OUTPUT_DIR/defaultServer \
+    && ln -s $WLP_OUTPUT_DIR/defaultServer /opt/ibm/links/output \
+    && ln -s /opt/ibm/wlp/usr/servers/defaultServer /opt/ibm/links/config \
+    && mkdir -p /opt/ibm/links/config/configDropins/defaults \
+    && mkdir -p /opt/ibm/links/config/configDropins/overrides
+
+# Create first-level symlinks as root user
+USER root
+
+RUN mkdir /output \
+    && chmod -t /output \
+    && rm -rf /output \
+    && ln -s /opt/ibm/links/output /output \
+    && ln -s /opt/ibm/links/config /config \
+    && chown -R 1001:0 /opt/ibm/links/output \
+    && chmod -R g+rw /opt/ibm/links/output \
+    && chown -R 1001:0 /opt/ibm/links/config \
+    && chmod -R g+rw /opt/ibm/links/config \
+    && chown -R 1001:0 /config \
+    && chmod -R g+rw /config \
+    && chown -R 1001:0 /output \
+    && chmod -R g+rw /output
 
 # Create a new SCC layer
 RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
@@ -126,4 +148,4 @@ USER 1001
 EXPOSE 9080 9443
 
 ENTRYPOINT ["/opt/ibm/helpers/runtime/docker-server.sh"]
-CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
+CMD ["/opt/ibm/wlp/bin/server", "run"]
