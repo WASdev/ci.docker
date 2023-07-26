@@ -12,7 +12,7 @@ Available image tags are listed below. The tags follow this naming convention:
 
 Append a tag to `icr.io/appcafe/websphere-liberty` to pull a specific image. For example, 
 ```
-icr.io/appcafe/websphere-liberty:23.0.0.3-kernel-java17-openj9-ubi
+icr.io/appcafe/websphere-liberty:23.0.0.6-kernel-java17-openj9-ubi
 ```
 
 Available images can be listed using [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started). Log in with your IBMid prior to running the following commands. Note that authentication is only required to list the images. **Images can be pulled from ICR without authentication** : 
@@ -36,18 +36,32 @@ full-java11-openj9-ubi
 full-java17-openj9-ubi
 ```
 
-## 23.0.0.4
+## 23.0.0.7
 
 ```
-23.0.0.4-kernel-java8-openj9-ubi
-23.0.0.4-kernel-java8-ibmjava-ubi
-23.0.0.4-kernel-java11-openj9-ubi
-23.0.0.4-kernel-java17-openj9-ubi
+23.0.0.7-kernel-java8-openj9-ubi
+23.0.0.7-kernel-java8-ibmjava-ubi
+23.0.0.7-kernel-java11-openj9-ubi
+23.0.0.7-kernel-java17-openj9-ubi
 
-23.0.0.4-full-java8-openj9-ubi
-23.0.0.4-full-java8-ibmjava-ubi
-23.0.0.4-full-java11-openj9-ubi
-23.0.0.4-full-java17-openj9-ubi
+23.0.0.7-full-java8-openj9-ubi
+23.0.0.7-full-java8-ibmjava-ubi
+23.0.0.7-full-java11-openj9-ubi
+23.0.0.7-full-java17-openj9-ubi
+```
+
+## 23.0.0.6
+
+```
+23.0.0.6-kernel-java8-openj9-ubi
+23.0.0.6-kernel-java8-ibmjava-ubi
+23.0.0.6-kernel-java11-openj9-ubi
+23.0.0.6-kernel-java17-openj9-ubi
+
+23.0.0.6-full-java8-openj9-ubi
+23.0.0.6-full-java8-ibmjava-ubi
+23.0.0.6-full-java11-openj9-ubi
+23.0.0.6-full-java17-openj9-ubi
 ```
 
 ## 23.0.0.3
@@ -62,18 +76,4 @@ full-java17-openj9-ubi
 23.0.0.3-full-java8-ibmjava-ubi
 23.0.0.3-full-java11-openj9-ubi
 23.0.0.3-full-java17-openj9-ubi
-```
-
-## 22.0.0.12
-
-```
-22.0.0.12-kernel-java8-openj9-ubi
-22.0.0.12-kernel-java8-ibmjava-ubi
-22.0.0.12-kernel-java11-openj9-ubi
-22.0.0.12-kernel-java17-openj9-ubi
-
-22.0.0.12-full-java8-openj9-ubi
-22.0.0.12-full-java8-ibmjava-ubi
-22.0.0.12-full-java11-openj9-ubi
-22.0.0.12-full-java17-openj9-ubi
 ```
