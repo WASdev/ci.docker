@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ibm-semeru-runtimes:open-17-jre-focal
+FROM ibm-semeru-runtimes:open-17-jre-jammy
 
 USER root
 
