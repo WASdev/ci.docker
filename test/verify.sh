@@ -43,7 +43,7 @@ main () {
 
    local tests=$(declare -F | cut -d" " -f3 | grep "^test")
    echo "****** Testing ${IMAGE}..."
-   for name in "${tests}"; do
+   for name in $tests; do
        timestamp=$(date '+%Y/%m/%d %H:%M:%S')
        echo "${timestamp} *** ${name} - Executing"
        eval "${name}"
@@ -99,9 +99,9 @@ testLibertyStopsAndRestarts()
     if [ "$1" == "OpenShift" ]; then
         timestamp=$(date '+%Y/%m/%d %H:%M:%S')
         echo "$timestamp *** testLibertyStopsAndRestarts on OpenShift"
-        cid=$(docker run -d -u 1001:0 $IMAGE)
+        local cid=$(docker run -d -u 1001:0 $IMAGE)
     else
-    local cid=$(docker run -d $IMAGE)
+        local cid=$(docker run -d $IMAGE)
     fi
     echo "Waiting for server to start..."
     waitForServerStart "${cid}" \
