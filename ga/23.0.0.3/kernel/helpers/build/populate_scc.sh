@@ -97,7 +97,8 @@ if [ $TRIM_SCC == yes ]
 then
   echo "Calculating SCC layer upper bound, starting with initial size $SCC_SIZE."
   # Populate the newly created class cache layer.
-  /opt/ibm/wlp/bin/server start && /opt/ibm/wlp/bin/server stop
+  /opt/ibm/wlp/bin/server start
+  /opt/ibm/wlp/bin/server stop
   # Find out how full it is.
   FULL=`( java $PRINT_LAYER_STATS || true ) 2>&1 | awk '/^Cache is [0-9.]*% .*full/ {print substr($3, 1, length($3)-1)}'`
   echo "SCC layer is $FULL% full. Destroying layer."
@@ -120,7 +121,8 @@ fi
 # Server start/stop to populate the /output/workarea and make subsequent server starts faster.
 for ((i=0; i<$ITERATIONS; i++))
 do
-  /opt/ibm/wlp/bin/server start && /opt/ibm/wlp/bin/server stop
+  /opt/ibm/wlp/bin/server start
+  /opt/ibm/wlp/bin/server stop
 done
 
 # restore umask
