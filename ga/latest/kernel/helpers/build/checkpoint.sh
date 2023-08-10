@@ -9,13 +9,15 @@ done
 echo "Performing checkpoint --at=$1"
 /opt/ibm/wlp/bin/server checkpoint defaultServer --at=$1
 
-# Find all directories in logs/ and output/ that the current user has read/write/execute permissions for
-# and give the same permissions to the group.
-find -L /logs /output -type d -readable -writable -executable -exec chmod g+rwx {} \;
-
-# Find all files in logs/ and output/ that the current user has read/write permissions for
-# and give the same permissions to the group.
-find -L /logs /output -type f -readable -writable -exec chmod g+rw {} \;
-
 rc=$?
+if [ $rc -eq 0 ]; then
+    # Find all directories in logs/ and output/ that the current user has read/write/execute permissions for
+    # and give the same permissions to the group.
+    find -L /logs /output -type d -readable -writable -executable -exec chmod g+rwx {} \;
+
+    # Find all files in logs/ and output/ that the current user has read/write permissions for
+    # and give the same permissions to the group.
+    find -L /logs /output -type f -readable -writable -exec chmod g+rw {} \;
+fi
+
 exit $rc
