@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# hack to bump up the pid by 100
-for i in {1..100}
+# hack to bump up the pid by 1000
+for i in {1..1000}
 do
     pidplus.sh
 done
