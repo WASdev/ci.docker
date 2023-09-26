@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ibmjava:8-ubi AS getRuntime
+FROM ibmjava:8-ubi9 AS getRuntime
 
 USER root
 
@@ -38,7 +38,7 @@ RUN yum -y install unzip wget openssl \
     && chmod -R g+rw /opt/ibm/wlp \
     && cp -a /opt/ibm/wlp/lafiles/. /licenses/
 
-FROM ibmjava:8-ubi
+FROM ibmjava:8-ubi9
 
 USER root
 
