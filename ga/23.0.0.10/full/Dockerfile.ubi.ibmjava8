@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:kernel-java8-ibmjava-ubi
+ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:23.0.0.10-kernel-java8-ibmjava-ubi
 FROM $PARENT_IMAGE AS installBundle
 
 ARG VERBOSE=false
