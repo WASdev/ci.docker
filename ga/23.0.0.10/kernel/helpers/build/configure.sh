@@ -167,6 +167,9 @@ function main() {
   #Make sure that group write permissions are set correctly after installing new features
   find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw
 
+  # Force the server.xml to be processed by updating its timestamp
+  touch /config/server.xml
+
   # Create a new SCC layer
   if [ "$OPENJ9_SCC" == "true" ]; then
     cmd="populate_scc.sh -i 1"
