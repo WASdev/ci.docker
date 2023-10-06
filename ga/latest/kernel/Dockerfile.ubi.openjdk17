@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-17-jdk-ubi9 AS getRuntime
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-17-jdk-ubi AS getRuntime
 
 USER root
 
@@ -38,7 +38,7 @@ RUN yum -y install shadow-utils unzip wget findutils openssl \
     && chmod -R g+rw /opt/ibm/wlp \
     && cp -a /opt/ibm/wlp/lafiles/. /licenses/
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-17-jdk-ubi9
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-17-jdk-ubi
 
 USER root
 
