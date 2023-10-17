@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ibm-semeru-runtimes:open-11-jre-jammy
+FROM ibm-semeru-runtimes:open-17-jre-jammy
 
 USER root
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
-ARG LIBERTY_VERSION=23.0.0.10
-ARG LIBERTY_BUILD_LABEL=cl231020231002-1201
+ARG LIBERTY_VERSION=23.0.0.11
+ARG LIBERTY_BUILD_LABEL=cl231120231014-2002
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
