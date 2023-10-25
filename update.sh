@@ -11,19 +11,17 @@ BUILD_LABEL=12345
 echo "Copying latest files to $NEW_VERSION"
 cp -r ./ga/latest ./ga/$NEW_VERSION
 
-# Perform the actual swaps by doing a search of the directory the script is running on
+# Perform the substitutions by searching in newly created directory
 for file in $(find ./ga/$NEW_VERSION -name Dockerfile.*); do
    echo "Processing $file";
 
    # Perform the swap for each version string/label/SHA in order
-   echo "--Performing subsitutions";
    sed -i'.bak' -e "s/$OLD_VERSION/$NEW_VERSION/" $file;
    sed -i'.bak' -e "s/ARG LIBERTY_BUILD_LABEL=.*/ARG LIBERTY_BUILD_LABEL=$BUILD_LABEL/g" $file;
    sed -i'.bak' -e "s/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:kernel/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:$NEW_VERSION-kernel/g" $file;
    sed -i'.bak' -e "s/FROM websphere-liberty:kernel/FROM websphere-liberty:$NEW_VERSION-kernel/g" $file;
 
     # Clean up temp files
-    echo "--Removing temp files"
     rm $file.bak
 
 done
