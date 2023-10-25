@@ -5,7 +5,7 @@ echo "Hello from the update.sh script!"
 NEW_VERSION=23.0.0.66
 OLD_VERSION=23.0.0.11
 OLD_SHORT_VERSION=11
-BUILD_LABEL=12345_new
+BUILD_LABEL=12345
 
 echo "Copying latest files to $NEW_VERSION"
 cp -r ./ga/latest ./ga/$NEW_VERSION
@@ -19,8 +19,8 @@ for file in $(find ./ga/$NEW_VERSION -type f | xargs egrep -l "$searchString"); 
    echo "--Performing subsitutions";
    sed -i'.bak' -e "s/$OLD_VERSION/$NEW_VERSION/" $file;
    sed -i'.bak' -e "s/LIBERTY_BUILD_LABEL=*/LIBERTY_BUILD_LABEL=$BUILD_LABEL" $file;
-   sed -i'.bak' -e "s#ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:kernel#ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:$NEW_VERSION-kernel#g" $file
-   sed -i'.bak' -e "s#FROM websphere-liberty:kernel#FROM websphere-liberty:$VERSION-kernel#g" $file
+   sed -i'.bak' -e "s#ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:kernel#ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:$NEW_VERSION-kernel#g" $file;
+   sed -i'.bak' -e "s#FROM websphere-liberty:kernel#FROM websphere-liberty:$NEW_VERSION-kernel#g" $file;
 
     # Clean up temp files
     echo "--Removing temp files"
