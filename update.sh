@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "Hello from the update.sh script!"
+echo "The latest version is really being invoked. :\ "
 
 NEW_VERSION=23.0.0.66
 OLD_VERSION=23.0.0.11
@@ -26,16 +27,17 @@ for file in $(find ./ga/$NEW_VERSION -type f | xargs egrep -l "$searchString"); 
     echo "--Removing temp files"
     rm $file.bak
 
-    cp ga/$OLD_VERSION/images.txt ga/$NEW_VERSION/images.txt;
-    sed -i'.bak' -e "s/$OLD_VERSION/$NEW_VERSION/g" ga/$NEW_VERSION/images.txt;
-    rm ga/$NEW_VERSION/images.txt.bak;
-
-    if [[ $(( $OLD_SHORT_VERSION % 3 )) -eq 0 ]]
-    then
-        :
-    else
-        rm -rf ga/$OLD_VERSION
-    fi
-
-    echo "Done processing new file updates!";
 done
+
+cp ./ga/$OLD_VERSION/images.txt ./ga/$NEW_VERSION/images.txt;
+sed -i'.bak' -e "s/$OLD_VERSION/$NEW_VERSION/g" ./ga/$NEW_VERSION/images.txt;
+rm ./ga/$NEW_VERSION/images.txt.bak;
+
+if [[ $(( $OLD_SHORT_VERSION % 3 )) -eq 0 ]]
+  then
+      :
+  else
+      rm -rf ./ga/$OLD_VERSION
+  fi
+
+echo "Done processing new file updates!";
