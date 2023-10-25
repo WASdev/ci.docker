@@ -13,7 +13,8 @@ cp -r ./ga/latest ./ga/$NEW_VERSION
 
 # Perform the actual swaps by doing a search of the directory the script is running on
 searchString="$OLD_VERSION"
-for file in $(find ./ga/$NEW_VERSION -type f | xargs egrep -l "$searchString"); do
+#for file in $(find ./ga/$NEW_VERSION -type f | xargs egrep -l "$searchString"); do
+for file in $(find ./ga/$NEW_VERSION -name Dockerfile.*)
    echo "Processing $file";
 
    # Perform the swap for each version string/label/SHA in order
