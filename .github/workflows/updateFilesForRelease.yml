@@ -1,0 +1,59 @@
+# This is a basic workflow that is triggered by a push
+
+name: Update files for new release workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  push:
+    branches:
+      - vNext
+    paths:
+      - 'vNext.properties'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called <?>
+  automate_release_updates:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Show useful information about the environment
+      run: |
+        echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
+    - name: Check out repository code
+      uses: actions/checkout@v4
+      with:
+        ref: vNext
+        repository: wraschke/ci.docker
+
+    - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+    - name: List files in the repository
+      run: |
+        ls ${{ github.workspace }}
+
+    - name: Run update.sh script
+      run: bash ./update.sh
+
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v9
+      with: 
+        default_author: github_actions
+        author_name: GitHub Actions
+        author_email: mail@example.com
+        message: 'Test commit'
+        add: '${{ github.workspace }}/ga/*'
+        new_branch: test_branch
+        push: true
+        tag_push: '--force'
+
+    - name: Create Pull Request
+      run: gh pr create -B vNext -H test_branch -r mbroz2 -r leochr --title 'Updates for the new release' --body 'Created by Github Actions'
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - run: echo "🍏 This job's status is ${{ job.status }}."
