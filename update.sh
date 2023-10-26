@@ -18,9 +18,10 @@ for file in $(find ./ga -type f | xargs egrep -l "$searchString"); do
    sed -i'.bak' -e "s/$OLD_VERSION/$NEW_VERSION/" $file;
    sed -i'.bak' -e "s/ARG LIBERTY_BUILD_LABEL=.*/ARG LIBERTY_BUILD_LABEL=$BUILD_LABEL/g" $file;
 
-   # Don't do this substitution in latest directory
-   if [[ "$file" == "ga/$NEW_VERSION/"* ]];
+   # Do this substitution only in new release directory
+   if [[ "$file" == "./ga/$NEW_VERSION/"* ]];
    then
+      echo "In the parent_image flow, yay"
       sed -i'.bak' -e "s/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:kernel/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:$NEW_VERSION-kernel/g" $file;
       sed -i'.bak' -e "s/FROM websphere-liberty:kernel/FROM websphere-liberty:$NEW_VERSION-kernel/g" $file;
    fi
