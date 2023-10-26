@@ -9,8 +9,8 @@ on:
     paths:
       - 'vNext.properties'
 
-#env:
-#  NEW_VERSION: 23.0.0.73
+env:
+  NEW_VERSION: 23.0.0.73
 
 jobs:
   automate_release_updates:
@@ -24,6 +24,7 @@ jobs:
     - name: Show useful information about the environment
       run: |
         echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+        env
 
     - name: Check out repository code
       uses: actions/checkout@v4
