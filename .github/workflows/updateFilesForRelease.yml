@@ -54,7 +54,7 @@ jobs:
 
     - name: Create Pull Request
       run: |
-        gh variable set NEW_VERSION < vNext.properties
+        gh variable set NEW_VERSION --body "$NEW_VERSION"
         echo "NEW_VERSION = $NEW_VERSION"
         gh pr create -B vNext -H "$NEW_VERSION-release" -r mbroz2 -r leochr --title "Updates for the release of $NEW_VERSION" --body "Created by Github Actions"
       env:
