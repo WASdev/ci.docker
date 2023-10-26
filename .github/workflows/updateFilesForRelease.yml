@@ -15,10 +15,6 @@ env:
 jobs:
   automate_release_updates:
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      contents: write
-      pull-requests: write
 
     steps:
     - name: Show useful information about the environment
