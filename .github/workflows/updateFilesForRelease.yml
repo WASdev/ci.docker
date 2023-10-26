@@ -24,7 +24,7 @@ jobs:
     steps:
     - name: Show useful information about the environment
       run: |
-        echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository 
+        echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
         echo "NEW_VERSION: $NEW_VERSION"
 
     - name: Check out repository code
