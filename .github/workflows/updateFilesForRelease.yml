@@ -51,12 +51,12 @@ jobs:
         author_email: mail@example.com
         message: "Updates for the release of $NEW_VERSION"
         add: '${{ github.workspace }}/ga/*'
-        new_branch: $NEW_VERSION-release
+        new_branch: "$NEW_VERSION-release"
         push: true
         tag_push: '--force'
 
     - name: Create Pull Request
-      run: gh pr create -B vNext -H $NEW_VERSION-release -r mbroz2 -r leochr --title "Updates for the release of $$NEW_VERSION" --body "Created by Github Actions"
+      run: gh pr create -B vNext -H "$NEW_VERSION-release" -r mbroz2 -r leochr --title "Updates for the release of $NEW_VERSION" --body "Created by Github Actions"
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
