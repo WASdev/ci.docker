@@ -8,14 +8,28 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
+      OLD_VERSION:
+        description: 'Enter old version'
         # Default value if no value is explicitly provided
-        default: 'World'
+        default: '23.0.0.11'
         # Input has to be provided for the workflow to run
         required: true
         # The data type of the input
+        type: string
+      NEW_VERSION:
+        description: 'Enter new version'
+        default: '23.0.0.12'
+        required: true
+        type: string
+      OLD_SHORT_VERSION:
+        description: 'Enter single digit of old version'
+        default: '11'
+        required: true
+        type: string
+      BUILD_LABEL:
+        description: 'Enter build label of release driver'
+        default: ''
+        required: true
         type: string
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
