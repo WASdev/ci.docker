@@ -5,6 +5,9 @@ echo $(date)
 
 . ./vNext.properties
 
+# Try to propagate this to the workflow environment?
+export NEW_VERSION=$NEW_VERSION;
+
 echo "Copying latest files to $NEW_VERSION"
 cp -r ./ga/latest ./ga/$NEW_VERSION
 
