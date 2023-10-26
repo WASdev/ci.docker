@@ -11,8 +11,8 @@ cp -r ./ga/latest ./ga/$NEW_VERSION
 # Perform the substitutions by searching in newly created directory
 searchString="$OLD_VERSION|$BUILD_LABEL";
 echo "searchString: $searchString"
-for file in $(find ./ga -type f | xargs egrep -l "$searchString"); do
-#for file in $(find ./ga/$NEW_VERSION -name Dockerfile.*); do
+#for file in $(find ./ga -type f | xargs egrep -l "$searchString"); do
+for file in $(find ./ga/latest ./ga/$NEW_VERSION -name Dockerfile.*); do
    echo "Processing $file";
 
    sed -i'.bak' -e "s/$OLD_VERSION/$NEW_VERSION/" $file;
