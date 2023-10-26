@@ -9,17 +9,24 @@ echo "Copying latest files to $NEW_VERSION"
 cp -r ./ga/latest ./ga/$NEW_VERSION
 
 # Perform the substitutions by searching in newly created directory
-for file in $(find ./ga/$NEW_VERSION -name Dockerfile.*); do
+searchString="$OLD_VERSION|$BUILD_LABEL";
+echo "searchString: $searchString"
+for file in $(find ./ga -type f | xargs egrep -l "$searchString"); do
+#for file in $(find ./ga/$NEW_VERSION -name Dockerfile.*); do
    echo "Processing $file";
 
-   # Perform the swap for each version string/label/SHA in order
    sed -i'.bak' -e "s/$OLD_VERSION/$NEW_VERSION/" $file;
    sed -i'.bak' -e "s/ARG LIBERTY_BUILD_LABEL=.*/ARG LIBERTY_BUILD_LABEL=$BUILD_LABEL/g" $file;
-   sed -i'.bak' -e "s/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:kernel/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:$NEW_VERSION-kernel/g" $file;
-   sed -i'.bak' -e "s/FROM websphere-liberty:kernel/FROM websphere-liberty:$NEW_VERSION-kernel/g" $file;
 
-    # Clean up temp files
-    rm $file.bak
+   # Don't do this substitution in latest directory
+   if [[ "$folder" == ga/NEW_VERSION/* ]];
+   then
+      sed -i'.bak' -e "s/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:kernel/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:$NEW_VERSION-kernel/g" $file;
+      sed -i'.bak' -e "s/FROM websphere-liberty:kernel/FROM websphere-liberty:$NEW_VERSION-kernel/g" $file;
+   fi
+   
+   # Clean up temp files
+   rm $file.bak
 
 done
 
