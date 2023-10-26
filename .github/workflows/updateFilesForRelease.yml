@@ -11,21 +11,21 @@ on:
     paths:
       - 'vNext.properties'
 
+env:
+  NEW_VERSION: 23.0.0.73
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called <?>
   automate_release_updates:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    env:
-      NEW_VERSION: 23.0.0.73
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Show useful information about the environment
       run: |
         echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-        echo "NEW_VERSION: $NEW_VERSION"
 
     - name: Check out repository code
       uses: actions/checkout@v4
@@ -35,13 +35,10 @@ jobs:
 
     - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-    # Uncomment out if you need to debug
-    # - name: List files in the repository
-    #  run: |
-    #    ls ${{ github.workspace }}
-
     - name: Run update.sh script
       run: bash ./update.sh
+
+    - run: echo "NEW_VERSION = $NEW_VERSION"
 
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
@@ -56,7 +53,9 @@ jobs:
         tag_push: '--force'
 
     - name: Create Pull Request
-      run: gh pr create -B vNext -H "$NEW_VERSION-release" -r mbroz2 -r leochr --title "Updates for the release of $NEW_VERSION" --body "Created by Github Actions"
+      run: |
+        echo "NEW_VERSION = $NEW_VERSION"
+        gh pr create -B vNext -H "$NEW_VERSION-release" -r mbroz2 -r leochr --title "Updates for the release of $NEW_VERSION" --body "Created by Github Actions"
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
