@@ -3,10 +3,7 @@
 echo "Hello from the update.sh script!"
 echo $(date)
 
-NEW_VERSION=23.0.0.66
-OLD_VERSION=23.0.0.11
-OLD_SHORT_VERSION=11
-BUILD_LABEL=12345
+. ~/vNext.properties
 
 echo "Copying latest files to $NEW_VERSION"
 cp -r ./ga/latest ./ga/$NEW_VERSION
