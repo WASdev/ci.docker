@@ -9,8 +9,8 @@ on:
     paths:
       - 'vNext.properties'
 
-env:
-  NEW_VERSION: 23.0.0.73
+#env:
+#  NEW_VERSION: 23.0.0.73
 
 jobs:
   automate_release_updates:
