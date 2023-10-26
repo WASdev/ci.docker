@@ -43,4 +43,8 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: Send greeting
-      run: echo "Hello ${{ inputs.name }}"
+      run: |
+        echo "OLD_VERSION ${{ inputs.OLD_VERSION }}"
+        echo "NEW_VERSION ${{ inputs.OLD_VERSION }}"
+        echo "OLD_SHORT_VERSION ${{ inputs.OLD_SHORT_VERSION }}"
+        echo "BUILD_LABEL ${{ inputs.BUILD_LABEL }}"
