@@ -19,7 +19,7 @@ for file in $(find ./ga -type f | xargs egrep -l "$searchString"); do
    sed -i'.bak' -e "s/ARG LIBERTY_BUILD_LABEL=.*/ARG LIBERTY_BUILD_LABEL=$BUILD_LABEL/g" $file;
 
    # Don't do this substitution in latest directory
-   if [[ "$folder" == ga/$NEW_VERSION/* ]];
+   if [[ "$folder" == "ga/$NEW_VERSION/"* ]];
    then
       sed -i'.bak' -e "s/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:kernel/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:$NEW_VERSION-kernel/g" $file;
       sed -i'.bak' -e "s/FROM websphere-liberty:kernel/FROM websphere-liberty:$NEW_VERSION-kernel/g" $file;
