@@ -43,7 +43,7 @@ jobs:
     - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
     - name: Run update.sh script
-      run: bash ./update.sh
+      run: bash ./update.sh ${{ inputs.OLD_VERSION }} ${{ inputs.NEW_VERSION }} ${{ inputs.BUILD_LABEL }}
 
     - run: echo "NEW_VERSION = ${{ inputs.NEW_VERSION }}"
 
