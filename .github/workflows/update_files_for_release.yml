@@ -1,0 +1,61 @@
+# This workflow is triggered by manual inputs.
+
+name: Update files for the new release
+
+on:
+  workflow_dispatch:
+    inputs:
+      OLD_VERSION:
+        description: 'Enter old version'
+        # Show defaults as examples so user enters correct format.
+        default: '23.0.0.11'
+        required: true
+        type: string
+      NEW_VERSION:
+        description: 'Enter new version'
+        default: '23.0.0.12'
+        required: true
+        type: string
+      BUILD_LABEL:
+        description: 'Enter build label of release driver'
+        default: 'replace_with_gm_driver_label'
+        required: false
+        type: string
+
+jobs:
+  automate_release_updates:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Show useful information about the environment
+      run: echo "🔎 The name of the branch is ${{ github.ref }} and repository is ${{ github.repository }}."
+
+    - name: Check out repository code
+      uses: actions/checkout@v4
+      with:
+        ref: vNext
+        repository: wraschke/ci.docker
+
+    - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+    - name: Run update.sh script
+      run: bash ./update.sh ${{ inputs.OLD_VERSION }} ${{ inputs.NEW_VERSION }} ${{ inputs.BUILD_LABEL }}
+
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v9
+      with: 
+        default_author: github_actions
+        author_name: GitHub Actions
+        message: "Updates for the release of ${{ inputs.NEW_VERSION }}"
+        add: '${{ github.workspace }}/ga/*'
+        new_branch: "${{ inputs.NEW_VERSION }}-release"
+        push: true
+        tag_push: '--force'
+
+    - name: Create Pull Request
+      run: |
+        gh pr create -B vNext -H "${{ inputs.NEW_VERSION }}-release" -r mbroz2 -r leochr --title "Updates for the release of ${{ inputs.NEW_VERSION }}" --body "Created by Github Actions"
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - run: echo "🍏 This job's status is ${{ job.status }}."
