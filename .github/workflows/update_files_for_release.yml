@@ -27,16 +27,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Show useful information about the environment
-      run: echo "🔎 The name of the branch is ${{ github.ref }} and repository is ${{ github.repository }}."
+    - name: Show useful information about the workflow environment
+      run: echo "🔎 This workflow is running in branch ${{ github.ref }} and repository ${{ github.repository }}."
 
-    - name: Check out repository code
+    # This repository and branch to clone and checkout on runner 
+    # could be different than repo and branch where workflow runs.
+    # Be aware of this nuance.
+    - name: Check out repository code to runner
       uses: actions/checkout@v4
       with:
         ref: vNext
         repository: WASdev/ci.docker
-
-    - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
     - name: Run update.sh script
       run: bash ./update.sh ${{ inputs.OLD_VERSION }} ${{ inputs.NEW_VERSION }} ${{ inputs.BUILD_LABEL }}
