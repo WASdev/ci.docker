@@ -3,6 +3,7 @@
 name: Update files for new release workflow
 
 on:
+  workflow_dispatch:
     inputs:
       OLD_VERSION:
         description: 'Enter old version'
