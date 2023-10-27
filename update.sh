@@ -3,7 +3,28 @@
 echo "Hello from the update.sh script!"
 echo $(date)
 
-. ./vNext.properties
+# Set variables to the positional parameters
+OLD_VERSION=$1
+NEW_VERSION=$2
+BUILD_LABEL=$3
+
+# See if NEW_VERSION and OLD_VERSION fit expected pattern.
+if [[ $OLD_VERSION =~ 2[3-9]\.0\.0\.[0-9]+ && $NEW_VERSION =~ 2[3-9]\.0\.0\.[0-9]+ ]];
+then
+   echo "$OLD_VERSION and $NEW_VERSION matches expected version format."
+else
+   echo "Either $OLD_VERSION or $NEW_VERSION does not fit format."
+   exit 1;
+fi
+
+# Get last digit of old version
+OLD_SHORT_VERSION=${OLD_VERSION:7}
+
+# Temp debug
+echo "OLD_VERSION = $OLD_VERSION"
+echo "NEW_VERSION = $NEW_VERSION"
+echo "BUILD_LABEL = $BUILD_LABEL"
+echo "OLD_SHORT_VERSION = $OLD_SHORT_VERSION"
 
 echo "Copying latest files to $NEW_VERSION"
 cp -r ./ga/latest ./ga/$NEW_VERSION
