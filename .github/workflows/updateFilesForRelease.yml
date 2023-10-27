@@ -20,7 +20,7 @@ on:
         type: string
       BUILD_LABEL:
         description: 'Enter build label of release driver'
-        default: '<replace_with_gm_driver_label>'
+        default: 'replace_with_gm_driver_label'
         required: false
         type: string
 
@@ -30,9 +30,7 @@ jobs:
 
     steps:
     - name: Show useful information about the environment
-      run: |
-        echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-        env
+      run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
 
     - name: Check out repository code
       uses: actions/checkout@v4
@@ -44,8 +42,6 @@ jobs:
 
     - name: Run update.sh script
       run: bash ./update.sh ${{ inputs.OLD_VERSION }} ${{ inputs.NEW_VERSION }} ${{ inputs.BUILD_LABEL }}
-
-    - run: echo "NEW_VERSION = ${{ inputs.NEW_VERSION }}"
 
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
@@ -60,7 +56,6 @@ jobs:
 
     - name: Create Pull Request
       run: |
-        echo "NEW_VERSION = ${{ inputs.NEW_VERSION }}"
         gh pr create -B vNext -H "${{ inputs.NEW_VERSION }}-release" -r mbroz2 -r leochr --title "Updates for the release of ${{ inputs.NEW_VERSION }}" --body "Created by Github Actions"
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
