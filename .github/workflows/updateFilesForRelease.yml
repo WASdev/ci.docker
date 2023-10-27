@@ -3,14 +3,25 @@
 name: Update files for new release workflow
 
 on:
-  push:
-    branches:
-      - vNext
-    paths:
-      - 'vNext.properties'
-
-env:
-  NEW_VERSION: 23.0.0.73
+    inputs:
+      OLD_VERSION:
+        description: 'Enter old version'
+        # Default value if no value is explicitly provided
+        default: '23.0.0.11'
+        # Input has to be provided for the workflow to run
+        required: true
+        # The data type of the input
+        type: string
+      NEW_VERSION:
+        description: 'Enter new version'
+        default: '23.0.0.12'
+        required: true
+        type: string
+      BUILD_LABEL:
+        description: 'Enter build label of release driver'
+        default: '<replace_with_gm_driver_label>'
+        required: false
+        type: string
 
 jobs:
   automate_release_updates:
@@ -33,24 +44,23 @@ jobs:
     - name: Run update.sh script
       run: bash ./update.sh
 
-    - run: echo "NEW_VERSION = ${{ env.NEW_VERSION }}"
+    - run: echo "NEW_VERSION = ${{ inputs.NEW_VERSION }}"
 
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
       with: 
         default_author: github_actions
         author_name: GitHub Actions
-        author_email: mail@example.com
-        message: "Updates for the release of ${{ env.NEW_VERSION }}"
+        message: "Updates for the release of ${{ inputs.NEW_VERSION }}"
         add: '${{ github.workspace }}/ga/*'
-        new_branch: "${{ env.NEW_VERSION }}-release"
+        new_branch: "${{ inputs.NEW_VERSION }}-release"
         push: true
         tag_push: '--force'
 
     - name: Create Pull Request
       run: |
-        echo "NEW_VERSION = ${{ env.NEW_VERSION }}"
-        gh pr create -B vNext -H "${{ env.NEW_VERSION }}-release" -r mbroz2 -r leochr --title "Updates for the release of ${{ env.NEW_VERSION }}" --body "Created by Github Actions"
+        echo "NEW_VERSION = ${{ inputs.NEW_VERSION }}"
+        gh pr create -B vNext -H "${{ inputs.NEW_VERSION }}-release" -r mbroz2 -r leochr --title "Updates for the release of ${{ inputs.NEW_VERSION }}" --body "Created by Github Actions"
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
