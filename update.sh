@@ -59,4 +59,9 @@ if [[ $(( $OLD_SHORT_VERSION % 3 )) -eq 0 ]]
       rm -rf ./ga/$OLD_VERSION
   fi
 
+# Finally comment out "ga/*/*/resources/*" in the workspace's .gitignore file so
+# the new resources directories can be committed, too.
+sed -i'.bak' -e "s/ga\/\*\/\*\/resources\/\*/#ga\/\*\/\*\/resources\/\*/g" .gitignore
+rm ./.gitignore.bak
+
 echo "Done processing new file updates!";
