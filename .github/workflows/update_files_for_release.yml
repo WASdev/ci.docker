@@ -48,7 +48,7 @@ jobs:
         default_author: github_actions
         author_name: GitHub Actions
         message: "Updates for the release of ${{ inputs.NEW_VERSION }}"
-        add: '${{ github.workspace }}/ga/*'
+        add: '${{ github.workspace }}/ga/* ${{ github.workspace }}/.travis.yml'
         new_branch: "${{ inputs.NEW_VERSION }}-release"
         push: true
         tag_push: '--force'
