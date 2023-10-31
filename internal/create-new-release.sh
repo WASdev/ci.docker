@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Hello from the update.sh script!"
+echo "Hello from the create-new-release.sh script!"
 echo $(date)
 
 # Set variables to the positional parameters
