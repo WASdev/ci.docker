@@ -51,7 +51,7 @@ done
 if test -f ./.travis.yml; then
   echo ".travis.yml exists."
 fi
-sed -i'.bak' -e "s/RELEASE=\.\.\/releases\/$OLD_VERSION/RELEASE=\.\.\/releases\/$NEW_VERSION/" ./.travis.yml;
+sed -i'.bak' -e "s/RELEASE=\.\.\/ga\/$OLD_VERSION/RELEASE=\.\.\/ga\/$NEW_VERSION/" ./.travis.yml;
 rm ./.travis.yml.bak;
 
 # Update the images.txt file
