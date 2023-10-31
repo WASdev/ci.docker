@@ -40,7 +40,7 @@ jobs:
         repository: WASdev/ci.docker
 
     - name: Run update.sh script
-      run: bash ./update.sh ${{ inputs.OLD_VERSION }} ${{ inputs.NEW_VERSION }} ${{ inputs.BUILD_LABEL }}
+      run: bash ./internal/create-new-release.sh ${{ inputs.OLD_VERSION }} ${{ inputs.NEW_VERSION }} ${{ inputs.BUILD_LABEL }}
 
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
