@@ -39,8 +39,8 @@ jobs:
         ref: vNext
         repository: WASdev/ci.docker
 
-    - name: Run update.sh script
-      run: bash ./internal/create-new-release.sh ${{ inputs.OLD_VERSION }} ${{ inputs.NEW_VERSION }} ${{ inputs.BUILD_LABEL }}
+    - name: Run update script
+      run: bash ./create-new-release.sh ${{ inputs.OLD_VERSION }} ${{ inputs.NEW_VERSION }} ${{ inputs.BUILD_LABEL }}
 
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
