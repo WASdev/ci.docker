@@ -6,6 +6,10 @@ do
     pidplus.sh
 done
 
+if [ -e /etc/instanton.ld.so.cache ]; then
+    cp /etc/instanton.ld.so.cache /etc/ld.so.cache
+fi
+
 ARCH="$(uname -m)";
 case "${ARCH}" in
     ppc64el|ppc64le)
