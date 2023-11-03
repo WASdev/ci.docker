@@ -154,6 +154,7 @@ RUN mkdir /logs \
     && chmod -R g+rw /logs \
     && chown -R 1001:0 /etc/wlp \
     && chmod -R g+rw /etc/wlp \
+    && if [ -e /etc/instanton.ld.so.cache ]; then chmod g+w /etc/ld.so.cache; fi \
     && chown -R 1001:0 /home/default \
     && chmod -R g+rw /home/default 
 
