@@ -6,6 +6,23 @@ do
     pidplus.sh
 done
 
+if [ -e /etc/instanton.ld.so.cache ]; then
+    cp /etc/instanton.ld.so.cache /etc/ld.so.cache
+fi
+
+ARCH="$(uname -m)";
+case "${ARCH}" in
+    ppc64el|ppc64le)
+        export JVM_ARGS="${JVM_ARGS} -XX:+JVMPortableRestoreMode"
+        ;;
+    s390x)
+        export JVM_ARGS="${JVM_ARGS} -XX:+JVMPortableRestoreMode"
+        ;;
+    *)
+        ;;
+esac;
+
+
 echo "Performing checkpoint --at=$1"
 /opt/ibm/wlp/bin/server checkpoint defaultServer --at=$1
 
