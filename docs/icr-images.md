@@ -1,9 +1,9 @@
 
 # IBM Container Registry (ICR)
 
-WebSphere Liberty container images are available from IBM Container Registry (ICR) at `icr.io/appcafe/websphere-liberty`. Our recommendation is to use ICR instead of Docker Hub, since ICR doesn't impose rate limits on image pulls. Images can be pulled from ICR without authentication. Only images with Universal Base Image (UBI) as the Operating System are available in ICR at the moment.
+WebSphere Liberty container images are available from the IBM Container Registry (ICR) at `icr.io/appcafe/websphere-liberty`. Our recommendation is to use ICR instead of Docker Hub since ICR doesn't impose rate limits on image pulls. Images can be pulled from ICR without authentication. Only images with Universal Base Image (UBI) as the Operating System are available in ICR.
 
-The images for the latest release and the last two quarterly releases are available and are refreshed regularly.
+The images for the latest Liberty release and the last two quarterly releases (versions ending in _.3_, _.6_, _.9_ and _.12_) are available and are refreshed regularly to include fixes for the operating system (OS) and Java.
 
 Available image tags are listed below. The tags follow this naming convention: 
 ```
@@ -22,7 +22,7 @@ ibmcloud cr images --restrict appcafe/websphere-liberty
 ```
 
 
-## Latest version
+## Latest version (23.0.0.11)
 
 ```
 kernel-java8-openj9-ubi
@@ -34,6 +34,20 @@ full-java8-openj9-ubi
 full-java8-ibmjava-ubi
 full-java11-openj9-ubi
 full-java17-openj9-ubi
+```
+
+## 23.0.0.11
+
+```
+23.0.0.11-kernel-java8-openj9-ubi
+23.0.0.11-kernel-java8-ibmjava-ubi
+23.0.0.11-kernel-java11-openj9-ubi
+23.0.0.11-kernel-java17-openj9-ubi
+
+23.0.0.11-full-java8-openj9-ubi
+23.0.0.11-full-java8-ibmjava-ubi
+23.0.0.11-full-java11-openj9-ubi
+23.0.0.11-full-java17-openj9-ubi
 ```
 
 ## 23.0.0.9
