@@ -18,7 +18,7 @@ on:
         type: string
       BUILD_LABEL:
         description: 'Enter build label of release driver'
-        default: 'replace_with_gm_driver_label'
+        default: '{replace_with_gm_driver_label}'
         required: false
         type: string
 
