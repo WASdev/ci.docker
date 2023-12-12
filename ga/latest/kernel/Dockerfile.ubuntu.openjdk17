@@ -20,7 +20,7 @@ ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
 ARG LIBERTY_VERSION=23.0.0.12
-ARG LIBERTY_BUILD_LABEL=replace_with_gm_driver_label
+ARG LIBERTY_BUILD_LABEL=cl231220231127-1901
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
