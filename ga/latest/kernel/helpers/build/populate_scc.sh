@@ -42,7 +42,8 @@ fi
 # In order to reduce the chances of this happening we use the -XX:+OriginalJDK8HeapSizeCompatibilityMode
 # option to revert to the old criteria, which results in AOT code that is more compatible, on average, with typical heap sizes/positions.
 # The option has no effect on later JDKs.
-export OPENJ9_JAVA_OPTIONS="-XX:+OriginalJDK8HeapSizeCompatibilityMode $SCC"
+# Using -XX:+IProfileDuringStartupPhase to enforce IProfiler collection during the startup phase to better populate the SCC.
+export OPENJ9_JAVA_OPTIONS="-XX:+OriginalJDK8HeapSizeCompatibilityMode -XX:+IProfileDuringStartupPhase $SCC"
 export IBM_JAVA_OPTIONS="$OPENJ9_JAVA_OPTIONS"
 CREATE_LAYER="$OPENJ9_JAVA_OPTIONS,createLayer,groupAccess"
 DESTROY_LAYER="$OPENJ9_JAVA_OPTIONS,destroy"
