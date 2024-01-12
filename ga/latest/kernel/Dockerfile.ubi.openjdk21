@@ -53,13 +53,13 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wend
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="$LIBERTY_VERSION" \
       org.opencontainers.image.revision="$LIBERTY_BUILD_LABEL" \
-      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
       org.opencontainers.image.title="IBM WebSphere Liberty" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
       version="$LIBERTY_VERSION" \
-      summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9" \
-      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
+      summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal" \
+      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
 
 ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build
 
