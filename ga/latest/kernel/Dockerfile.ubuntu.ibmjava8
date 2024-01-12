@@ -22,23 +22,6 @@ ARG OPENJ9_SCC=true
 ARG LIBERTY_VERSION=24.0.0.1
 ARG LIBERTY_BUILD_LABEL={replace_with_gm_driver_label}
 
-LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
-      org.opencontainers.image.vendor="IBM" \
-      org.opencontainers.image.url="https://github.com/WASdev/ci.docker" \
-      org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
-      org.opencontainers.image.version="$LIBERTY_VERSION" \
-      org.opencontainers.image.revision="$LIBERTY_BUILD_LABEL" \
-      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Ubuntu as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
-      org.opencontainers.image.title="IBM WebSphere Liberty"
-
-ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build
-
-# Add labels for consumption by IBM Product Insights
-LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
-      "ProductName"="WebSphere Application Server Liberty" \
-      "ProductVersion"="$LIBERTY_VERSION" \
-      "BuildLabel"="$LIBERTY_BUILD_LABEL"
-
 # Install dumb-init
 RUN set -eux; \
     apt-get update; \
@@ -71,6 +54,23 @@ RUN set -eux; \
     chmod +x /usr/bin/dumb-init; \
     apt-get purge --auto-remove -y curl; \
     rm -rf /var/lib/apt/lists/*;
+
+LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
+      org.opencontainers.image.vendor="IBM" \
+      org.opencontainers.image.url="https://github.com/WASdev/ci.docker" \
+      org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
+      org.opencontainers.image.version="$LIBERTY_VERSION" \
+      org.opencontainers.image.revision="$LIBERTY_BUILD_LABEL" \
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Ubuntu as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
+      org.opencontainers.image.title="IBM WebSphere Liberty"
+
+ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build
+
+# Add labels for consumption by IBM Product Insights
+LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
+      "ProductName"="WebSphere Application Server Liberty" \
+      "ProductVersion"="$LIBERTY_VERSION" \
+      "BuildLabel"="$LIBERTY_BUILD_LABEL"
 
 # Install WebSphere Liberty
 ARG LIBERTY_URL
