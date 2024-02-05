@@ -22,6 +22,7 @@ ARG VERBOSE=false
 ARG LIBERTY_VERSION=24.0.0.2
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
+ARG LIBERTY_SHA={replace_with_correct_sha}
 
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
@@ -32,6 +33,8 @@ RUN yum -y install unzip wget openssl \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | grep -E "^\s*kernel:.*${LIBERTY_VERSION}\.zip" | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
     && if [ ! -f /tmp/wlp.zip ]; then wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip; fi \
+    && echo "$LIBERTY_SHA  /tmp/wlp.zip" > /tmp/wlp.zip.sha1 \
+    && sha1sum -c /tmp/wlp.zip.sha1 \
     && chmod -R g+x /usr/bin \
     && unzip -q /tmp/wlp.zip -d /opt/ibm \
     && chown -R 1001:0 /opt/ibm/wlp \
