@@ -10,7 +10,7 @@ before_install:
 env:
   - RELEASE=../ga/23.0.0.9
   - RELEASE=../ga/23.0.0.12
-  - RELEASE=../ga/24.0.0.1
+  - RELEASE=../ga/24.0.0.2
   - RELEASE=../ga/latest
 
 script:
