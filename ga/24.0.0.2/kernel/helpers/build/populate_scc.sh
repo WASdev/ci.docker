@@ -51,7 +51,7 @@ CREATE_LAYER="$OPENJ9_JAVA_OPTIONS,createLayer,groupAccess"
 DESTROY_LAYER="$OPENJ9_JAVA_OPTIONS,destroy"
 PRINT_LAYER_STATS="$OPENJ9_JAVA_OPTIONS,printTopLayerStats"
 
-while getopts ":i:s:u:tdhw" OPT
+while getopts ":i:s:u:tdhwc" OPT
 do
   case "$OPT" in
     i)
@@ -69,6 +69,9 @@ do
       ;;
     w)
       WARM_ENDPOINT=true
+      ;;
+    c)
+      WARM_ENDPOINT=false
       ;;
     u)
       WARM_ENDPOINT_URL="${OPTARG}"

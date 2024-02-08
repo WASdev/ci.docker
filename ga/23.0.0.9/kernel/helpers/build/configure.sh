@@ -176,8 +176,8 @@ function main() {
     if [ ! "$SCC_SIZE" = "" ]; then
       cmd+=" -s $SCC_SIZE"
     fi
-    if [ "$WARM_ENDPOINT" = "true" ]; then
-      cmd+=" -w"
+    if [ "$WARM_ENDPOINT" = "false" ]; then
+      cmd+=" -c"
     fi
     if [ ! "$WARM_ENDPOINT_URL" = "" ]; then
       cmd+=" -u $WARM_ENDPOINT_URL"
