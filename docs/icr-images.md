@@ -3,7 +3,7 @@
 
 WebSphere Liberty container images are available from the IBM Container Registry (ICR) at `icr.io/appcafe/websphere-liberty`. Our recommendation is to use ICR instead of Docker Hub since ICR doesn't impose rate limits on image pulls. Images can be pulled from ICR without authentication. Only images with Universal Base Image (UBI) as the Operating System are available in ICR.
 
-The images for the latest Liberty release and the last two quarterly releases (versions ending in _.3_, _.6_, _.9_ and _.12_) are available and are refreshed regularly to include fixes for the operating system (OS) and Java.
+The images for the latest Liberty release and the last two quarterly releases (versions ending in _.3_, _.6_, _.9_ and _.12_) are available and are refreshed regularly (every 1-2 weeks) to include fixes for the operating system (OS) and Java.
 
 Available image tags are listed below. The tags use the following naming convention. For more information on tags, see [Container image naming conventions](https://www.ibm.com/docs/en/was-liberty/base?topic=images-liberty-container#cntr_r_images__imagename__title__1) documentation.
 ```
