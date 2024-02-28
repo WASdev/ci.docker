@@ -135,6 +135,12 @@ This feature can be controlled via the following variables:
 * `SCC_SIZE` (environment variable)
   * Description: The size of the application-specific SCC layer in the image. This value is only used if `TRIM_SCC` is set to `"false"`.
   * Default: `"80m"`.
+* `WARM_ENDPOINT` (environment variable)
+  * Description: If `"true"`, curl will be used to access the WARM_ENDPOINT_URL (see below) during the population of the SCC. This will increase the amount of information in the SCC and improve first request time in subsequent starts of the image.
+  * Default: `"true"`.
+* `WARM_ENDPOINT_URL` (enviornment variable)
+  * Description: The URL to access during SCC population if WARM_ENDPOINT is true.
+  * Default: `"localhost:9080/"`.
 
 ## Logging
 

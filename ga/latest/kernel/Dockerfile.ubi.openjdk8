@@ -19,9 +19,10 @@ USER root
 ARG VERBOSE=false
 
 # Install WebSphere Liberty
-ARG LIBERTY_VERSION=24.0.0.1
+ARG LIBERTY_VERSION=24.0.0.2
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
+ARG LIBERTY_SHA=bd9c64cbf086f03e81ee50e4a44acc6f05af191a
 
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
@@ -32,6 +33,8 @@ RUN yum -y install shadow-utils unzip wget findutils openssl \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | grep -E "^\s*kernel:.*${LIBERTY_VERSION}\.zip" | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
     && if [ ! -f /tmp/wlp.zip ]; then wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip; fi \
+    && echo "$LIBERTY_SHA  /tmp/wlp.zip" > /tmp/wlp.zip.sha1 \
+    && sha1sum -c /tmp/wlp.zip.sha1 \
     && chmod -R g+x /usr/bin \
     && unzip -q /tmp/wlp.zip -d /opt/ibm \
     && chown -R 1001:0 /opt/ibm/wlp \
@@ -45,8 +48,8 @@ USER root
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
-ARG LIBERTY_VERSION=24.0.0.1
-ARG LIBERTY_BUILD_LABEL=cl240120240115-2042
+ARG LIBERTY_VERSION=24.0.0.2
+ARG LIBERTY_BUILD_LABEL=cl240220240212-1928
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
