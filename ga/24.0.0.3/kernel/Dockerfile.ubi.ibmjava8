@@ -22,7 +22,7 @@ ARG VERBOSE=false
 ARG LIBERTY_VERSION=24.0.0.3
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
-ARG LIBERTY_SHA=bd9c64cbf086f03e81ee50e4a44acc6f05af191a
+ARG LIBERTY_SHA={replace_with_correct_sha}
 
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
