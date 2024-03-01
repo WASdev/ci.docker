@@ -6,14 +6,11 @@ on:
   workflow_dispatch:
     inputs:
       OLD_VERSION:
-        description: 'Enter old version'
-        # Show defaults as examples so user enters correct format.
-        default: '23.0.0.11'
+        description: 'Enter old version (what was just released)'
         required: true
         type: string
       NEW_VERSION:
-        description: 'Enter new version'
-        default: '23.0.0.12'
+        description: 'Enter new version (pre-eGA release)'
         required: true
         type: string
       BUILD_LABEL:
