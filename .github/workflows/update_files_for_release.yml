@@ -36,7 +36,7 @@ jobs:
     - name: Check out repository code to runner
       uses: actions/checkout@v4
       with:
-        ref: vNext
+        ref: liberty_sha_fix
         repository: WASdev/ci.docker
 
     - name: Run update script
