@@ -26,6 +26,8 @@ ITERATIONS=2    # Number of iterations to run to populate it.
 TRIM_SCC=yes    # Trim the SCC to eliminate any wasted space.
 WARM_ENDPOINT=true
 WARM_ENDPOINT_URL=localhost:9080/
+WARM_OPENAPI_ENDPOINT=true
+WARM_OPENAPI_ENDPOINT_URL=localhost:9080/openapi
 
 # If this directory exists and has at least ug=rwx permissions, assume the base image includes an SCC called 'openj9_system_scc' and build on it.
 # If not, build on our own SCC.
@@ -51,7 +53,7 @@ CREATE_LAYER="$OPENJ9_JAVA_OPTIONS,createLayer,groupAccess"
 DESTROY_LAYER="$OPENJ9_JAVA_OPTIONS,destroy"
 PRINT_LAYER_STATS="$OPENJ9_JAVA_OPTIONS,printTopLayerStats"
 
-while getopts ":i:s:u:tdhwc" OPT
+while getopts ":i:s:u:o:tdhwcml" OPT
 do
   case "$OPT" in
     i)
@@ -76,15 +78,28 @@ do
     u)
       WARM_ENDPOINT_URL="${OPTARG}"
       ;;
+    m)
+      WARM_OPENAPI_ENDPOINT=true
+      ;;
+    l)
+      WARM_OPENAPI_ENDPOINT=false
+      ;;
+    o)
+      WARM_OPENAPI_ENDPOINT_URL="${OPTARG}"
+      ;;
     h)
       echo \
-"Usage: $0 [-i iterations] [-s size] [-t] [-d] [-w] [-u url]
+"Usage: $0 [-i iterations] [-s size] [-t] [-d] [-w] [-c] [-u url] [-m] [-l] [-o url]
   -i <iterations> Number of iterations to run to populate the SCC. (Default: $ITERATIONS)
   -s <size>       Size of the SCC in megabytes (m suffix required). (Default: $SCC_SIZE)
   -t              Trim the SCC to eliminate most of the free space, if any.
   -d              Don't trim the SCC.
   -w              Use curl to warm an endpoint during SCC creation. (Default: $WARM_ENDPOINT)
+  -c              Do not warm an endpoint during SCC creation.
   -u              The URL endpoint to warm during SCC creation. (Default: $WARM_ENDPOINT_URL)
+  -m              Use curl to warm the openapi endpoint during SCC creation. (Default: $WARM_OPENAPI_ENDPOINT)
+  -l              Do not warm the openapi endpoint during SCC creation.
+  -o              The Open API URL endpoint to warm during SCC creation. (Default: $WARM_ENDPOINT_OPENAPI_URL)
 
   Trimming enabled=$TRIM_SCC"
       exit 1
@@ -115,7 +130,11 @@ then
 
   if [ ${WARM_ENDPOINT} == true ]
   then
-    curl --silent --output /dev/null --show-error --fail --max-time 5 ${WARM_ENDPOINT_URL} 2>&1 || echo "WARM_ENDPOINT call failed, continuing"
+    curl --silent --output /dev/null --show-error --fail --max-time 5 ${WARM_ENDPOINT_URL} 2>&1 || echo "${WARM_ENDPOINT_URL} call failed, continuing"
+  fi
+  if [ ${WARM_OPENAPI_ENDPOINT} == true ]
+  then
+    curl --silent --output /dev/null --show-error --fail --max-time 5 ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
   fi
 
   /opt/ibm/wlp/bin/server stop
@@ -146,7 +165,11 @@ do
 
   if [ ${WARM_ENDPOINT} == true ]
   then
-    curl --silent --output /dev/null --show-error --fail --max-time 5 ${WARM_ENDPOINT_URL} 2>&1 || echo "WARM_ENDPOINT call failed, continuing"
+    curl --silent --output /dev/null --show-error --fail --max-time 5 ${WARM_ENDPOINT_URL} 2>&1 || echo "${WARM_ENDPOINT_URL} call failed, continuing"
+  fi
+  if [ ${WARM_OPENAPI_ENDPOINT} == true ]
+  then
+    curl --silent --output /dev/null --show-error --fail --max-time 5 ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
   fi
 
   /opt/ibm/wlp/bin/server stop
