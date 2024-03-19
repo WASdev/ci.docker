@@ -185,6 +185,12 @@ function main() {
     if [ ! "$WARM_ENDPOINT_URL" = "" ]; then
       cmd+=" -u $WARM_ENDPOINT_URL"
     fi
+    if [ "$WARM_OPENAPI_ENDPOINT" = "false" ]; then
+      cmd+=" -l"
+    fi
+    if [ ! "$WARM_OPENAPI_ENDPOINT_URL" = "" ]; then
+      cmd+=" -o $WARM_OPENAPI_ENDPOINT_URL"
+    fi
     eval $cmd
   fi
 }
