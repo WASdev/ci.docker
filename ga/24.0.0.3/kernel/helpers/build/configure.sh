@@ -21,7 +21,7 @@ else
 fi
 
 if [ "$VERBOSE" != "true" ]; then
-  exec &>/dev/null
+  exec >/dev/null
 fi
 
 set -Eeox pipefail

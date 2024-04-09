@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 if [ "$VERBOSE" != "true" ]; then
-  exec &>/dev/null
+  exec >/dev/null
 fi
 
 set -Eeox pipefail
