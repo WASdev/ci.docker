@@ -6,14 +6,11 @@ on:
   workflow_dispatch:
     inputs:
       OLD_VERSION:
-        description: 'Enter old version'
-        # Show defaults as examples so user enters correct format.
-        default: '23.0.0.11'
+        description: 'Enter old version (what was just released)'
         required: true
         type: string
       NEW_VERSION:
-        description: 'Enter new version'
-        default: '23.0.0.12'
+        description: 'Enter new version (pre-eGA release)'
         required: true
         type: string
       BUILD_LABEL:
@@ -55,7 +52,7 @@ jobs:
 
     - name: Create Pull Request
       run: |
-        gh pr create -B vNext -H "${{ inputs.NEW_VERSION }}-release" -r mbroz2 -r leochr --title "Updates for the release of ${{ inputs.NEW_VERSION }}" --body "Created by Github Actions"
+        gh pr create -B vNext -H "${{ inputs.NEW_VERSION }}-release" -r leochr --title "Updates for the release of ${{ inputs.NEW_VERSION }}" --body "Created by Github Actions"
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
