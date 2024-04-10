@@ -142,10 +142,10 @@ This feature can be controlled via the following variables:
   * Description: The URL to access during SCC population if WARM_ENDPOINT is true.
   * Default: `"localhost:9080/"`.
 * `WARM_OPENAPI_ENDPOINT` (environment variable)
-  * Description: If `"true"`, curl will be used to access the WARM_OPENAPI_ENDPOINT_URL (see below) during the population of the SCC. This will increase the amount of information in the SCC and improve first request time in subsequent starts of the image.
+  * Description: (24.0.0.4+) If `"true"`, curl will be used to access the WARM_OPENAPI_ENDPOINT_URL (see below) during the population of the SCC. This will increase the amount of information in the SCC and improve first request time in subsequent starts of the image.
   * Default: `"true"`
 * `WARM_OPENAPI_ENDPOINT_URL` (enviornment variable)
-  * Description: The URL to access during SCC population if WARM_OPENAPI_ENDPOINT is true.
+  * Description: (24.0.0.4+) The URL to access during SCC population if WARM_OPENAPI_ENDPOINT is true.
   * Default: `"localhost:9080/openapi"`
 
 ## Logging
