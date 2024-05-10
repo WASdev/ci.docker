@@ -21,6 +21,9 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Arthur De Magalhaes
       org.opencontainers.image.version="2020.10.0.0" \
       org.opencontainers.image.revision="cl201020200915-1100"
 
+LABEL liberty.version=$LIBERTY_VERSION \
+      com.ibm.websphere.liberty.version=$LIBERTY_VERSION
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends unzip \
     && rm -rf /var/lib/apt/lists/* \
