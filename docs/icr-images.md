@@ -28,7 +28,9 @@ ibmcloud cr images --restrict appcafe/websphere-liberty
 ```
 
 
-## Latest version (24.0.0.4)
+## Latest version
+
+The following tags include the most recent WebSphere Liberty version: `24.0.0.5` 
 
 ```
 kernel-java21-openj9-ubi-minimal
@@ -46,20 +48,20 @@ full-java8-ibmjava-ubi
 latest
 ```
 
-## 24.0.0.4
+## 24.0.0.5
 
 ```
-24.0.0.4-kernel-java21-openj9-ubi-minimal
-24.0.0.4-kernel-java17-openj9-ubi
-24.0.0.4-kernel-java11-openj9-ubi
-24.0.0.4-kernel-java8-ibmjava-ubi
-24.0.0.4-kernel-java8-openj9-ubi
+24.0.0.5-kernel-java21-openj9-ubi-minimal
+24.0.0.5-kernel-java17-openj9-ubi
+24.0.0.5-kernel-java11-openj9-ubi
+24.0.0.5-kernel-java8-ibmjava-ubi
+24.0.0.5-kernel-java8-openj9-ubi
 
-24.0.0.4-full-java21-openj9-ubi-minimal
-24.0.0.4-full-java17-openj9-ubi
-24.0.0.4-full-java11-openj9-ubi
-24.0.0.4-full-java8-openj9-ubi
-24.0.0.4-full-java8-ibmjava-ubi
+24.0.0.5-full-java21-openj9-ubi-minimal
+24.0.0.5-full-java17-openj9-ubi
+24.0.0.5-full-java11-openj9-ubi
+24.0.0.5-full-java8-openj9-ubi
+24.0.0.5-full-java8-ibmjava-ubi
 ```
 
 ## 24.0.0.3
