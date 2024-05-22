@@ -70,6 +70,9 @@ LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
       "ProductVersion"="$LIBERTY_VERSION" \
       "BuildLabel"="$LIBERTY_BUILD_LABEL"
 
+LABEL liberty.version=$LIBERTY_VERSION \
+      com.ibm.websphere.liberty.version=$LIBERTY_VERSION
+
 # Install dumb-init
 RUN set -eux; \
     ARCH="$(uname -m)"; \
