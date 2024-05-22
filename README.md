@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/WASdev/ci.docker.svg?branch=master)](https://travis-ci.org/WASdev/ci.docker)
 # WebSphere Application Server Liberty and Containers
 
 - [WebSphere Application Server Liberty and Containers](#websphere-application-server-liberty-and-containers)
