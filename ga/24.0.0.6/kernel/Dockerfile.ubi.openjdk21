@@ -12,23 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-17-jdk-ubi AS getRuntime
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-21-jre-ubi9-minimal AS getRuntime
 
 USER root
 
 ARG VERBOSE=false
 
 # Install WebSphere Liberty
-ARG LIBERTY_VERSION=24.0.0.5
+ARG LIBERTY_VERSION=24.0.0.6
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
-ARG LIBERTY_SHA=178f6640f31ca9638ae21f107d0cc8ee7b77fbdf
+ARG LIBERTY_SHA={replace_with_correct_sha}
 
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
 
-RUN yum -y install shadow-utils unzip wget findutils openssl \
-    && yum clean all \
+RUN microdnf -y install shadow-utils unzip wget findutils openssl \
     && mkdir -p /licenses \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | grep -E "^\s*kernel:.*${LIBERTY_VERSION}\.zip" | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
@@ -41,15 +40,15 @@ RUN yum -y install shadow-utils unzip wget findutils openssl \
     && chmod -R g+rw /opt/ibm/wlp \
     && cp -a /opt/ibm/wlp/lafiles/. /licenses/
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-17-jdk-ubi
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-21-jre-ubi9-minimal
 
 USER root
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
-ARG LIBERTY_VERSION=24.0.0.5
-ARG LIBERTY_BUILD_LABEL=cl240520240506-1951
+ARG LIBERTY_VERSION=24.0.0.6
+ARG LIBERTY_BUILD_LABEL={replace_with_gm_driver_label}
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
@@ -57,13 +56,13 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wend
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="$LIBERTY_VERSION" \
       org.opencontainers.image.revision="$LIBERTY_BUILD_LABEL" \
-      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
       org.opencontainers.image.title="IBM WebSphere Liberty" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
       version="$LIBERTY_VERSION" \
-      summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8" \
-      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
+      summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal" \
+      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
 
 ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build
 
@@ -103,17 +102,18 @@ RUN set -eux; \
     chmod +x /usr/bin/dumb-init;
 
 # Add default user 1001 and create wlp with right user/permissions before copying
-RUN adduser -u 1001 -r -g root -s /usr/sbin/nologin default \
+RUN microdnf -y install shadow-utils findutils openssl \
+    && adduser -u 1001 -r -g root -s /usr/sbin/nologin default \
     && mkdir -p /opt/ibm/wlp \
     && chown -R 1001:0 /opt/ibm/wlp \
-    && chmod -R g+rw /opt/ibm/wlp
+    && chmod -R g+rw /opt/ibm/wlp \
+    && microdnf remove -y shadow-utils \
+    && microdnf clean all
 
 # Copy the runtime and licenses
 COPY --from=getRuntime --chown=1001:0 /opt/ibm/wlp /opt/ibm/wlp
 COPY --from=getRuntime /licenses /licenses
 
-RUN yum -y install openssl \
-    && yum clean all
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
