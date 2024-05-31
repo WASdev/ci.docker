@@ -12,9 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-if [ "$VERBOSE" != "true" ]; then
-  exec >/dev/null
-fi
+. /opt/ibm/helpers/build/internal/logger.sh
 
 set -Eeox pipefail
 
