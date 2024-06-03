@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-. /opt/ibm/helpers/build/internal/logger.sh
+. ./internal/logger.sh
 
 set -Eeox pipefail
 
