@@ -14,13 +14,13 @@
 # limitations under the License.
 
 # Determine if featureUtility ran in an earlier build step
-if ./internal/features-installed.sh; then
+if /opt/ibm/helpers/build/internal/features-installed.sh; then
   FEATURES_INSTALLED=true
 else
   FEATURES_INSTALLED=false
 fi
 
-. ./internal/logger.sh
+. /opt/ibm/helpers/build/internal/logger.sh
 
 set -Eeox pipefail
 
