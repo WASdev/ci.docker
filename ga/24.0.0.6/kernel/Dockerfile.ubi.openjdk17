@@ -22,7 +22,7 @@ ARG VERBOSE=false
 ARG LIBERTY_VERSION=24.0.0.6
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
-ARG LIBERTY_SHA={replace_with_correct_sha}
+ARG LIBERTY_SHA=e2daf941ebdf3908d50bb1288c1574ccfd454796
 
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
@@ -49,7 +49,7 @@ ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
 ARG LIBERTY_VERSION=24.0.0.6
-ARG LIBERTY_BUILD_LABEL={replace_with_gm_driver_label}
+ARG LIBERTY_BUILD_LABEL=cl240620240603-2001
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
