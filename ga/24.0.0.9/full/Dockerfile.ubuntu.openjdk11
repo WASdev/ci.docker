@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:24.0.0.8-kernel-java11-openj9
+FROM websphere-liberty:24.0.0.9-kernel-java11-openj9
 
 ARG VERBOSE=false
 ARG REPOSITORIES_PROPERTIES=""

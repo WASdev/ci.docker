@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:24.0.0.8-kernel-java8-ibmjava-ubi
+ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:24.0.0.9-kernel-java21-openj9-ubi9-minimal
 FROM $PARENT_IMAGE AS installBundle
 
 ARG VERBOSE=false
@@ -36,7 +36,7 @@ RUN set -eux; \
   rm -rf /output/workarea /output/logs; \
   find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw;
 
-ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:24.0.0.8-kernel-java8-ibmjava-ubi
+ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:24.0.0.9-kernel-java21-openj9-ubi9-minimal
 FROM $PARENT_IMAGE
 ARG VERBOSE=false
 
@@ -48,4 +48,4 @@ COPY --chown=1001:0 server.xml /config/
 # Create a new SCC layer
 RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
     && rm -rf /output/messaging /output/resources/security /logs/* $WLP_OUTPUT_DIR/.classCache \
-    && find /opt/ibm/wlp/output ! -path "*.classCache*" ! -perm -g=rwx -print0 | xargs -0 -r chmod g+rwx
+    && find /opt/ibm/wlp/output ! -perm -g=rwx -print0 | xargs -0 -r chmod g+rwx
