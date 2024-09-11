@@ -36,7 +36,6 @@ RUN set -eux; \
   rm -rf /output/workarea /output/logs; \
   find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw;
 
-ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:kernel-java21-openj9-ubi9-minimal
 FROM $PARENT_IMAGE
 ARG VERBOSE=false
 
