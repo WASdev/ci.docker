@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:kernel-java11
+ARG PARENT_IMAGE=websphere-liberty:kernel-java11
+FROM $PARENT_IMAGE
 
 ARG REPOSITORIES_PROPERTIES=""
 
