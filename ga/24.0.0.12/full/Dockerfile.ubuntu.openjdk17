@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty:24.0.0.12-kernel-java17-openj9
+ARG PARENT_IMAGE=websphere-liberty:24.0.0.12-kernel-java17-openj9
+FROM $PARENT_IMAGE
 
 ARG VERBOSE=false
 ARG REPOSITORIES_PROPERTIES=""

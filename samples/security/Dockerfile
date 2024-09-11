@@ -1,4 +1,5 @@
-FROM ibmcom/websphere-liberty:kernel-java8-openj9-ubi
+ARG PARENT_IMAGE=ibmcom/websphere-liberty:kernel-java8-openj9-ubi
+FROM $PARENT_IMAGE
 
 # Add my app and config
 COPY --chown=1001:0  server.xml /config/

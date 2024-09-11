@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty
+ARG PARENT_IMAGE=websphere-liberty
+FROM $PARENT_IMAGE
 COPY wlp-*-license.jar /tmp/
 RUN java -jar /tmp/wlp-*-license.jar --acceptLicense /opt/ibm \
     && rm /tmp/wlp-*-license.jar
