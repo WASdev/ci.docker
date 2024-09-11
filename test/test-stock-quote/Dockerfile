@@ -13,7 +13,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-FROM ibmcom/websphere-liberty:kernel-java17-openj9-ubi
+ARG PARENT_IMAGE=ibmcom/websphere-liberty:kernel-java17-openj9-ubi
+FROM $PARENT_IMAGE
 
 COPY --chown=1001:0 config /config/
 
