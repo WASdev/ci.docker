@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-8-jdk-ubi AS getRuntime
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-21-jre-ubi9-minimal AS getRuntime
 
 USER root
 
@@ -22,13 +22,12 @@ ARG VERBOSE=false
 ARG LIBERTY_VERSION=24.0.0.11
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
-ARG LIBERTY_SHA={replace_with_correct_sha}
+ARG LIBERTY_SHA=cc5790346b45f63d093cf8d6a528a7730a1dc570
 
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
 
-RUN yum -y install shadow-utils unzip wget findutils openssl \
-    && yum clean all \
+RUN microdnf -y install shadow-utils unzip wget findutils openssl \
     && mkdir -p /licenses \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | grep -E "^\s*kernel:.*${LIBERTY_VERSION}\.zip" | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
@@ -41,7 +40,7 @@ RUN yum -y install shadow-utils unzip wget findutils openssl \
     && chmod -R g+rw /opt/ibm/wlp \
     && cp -a /opt/ibm/wlp/lafiles/. /licenses/
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-8-jdk-ubi
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-21-jre-ubi9-minimal
 
 USER root
 
@@ -57,13 +56,13 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wend
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="$LIBERTY_VERSION" \
       org.opencontainers.image.revision="$LIBERTY_BUILD_LABEL" \
-      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
       org.opencontainers.image.title="IBM WebSphere Liberty" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
       version="$LIBERTY_VERSION" \
-      summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8" \
-      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
+      summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal" \
+      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
 
 ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build
 
@@ -103,17 +102,18 @@ RUN set -eux; \
     chmod +x /usr/bin/dumb-init;
 
 # Add default user 1001 and create wlp with right user/permissions before copying
-RUN adduser -u 1001 -r -g root -s /usr/sbin/nologin default \
+RUN microdnf -y install shadow-utils findutils openssl \
+    && adduser -u 1001 -r -g root -s /usr/sbin/nologin default \
     && mkdir -p /opt/ibm/wlp \
     && chown -R 1001:0 /opt/ibm/wlp \
-    && chmod -R g+rw /opt/ibm/wlp
+    && chmod -R g+rw /opt/ibm/wlp \
+    && microdnf remove -y shadow-utils \
+    && microdnf clean all
 
 # Copy the runtime and licenses
 COPY --from=getRuntime --chown=1001:0 /opt/ibm/wlp /opt/ibm/wlp
 COPY --from=getRuntime /licenses /licenses
 
-RUN yum -y install openssl \
-    && yum clean all
 # Set Path Shortcuts
 ENV LOG_DIR=/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
