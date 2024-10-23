@@ -18,7 +18,7 @@ The `latest` tag simplifies pulling the full latest Open Liberty release with th
 
 Append a tag to `icr.io/appcafe/websphere-liberty` to pull a specific image. For example, 
 ```
-icr.io/appcafe/websphere-liberty:24.0.0.3-kernel-java17-openj9-ubi
+icr.io/appcafe/websphere-liberty:24.0.0.9-kernel-java17-openj9-ubi
 ```
 
 Available images can be listed using [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started). Log in with your IBMid prior to running the following commands. Note that authentication is only required to list the images. **Images can be pulled from ICR without authentication** : 
@@ -28,7 +28,9 @@ ibmcloud cr images --restrict appcafe/websphere-liberty
 ```
 
 
-## Latest version (24.0.0.3)
+## Latest version
+
+The following tags include the most recent WebSphere Liberty version: `24.0.0.10` 
 
 ```
 kernel-java21-openj9-ubi-minimal
@@ -46,32 +48,50 @@ full-java8-ibmjava-ubi
 latest
 ```
 
-## 24.0.0.3
+## 24.0.0.10
 
 ```
-24.0.0.3-kernel-java21-openj9-ubi-minimal
-24.0.0.3-kernel-java17-openj9-ubi
-24.0.0.3-kernel-java11-openj9-ubi
-24.0.0.3-kernel-java8-ibmjava-ubi
-24.0.0.3-kernel-java8-openj9-ubi
+24.0.0.10-kernel-java21-openj9-ubi-minimal
+24.0.0.10-kernel-java17-openj9-ubi
+24.0.0.10-kernel-java11-openj9-ubi
+24.0.0.10-kernel-java8-ibmjava-ubi
+24.0.0.10-kernel-java8-openj9-ubi
 
-24.0.0.3-full-java21-openj9-ubi-minimal
-24.0.0.3-full-java17-openj9-ubi
-24.0.0.3-full-java11-openj9-ubi
-24.0.0.3-full-java8-openj9-ubi
-24.0.0.3-full-java8-ibmjava-ubi
+24.0.0.10-full-java21-openj9-ubi-minimal
+24.0.0.10-full-java17-openj9-ubi
+24.0.0.10-full-java11-openj9-ubi
+24.0.0.10-full-java8-openj9-ubi
+24.0.0.10-full-java8-ibmjava-ubi
 ```
 
-## 23.0.0.12
+## 24.0.0.9
 
 ```
-23.0.0.12-kernel-java17-openj9-ubi
-23.0.0.12-kernel-java11-openj9-ubi
-23.0.0.12-kernel-java8-openj9-ubi
-23.0.0.12-kernel-java8-ibmjava-ubi
+24.0.0.9-kernel-java21-openj9-ubi-minimal
+24.0.0.9-kernel-java17-openj9-ubi
+24.0.0.9-kernel-java11-openj9-ubi
+24.0.0.9-kernel-java8-ibmjava-ubi
+24.0.0.9-kernel-java8-openj9-ubi
 
-23.0.0.12-full-java17-openj9-ubi
-23.0.0.12-full-java11-openj9-ubi
-23.0.0.12-full-java8-openj9-ubi
-23.0.0.12-full-java8-ibmjava-ubi
+24.0.0.9-full-java21-openj9-ubi-minimal
+24.0.0.9-full-java17-openj9-ubi
+24.0.0.9-full-java11-openj9-ubi
+24.0.0.9-full-java8-openj9-ubi
+24.0.0.9-full-java8-ibmjava-ubi
+```
+
+## 24.0.0.6
+
+```
+24.0.0.6-kernel-java21-openj9-ubi-minimal
+24.0.0.6-kernel-java17-openj9-ubi
+24.0.0.6-kernel-java11-openj9-ubi
+24.0.0.6-kernel-java8-ibmjava-ubi
+24.0.0.6-kernel-java8-openj9-ubi
+
+24.0.0.6-full-java21-openj9-ubi-minimal
+24.0.0.6-full-java17-openj9-ubi
+24.0.0.6-full-java11-openj9-ubi
+24.0.0.6-full-java8-openj9-ubi
+24.0.0.6-full-java8-ibmjava-ubi
 ```

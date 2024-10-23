@@ -69,14 +69,16 @@ Refer to [Repository and proxy modifications](https://openliberty.io/docs/ref/co
 
 ## Optional Enterprise Functionality
 
-This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular argument (`ARG`) or environment variable (`ENV`) and calling `RUN configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets (except for `VERBOSE`), described below:
+This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular argument (`ARG`) or environment variable (`ENV`) and calling `RUN configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets (except for `VERBOSE` and `SKIP_FEATURE_INSTALL`), described below:
 
-* `TLS` (`SSL` is deprecated)
-  *  Description: Enable Transport Security in Liberty by adding the `transportSecurity-1.0` feature (includes support for SSL).
-  *  XML Snippet Location:  [keystore.xml](ga/latest/kernel/helpers/build/configuration_snippets/keystore.xml).
 * `HZ_SESSION_CACHE`
   *  Description: Enable the persistence of HTTP sessions using JCache by adding the `sessionCache-1.0` feature.
   *  XML Snippet Location: [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml)
+* `SKIP_FEATURE_INSTALL`
+  *  Description: Default setting is `false`. When set to `true`, Liberty features will not be installed using `installUtility` when `configure.sh` is run. This setting is not applicable when `features.sh` is run.
+* `TLS` (`SSL` is deprecated)
+  *  Description: Enable Transport Security in Liberty by adding the `transportSecurity-1.0` feature (includes support for SSL).
+  *  XML Snippet Location:  [keystore.xml](ga/latest/kernel/helpers/build/configuration_snippets/keystore.xml).
 * `VERBOSE`
   *  Description: When set to `true` it outputs the commands and results to stdout from `configure.sh`. Otherwise, default setting is `false` and `configure.sh` is silenced.
 

@@ -12,16 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ibm-semeru-runtimes:open-17-jre-jammy
+FROM ibmjava:8-jre
 
 USER root
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
-ARG LIBERTY_VERSION=24.0.0.10
-ARG LIBERTY_BUILD_LABEL=cl241020240923-1638
-ARG LIBERTY_SHA=464d34c631faa13b85a78de7058ecaa5dbdbbaaf
+ARG LIBERTY_VERSION=24.0.0.11
+ARG LIBERTY_BUILD_LABEL=cl241120241021-1102
+ARG LIBERTY_SHA=cc5790346b45f63d093cf8d6a528a7730a1dc570
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
@@ -42,6 +42,8 @@ LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
 
 # Install dumb-init
 RUN set -eux; \
+    apt-get update; \
+    apt-get install -y curl; \
     ARCH="$(dpkg --print-architecture)"; \
     case "${ARCH}" in \
        aarch64|arm64) \
@@ -67,13 +69,16 @@ RUN set -eux; \
     esac; \
     curl -LfsSo /usr/bin/dumb-init ${DUMB_INIT_URL}; \
     echo "${DUMB_INIT_SHA256} */usr/bin/dumb-init" | sha256sum -c -; \
-    chmod +x /usr/bin/dumb-init;
+    chmod +x /usr/bin/dumb-init; \
+    apt-get purge --auto-remove -y curl; \
+    rm -rf /var/lib/apt/lists/*;
 
 # Install WebSphere Liberty
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
+
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends unzip openssl wget \
+    && apt-get install -y --no-install-recommends unzip wget openssl \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /licenses/ \
     && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
@@ -144,7 +149,7 @@ RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
 
 # These settings are needed so that we can run as a different user than 1001 after server warmup
 ENV RANDFILE=/tmp/.rnd \
-    OPENJ9_JAVA_OPTIONS="-XX:+IgnoreUnrecognizedVMOptions -XX:+IdleTuningGcOnIdle -Xshareclasses:name=openj9_system_scc,cacheDir=/opt/java/.scc,readonly,nonFatal -Dosgi.checkConfiguration=false"
+    IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,readonly,nonfatal,cacheDir=/output/.classCache/ -Dosgi.checkConfiguration=false ${IBM_JAVA_OPTIONS}"
 
 USER 1001
 
