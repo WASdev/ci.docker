@@ -61,7 +61,7 @@ function importKeyCert() {
   # Add kubernetes CA certificates to the truststore
   # CA bundles need to be split and added as individual certificates
   if [ "$SEC_IMPORT_K8S_CERTS" = "true" ] && [ -d "${KUBE_SA_FOLDER}" ]; then
-    mkdir /tmp/certs
+    mkdir -p /tmp/certs
     pushd /tmp/certs >&/dev/null
     cat ${KUBE_SA_FOLDER}/*.crt >${TMP_CERT}
     csplit -s -z -f crt- "${TMP_CERT}" "${CRT_DELIMITER}" '{*}'
