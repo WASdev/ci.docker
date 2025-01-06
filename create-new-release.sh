@@ -41,8 +41,8 @@ for file in $(find ./ga/latest ./ga/$NEW_VERSION -name Dockerfile.*); do
    if [[ "$file" == "./ga/$NEW_VERSION/"* && "$file" != "./ga/$NEW_VERSION/oidcProvider"* ]];
    then
       sed -i'.bak' -e "s/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:kernel/ARG PARENT_IMAGE=icr.io\/appcafe\/websphere-liberty:$NEW_VERSION-kernel/g" $file;
-      # sed -i'.bak' -e "s/FROM websphere-liberty:kernel/FROM websphere-liberty:$NEW_VERSION-kernel/g" $file;
       sed -i'.bak' -e "s/ARG PARENT_IMAGE=websphere-liberty:kernel/ARG PARENT_IMAGE=websphere-liberty:$NEW_VERSION-kernel/g" $file;
+      sed -i'.bak' -e "s/FROM websphere-liberty:kernel/FROM websphere-liberty:$NEW_VERSION-kernel/g" $file;
    fi
    
    # Clean up temp files
