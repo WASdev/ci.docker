@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) Copyright IBM Corporation 2020, 2023.
+# (C) Copyright IBM Corporation 2020, 2025.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,7 @@ else
   FEATURES_INSTALLED=false
 fi
 
-if [ "$VERBOSE" != "true" ]; then
-  exec >/dev/null
-fi
+. /opt/ibm/helpers/build/internal/logger.sh
 
 set -Eeox pipefail
 
@@ -128,8 +126,10 @@ function main() {
   if [ "$SSL" != "false" ] && [ "$TLS" != "false" ]; then
     if [ ! -e $keystorePath ]; then
       # Generate the keystore.xml
-      export KEYSTOREPWD=$(openssl rand -base64 32)
+      hideLogs
+      KEYSTOREPWD=$(openssl rand -base64 32)
       sed "s|REPLACE|$KEYSTOREPWD|g" $SNIPPETS_SOURCE/keystore.xml > $SNIPPETS_TARGET_DEFAULTS/keystore.xml
+      showLogs
       chmod g+w $SNIPPETS_TARGET_DEFAULTS/keystore.xml
     fi
   fi
