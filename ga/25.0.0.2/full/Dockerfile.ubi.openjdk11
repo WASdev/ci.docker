@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:25.0.0.1-kernel-java8-openj9-ubi
+ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:25.0.0.2-kernel-java11-openj9-ubi
 FROM $PARENT_IMAGE AS installBundle
 
 ARG VERBOSE=false
@@ -36,7 +36,7 @@ RUN set -eux; \
   rm -rf /output/workarea /output/logs; \
   find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw;
 
-ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:25.0.0.1-kernel-java8-openj9-ubi
+ARG PARENT_IMAGE=icr.io/appcafe/websphere-liberty:25.0.0.2-kernel-java11-openj9-ubi
 FROM $PARENT_IMAGE
 ARG VERBOSE=false
 
