@@ -19,9 +19,9 @@ USER root
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
-ARG LIBERTY_VERSION=25.0.0.1
-ARG LIBERTY_BUILD_LABEL=cl250120250113-0302
-ARG LIBERTY_SHA=2185933b7437ede506552cdd0e11ad3a650c6556
+ARG LIBERTY_VERSION=25.0.0.2
+ARG LIBERTY_BUILD_LABEL=cl250220250209-1902
+ARG LIBERTY_SHA=7a72444984453d9eede3253b5fb392c5fcd315ef
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
