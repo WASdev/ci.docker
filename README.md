@@ -3,7 +3,7 @@
 - [WebSphere Application Server Liberty and Containers](#websphere-application-server-liberty-and-containers)
   - [Container images](#container-images)
   - [Building an application image](#building-an-application-image)
-  - [Optional Enterprise Functionality](#optional-enterprise-functionality)
+  - [Build Variables](#build-variables)
   - [Security](#security)
   - [OpenJ9 Shared Class Cache (SCC)](#openj9-shared-class-cache-scc)
   - [Logging](#logging)
@@ -67,9 +67,9 @@ remoteRepo.password={aes}KM8dhwcv892Ss1sawu9R+
 
 Refer to [Repository and proxy modifications](https://openliberty.io/docs/ref/command/featureUtility-commands.html) for more information.
 
-## Optional Enterprise Functionality
+## Build Variables
 
-This section describes the optional enterprise functionality that can be enabled via the Dockerfile during `build` time, by setting particular argument (`ARG`) or environment variable (`ENV`) and calling `RUN configure.sh`.  Each of these options trigger the inclusion of specific configuration via XML snippets (except for `VERBOSE` and `SKIP_FEATURE_INSTALL`), described below:
+This section describes the optional build variables that can be enabled via the Dockerfile during the `build` time, by setting particular build-argument (`ARG`) or environment variable (`ENV`) and calling `RUN configure.sh`.  Each of these variables trigger the inclusion of specific configuration via XML snippets (except for `VERBOSE` and `SKIP_FEATURE_INSTALL`), described below:
 
 * `HZ_SESSION_CACHE`
   *  Description: Enable the persistence of HTTP sessions using JCache by adding the `sessionCache-1.0` feature.
