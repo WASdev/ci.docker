@@ -83,9 +83,9 @@ This section describes the optional enterprise functionality that can be enabled
   *  Description: When set to `true` it outputs the commands and results to stdout from `configure.sh`. Otherwise, default setting is `false` and `configure.sh` is silenced.
 
 
-### Deprecated Enterprise Functionality
+### Deprecated Build Variables
 
-The following enterprise functionalities are now **deprecated** and will be **removed** in a future release. You should **stop** using them :
+The following container image build variables are now **deprecated** and will be **removed** in a future release. You should **stop** using them:
 
 * `HTTP_ENDPOINT`
   *  Description: Add configuration properties for an HTTP endpoint.
