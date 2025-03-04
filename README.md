@@ -105,10 +105,10 @@ The following container image build variables are now **deprecated** and will be
   *  Description: Add configuration properties for a JMS endpoint.
   *  XML Snippet Location: [jms-ssl-endpoint.xml](ga/latest/kernel/helpers/build/configuration_snippets/jms-ssl-endpoint.xml) when SSL is enabled. Otherwise, [jms-endpoint.xml](ga/latest/kernel/helpers/build/configuration_snippets/jms-endpoint.xml)
 * `OIDC`
-  *  Description: Enable Othe penIdConnect Client function by adding the `openidConnectClient-1.0` feature.
+  *  Description: Enable the OpenID Connect Client function by adding the `openidConnectClient-1.0` feature.
   *  XML Snippet Location: [oidc.xml](ga/latest/kernel/helpers/build/configuration_snippets/oidc.xml)
 * `OIDC_CONFIG`
-  *  Description: Enable OpenIdConnect Client configuration to be read from environment variables.
+  *  Description: Enable the OpenID Connect Client configuration to be read from environment variables.
   *  XML Snippet Location: [oidc-config.xml](ga/latest/kernel/helpers/build/configuration_snippets/oidc-config.xml)
   *  Note: The following variables will be read:  OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, OIDC_DISCOVERY_URL.
 
