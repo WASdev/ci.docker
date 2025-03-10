@@ -28,7 +28,7 @@ function showLogs() {
 }
 
 function logDeprecationNotice() {
-    echo "Deprecation notice: The websphere-liberty image will no longer be published to Docker Hub. Instead, pull from the IBM Container Registry using image icr.io/appcafe/websphere-liberty"
+    echo "Deprecation notice: IBM expects the last version of the UBI-based WebSphere Liberty container image in Docker Hub ('ibmcom/websphere-liberty') to be 25.0.0.3. To continue to receive updates and security fixes after 25.0.0.3, you must switch to using the images from the IBM Container Registry (ICR). To switch, simply update 'FROM ibmcom/websphere-liberty' in your Dockerfiles to 'FROM icr.io/appcafe/websphere-liberty'. The same image tags from Docker Hub are also available in ICR. Ubuntu-based Liberty container images will continue to be available from Docker Hub. For more information, see https://ibm.biz/wl-ubi-containers-dh-deprecation"
 }
 
 logDeprecationNotice
