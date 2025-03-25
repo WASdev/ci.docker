@@ -155,5 +155,11 @@ elif [[ ! -z "$WLP_CHECKPOINT" ]]; then
   checkpoint.sh "$TMP_CHECKPOINT"
 else
   # The default is to just exec the supplied CMD
+  if [[ ! -z "$SERVICEABILITY_NAMESPACE" ]] && [[ ! -z $HOSTNAME ]]; then
+    SERVICEABILITY_FOLDER="/serviceability/$SERVICEABILITY_NAMESPACE/$HOSTNAME"
+    mkdir -p $SERVICEABILITY_FOLDER
+    rm -f /opt/ibm/links/logs
+    ln -s $SERVICEABILITY_FOLDER /opt/ibm/links/logs
+  fi
   exec "$@"
 fi
