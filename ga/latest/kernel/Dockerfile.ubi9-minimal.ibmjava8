@@ -13,13 +13,14 @@
 # limitations under the License.
 
 
-# TODO
 # This relies on a base image which needs to be built seperately
 # curl https://raw.githubusercontent.com/ibmruntimes/ci.docker/main/ibmjava/8/jre/ubi-min/Dockerfile -o java/Dockerfile.ubi9.minimal
 # The above file needs editing before it is built:
-# $> sed -i -e 's/ubi8/ubi9/' -e 's/microdnf install/microdnf -y install/' Dockerfile.ubi9-minimal.ibmjava8
-# The above changes to a UBI9 base, and corrects the microdnf command to work on UBI9.
+# This changes to a UBI9 base, and corrects the microdnf command to work on UBI9.
+# $> sed -i -e 's/ubi8/ubi9/' -e 's/microdnf install/microdnf -y install/' -e 's/microdnf update/microdnf update -y/' Dockerfile.ubi9-minimal.ibmjava8
+# $> rm ./java/Dockerfile.ubi9.minimal.bak
 # Then build and tag as 'ibmjava:9-ubi'
+# $> docker build -t ibmjava:9-ubi -f ./java/Dockerfile.ubi9.minimal java
 
 FROM ibmjava:9-ubi AS getRuntime
 
