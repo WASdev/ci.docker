@@ -117,7 +117,7 @@ COPY --from=getRuntime --chown=1001:0 /opt/ibm/wlp /opt/ibm/wlp
 COPY --from=getRuntime /licenses /licenses
 
 # Set Path Shortcuts
-ENV LOG_DIR=/logs \
+ENV LOG_DIR=/liberty/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
     OPENJ9_SCC=$OPENJ9_SCC
 
@@ -161,7 +161,9 @@ RUN mkdir /logs \
     && chmod -R g+rw /etc/wlp \
     && if [ -e /etc/instanton.ld.so.cache ]; then chmod g+w /etc/ld.so.cache; fi \
     && chown -R 1001:0 /home/default \
-    && chmod -R g+rw /home/default 
+    && chmod -R g+rw /home/default \
+    && ln -s /logs /liberty/logs \
+    && chown -h 1001:0 /liberty/logs
 
 # Create a new SCC layer
 RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
