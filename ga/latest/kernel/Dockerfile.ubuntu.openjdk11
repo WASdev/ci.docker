@@ -107,7 +107,8 @@ COPY helpers/ /opt/ibm/helpers/
 COPY fixes/ /opt/ibm/fixes/
 
 # Create symlinks && set permissions for non-root user
-RUN mkdir /etc/wlp \
+RUN mkdir /logs \
+    && mkdir /etc/wlp \
     && mkdir -p /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
     && mkdir -p /home/default \
     && mkdir /output \

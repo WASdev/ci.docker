@@ -131,7 +131,8 @@ COPY helpers/ /opt/ibm/helpers/
 COPY fixes/ /opt/ibm/fixes/
 
 # Create symlinks && set permissions for non-root user
-RUN mkdir /etc/wlp \
+RUN mkdir /logs \
+    && mkdir /etc/wlp \
     && mkdir -p /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
     && mkdir -p /home/default \
     && mkdir /output \
@@ -161,11 +162,6 @@ RUN mkdir /etc/wlp \
     && chmod -R g+rw /home/default \
     && ln -s /logs /liberty/logs \
     && chown -h 1001:0 /liberty/logs
-
-USER 1001
-RUN ln -s /opt/ibm/logs /opt/ibm/links/logs
-USER root
-RUN ln -s /opt/ibm/links/logs /logs
 
 # Create a new SCC layer
 RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
