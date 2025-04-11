@@ -98,7 +98,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Set Path Shortcuts
-ENV LOG_DIR=/logs \
+ENV LOG_DIR=/liberty/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
     OPENJ9_SCC=$OPENJ9_SCC
 
@@ -139,15 +139,8 @@ RUN mkdir /etc/wlp \
     && chmod -R g+rw /etc/wlp \
     && chown -R 1001:0 /home/default \
     && chmod -R g+rw /home/default \
-    && mkdir -p /opt/ibm/links \
-    && chown -R 1001:0 /opt/ibm/links \
-    && chmod -R g+rw /opt/ibm/links \
-    && mkdir -p /opt/ibm/logs \
-    && chown -R 1001:0 /opt/ibm/logs \
-    && chmod -R g+rw /opt/ibm/logs \
-    && mkdir -p /serviceability \
-    && chown -R 1001:0 /serviceability \
-    && chmod -R g+rw /serviceability
+    && ln -s /logs /liberty/logs \
+    && chown -h 1001:0 /liberty/logs
 
 USER 1001
 RUN ln -s /opt/ibm/logs /opt/ibm/links/logs
