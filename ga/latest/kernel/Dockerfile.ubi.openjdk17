@@ -160,12 +160,6 @@ RUN mkdir /logs \
     && if [ -e /etc/instanton.ld.so.cache ]; then chmod g+w /etc/ld.so.cache; fi \
     && chown -R 1001:0 /home/default \
     && chmod -R g+rw /home/default \
-    && mkdir -p /opt/ibm/links \
-    && chown -R 1001:0 /opt/ibm/links \
-    && chmod -R g+rw /opt/ibm/links \
-    && mkdir -p /opt/ibm/logs \
-    && chown -R 1001:0 /opt/ibm/logs \
-    && chmod -R g+rw /opt/ibm/logs \
     && ln -s /logs /liberty/logs \
     && chown -h 1001:0 /liberty/logs
 
