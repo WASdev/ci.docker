@@ -117,7 +117,7 @@ COPY --from=getRuntime /licenses /licenses
 RUN yum -y install openssl \
     && yum clean all
 # Set Path Shortcuts
-ENV LOG_DIR=/logs \
+ENV LOG_DIR=/liberty/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
     OPENJ9_SCC=$OPENJ9_SCC
 
@@ -131,7 +131,8 @@ COPY helpers/ /opt/ibm/helpers/
 COPY fixes/ /opt/ibm/fixes/
 
 # Create symlinks && set permissions for non-root user
-RUN mkdir /etc/wlp \
+RUN mkdir /logs \
+    && mkdir /etc/wlp \
     && mkdir -p /opt/ibm/wlp/usr/shared/resources/lib.index.cache \
     && mkdir -p /home/default \
     && mkdir /output \
@@ -159,20 +160,8 @@ RUN mkdir /etc/wlp \
     && if [ -e /etc/instanton.ld.so.cache ]; then chmod g+w /etc/ld.so.cache; fi \
     && chown -R 1001:0 /home/default \
     && chmod -R g+rw /home/default \
-    && mkdir -p /opt/ibm/links \
-    && chown -R 1001:0 /opt/ibm/links \
-    && chmod -R g+rw /opt/ibm/links \
-    && mkdir -p /opt/ibm/logs \
-    && chown -R 1001:0 /opt/ibm/logs \
-    && chmod -R g+rw /opt/ibm/logs \
-    && mkdir -p /serviceability \
-    && chown -R 1001:0 /serviceability \
-    && chmod -R g+rw /serviceability
-
-USER 1001
-RUN ln -s /opt/ibm/logs /opt/ibm/links/logs
-USER root
-RUN ln -s /opt/ibm/links/logs /logs
+    && ln -s /logs /liberty/logs \
+    && chown -h 1001:0 /liberty/logs
 
 # Create a new SCC layer
 RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
