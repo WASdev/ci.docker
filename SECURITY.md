@@ -9,7 +9,7 @@ If set to true, then the default certificates from the JVM are used in addition 
 
 ### Providing custom certificates (`20.0.0.3+`)
 
-It is possible to provide custom PEM certifacates by mounting the files into the container. Files that will be imported are `tls.key`, `tls.crt` and `ca.crt`.
+It is possible to provide custom PEM certificates by mounting the files into the container. Files that will be imported are `tls.key`, `tls.crt` and `ca.crt`.
 
 The location can be specified by `TLS_DIR` environment variable. Default location
 for certificates is `/etc/x509/certs/`.
