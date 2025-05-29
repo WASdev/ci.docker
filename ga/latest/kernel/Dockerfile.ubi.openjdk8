@@ -67,7 +67,7 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wend
       summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8" \
       description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
 
-ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build
+ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build:/opt/ibm/helpers/runtime
 
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \

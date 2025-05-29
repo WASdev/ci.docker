@@ -34,7 +34,7 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wend
       liberty.version="$LIBERTY_VERSION" \
       com.ibm.websphere.liberty.version="$LIBERTY_VERSION"
 
-ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build
+ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build:/opt/ibm/helpers/runtime
 
 # Add labels for consumption by IBM Product Insights
 LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
