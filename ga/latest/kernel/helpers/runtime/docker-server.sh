@@ -26,8 +26,10 @@ function importKeyCert() {
   local KEYSTORE_FILE="/output/resources/security/key.p12"
   local TRUSTSTORE_FILE="/output/resources/security/trust.p12"
 
-  # Import the private key and certificate into new keytore
+  # Import the private key and certificate into new keystore
   if [ -f "${CERT_FOLDER}/${KEY_FILE}" ] && [ -f "${CERT_FOLDER}/${CRT_FILE}" ]; then
+    # Mounted certificates found. Assume the user wants to overwrite any existing keystore
+    # and add these certificates
     echo "Found mounted TLS certificates, generating keystore"
     mkdir -p /output/resources/security
     if [ -f "${CERT_FOLDER}/${CA_FILE}" ]; then
@@ -47,9 +49,9 @@ function importKeyCert() {
         -password pass:"${PASSWORD}" >&/dev/null
     fi
 
-     # Since we are creating new keystore, always write new password to a file
-    sed "s|REPLACE|$PASSWORD|g" $SNIPPETS_SOURCE/keystore.xml > $SNIPPETS_TARGET_DEFAULTS/keystore.xml
-
+    # Since we are creating new keystore, always write new password to a file
+    sed "s|REPLACE|$PASSWORD|g" $SNIPPETS_SOURCE/keystore.xml > $keystorePathOverride
+    
     # Add mounted CA to the truststore
     if [ -f "${CERT_FOLDER}/${CA_FILE}" ]; then
         echo "Found mounted TLS CA certificate, adding to truststore"
@@ -73,9 +75,9 @@ function importKeyCert() {
     rm -rf /tmp/certs
   fi
 
-  # Add the keystore password to server configuration
-  if [ ! -e $keystorePath ]; then
-    sed "s|REPLACE|$PASSWORD|g" $SNIPPETS_SOURCE/keystore.xml > $SNIPPETS_TARGET_DEFAULTS/keystore.xml
+  # If no keystore has been created, add a keystore password to server configuration
+  if [ ! -e "$keystorePathDefault" ] && [ ! -e "$keystorePathOverride" ]; then
+    sed "s|REPLACE|$PASSWORD|g" $SNIPPETS_SOURCE/keystore.xml > $keystorePathDefault
   fi
   if [ -e $TRUSTSTORE_FILE ]; then
     sed "s|PWD_TRUST|$TRUSTSTORE_PASSWORD|g" $SNIPPETS_SOURCE/truststore.xml > $SNIPPETS_TARGET_OVERRIDES/truststore.xml
@@ -107,7 +109,8 @@ SNIPPETS_SOURCE=/opt/ibm/helpers/build/configuration_snippets
 SNIPPETS_TARGET_DEFAULTS=/config/configDropins/defaults
 SNIPPETS_TARGET_OVERRIDES=/config/configDropins/overrides
 
-keystorePath="$SNIPPETS_TARGET_DEFAULTS/keystore.xml"
+keystorePathDefault="$SNIPPETS_TARGET_DEFAULTS/keystore.xml"
+keystorePathOverride="$SNIPPETS_TARGET_OVERRIDES/keystore.xml"
 
 importKeyCert
 
