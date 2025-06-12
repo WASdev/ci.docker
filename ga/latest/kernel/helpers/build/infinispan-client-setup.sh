@@ -28,10 +28,27 @@ fi
 $pkgcmd update -y
 $pkgcmd install -y maven
 mkdir -p /opt/ibm/wlp/usr/shared/resources/infinispan
-echo '<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  <modelVersion>4.0.0</modelVersion>   <groupId>io.openliberty</groupId>  <artifactId>openliberty-infinispan-client</artifactId>  <version>1.0</version>  <!-- https://mvnrepository.com/artifact/org.infinispan/infinispan-jcache-remote -->  <dependencies>    <dependency>      <groupId>org.infinispan</groupId>      <artifactId>infinispan-jcache-remote</artifactId>      <version>'${INFINISPAN_CLIENT_VERSION}'</version>    </dependency>  </dependencies></project>' > /opt/ibm/wlp/usr/shared/resources/infinispan/pom.xml
+cat << EOF > /opt/ibm/wlp/usr/shared/resources/infinispan/pom.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.openliberty</groupId>
+  <artifactId>openliberty-infinispan-client</artifactId>
+  <version>1.0</version>
+  <!-- https://mvnrepository.com/artifact/org.infinispan/infinispan-jcache-remote -->
+  <dependencies>
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-jcache-remote</artifactId>
+      <version>${INFINISPAN_CLIENT_VERSION}</version>
+    </dependency>
+  </dependencies>
+</project>
+EOF
 
 if [ "${USE_LATEST_COMPATIBLE}" = "true" ]; then
-  echo "[INFO] Finding latest compatible version..."
+  echo "Finding latest compatible Infinispan client version..."
   mvn -f /opt/ibm/wlp/usr/shared/resources/infinispan/pom.xml versions:use-latest-releases -DallowMajorUpdates=false
 fi
 mvn -f /opt/ibm/wlp/usr/shared/resources/infinispan/pom.xml dependency:copy-dependencies -DoutputDirectory=/opt/ibm/wlp/usr/shared/resources/infinispan
@@ -45,7 +62,7 @@ rm -rf ~/.m2
 chown -R 1001:0 /opt/ibm/wlp/usr/shared/resources/infinispan
 chmod -R g+rw /opt/ibm/wlp/usr/shared/resources/infinispan
 
-INSTALLED_VERSION=$(find /opt/ibm/wlp/usr/shared/resources/infinispan/ -name "*infinispan-commons*" -printf "%f\n" | sed 's/infinispan-commons-\(.*\).jar/\1/')
+INSTALLED_VERSION=$(find /opt/ibm/wlp/usr/shared/resources/infinispan/ -name "*infinispan-commons*.jar" -printf "%f" | sed 's/infinispan-commons-\(.*\).jar/\1/')
 if [ -n "$INSTALLED_VERSION" ]; then
-  echo "[INFO] Successfully installed Infinispan client version: ${INSTALLED_VERSION}"
+  echo "Successfully installed Infinispan client version: ${INSTALLED_VERSION}"
 fi
