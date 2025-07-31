@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2023.
+# (C) Copyright IBM Corporation 2025.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,24 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-8-jre-ubi9-minimal AS getRuntime
+
+# This relies on a base image which needs to be built seperately
+# curl https://raw.githubusercontent.com/ibmruntimes/ci.docker/main/ibmjava/8/jre/ubi-min/Dockerfile -o java/Dockerfile.ubi9.minimal
+# The above file needs editing before it is built:
+# This changes to a UBI9 base, and corrects the microdnf command to work on UBI9.
+# $> sed -i -e 's/ubi8/ubi9/' -e 's/microdnf install/microdnf -y install/' -e 's/microdnf update/microdnf update -y/' Dockerfile.ubi9-minimal.ibmjava8
+# $> rm ./java/Dockerfile.ubi9.minimal.bak
+# Then build and tag as 'ibmjava:9-ubi'
+# $> docker build -t ibmjava:9-ubi -f ./java/Dockerfile.ubi9.minimal java
+
+FROM ibmjava:9-ubi AS getRuntime
 
 USER root
 
 ARG VERBOSE=false
 
 # Install WebSphere Liberty
-ARG LIBERTY_VERSION=25.0.0.7
+ARG LIBERTY_VERSION=25.0.0.8
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
-ARG LIBERTY_SHA=77ef55d63a7287c3dc5165295ce2d47af5686ba8
+ARG LIBERTY_SHA=27abac812660d4dba368044ba969b29c27e23f85
 
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
 
 RUN microdnf -y install shadow-utils unzip wget findutils openssl \
     && mkdir -p /licenses \
-    && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
+#   This is removed compared to the UBI8 dockerfile as the base
+#   java dockerfile already adds this user
+#   && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
     && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | grep -E "^\s*kernel:.*${LIBERTY_VERSION}\.zip" | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
     && if [ ! -f /tmp/wlp.zip ]; then wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip; fi \
     && echo "$LIBERTY_SHA  /tmp/wlp.zip" > /tmp/wlp.zip.sha1 \
@@ -40,15 +52,15 @@ RUN microdnf -y install shadow-utils unzip wget findutils openssl \
     && chmod -R g+rw /opt/ibm/wlp \
     && cp -a /opt/ibm/wlp/lafiles/. /licenses/
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-8-jre-ubi9-minimal
+FROM ibmjava:9-ubi
 
 USER root
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
-ARG LIBERTY_VERSION=25.0.0.7
-ARG LIBERTY_BUILD_LABEL=cl250720250629-1102
+ARG LIBERTY_VERSION=25.0.0.8
+ARG LIBERTY_BUILD_LABEL=cl250420250407-1902
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Iain Lewis, Melissa Lee, Kirby Chin" \
       org.opencontainers.image.vendor="IBM" \
@@ -56,15 +68,15 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Iain Lewis, Melissa
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="$LIBERTY_VERSION" \
       org.opencontainers.image.revision="$LIBERTY_BUILD_LABEL" \
-      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM's Java and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
       org.opencontainers.image.title="IBM WebSphere Liberty" \
       liberty.version="$LIBERTY_VERSION" \
       com.ibm.websphere.liberty.version="$LIBERTY_VERSION" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
       version="$LIBERTY_VERSION" \
-      summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal" \
-      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
+      summary="Image for WebSphere Liberty with IBM's Java and Red Hat's UBI 9 minimal" \
+      description="This image contains the WebSphere Liberty runtime with IBM's Java and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
 
 ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build:/opt/ibm/helpers/runtime
 
@@ -105,7 +117,9 @@ RUN set -eux; \
 
 # Add default user 1001 and create wlp with right user/permissions before copying
 RUN microdnf -y install shadow-utils findutils openssl \
-    && adduser -u 1001 -r -g root -s /usr/sbin/nologin default \
+#   This is removed compared to the UBI8 dockerfile as the base
+#   java dockerfile already adds this user
+#   && adduser -u 1001 -r -g root -s /usr/sbin/nologin default \
     && mkdir -p /opt/ibm/wlp \
     && chown -R 1001:0 /opt/ibm/wlp \
     && chmod -R g+rw /opt/ibm/wlp \
@@ -159,7 +173,6 @@ RUN mkdir /logs \
     && chmod -R g+rw /logs \
     && chown -R 1001:0 /etc/wlp \
     && chmod -R g+rw /etc/wlp \
-    && if [ -e /etc/instanton.ld.so.cache ]; then chmod g+w /etc/ld.so.cache; fi \
     && chown -R 1001:0 /home/default \
     && chmod -R g+rw /home/default 
 
@@ -171,7 +184,7 @@ RUN if [ "$OPENJ9_SCC" = "true" ]; then populate_scc.sh; fi \
 
 # These settings are needed so that we can run as a different user than 1001 after server warmup
 ENV RANDFILE=/tmp/.rnd \
-    OPENJ9_JAVA_OPTIONS="-XX:+IgnoreUnrecognizedVMOptions -XX:+IdleTuningGcOnIdle -Xshareclasses:name=openj9_system_scc,cacheDir=/opt/java/.scc,readonly,nonFatal -Dosgi.checkConfiguration=false"
+    IBM_JAVA_OPTIONS="-Xshareclasses:name=liberty,readonly,nonfatal,cacheDir=/output/.classCache/ -Dosgi.checkConfiguration=false ${IBM_JAVA_OPTIONS}"
 
 USER 1001
 
