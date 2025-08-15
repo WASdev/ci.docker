@@ -157,6 +157,13 @@ elif [[ ! -z "$WLP_CHECKPOINT" ]]; then
   # A checkpoint action has been requested; run the checkpoint.sh script.
   checkpoint.sh "$TMP_CHECKPOINT"
 else
+  if [[ ! -z "$SERVICEABILITY_NAMESPACE" ]] && [[ ! -z $HOSTNAME ]]; then
+    SERVICEABILITY_FOLDER="/serviceability/$SERVICEABILITY_NAMESPACE/$HOSTNAME"
+    SERVICEABILITY_LOG_DIR="$SERVICEABILITY_FOLDER/logs"
+    mkdir -p $SERVICEABILITY_LOG_DIR
+    rm /liberty/logs
+    ln -s $SERVICEABILITY_LOG_DIR /liberty/logs
+  fi
   # The default is to just exec the supplied CMD
   exec "$@"
 fi
