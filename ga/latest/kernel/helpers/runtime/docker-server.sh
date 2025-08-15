@@ -159,9 +159,10 @@ elif [[ ! -z "$WLP_CHECKPOINT" ]]; then
 else
   if [[ ! -z "$SERVICEABILITY_NAMESPACE" ]] && [[ ! -z $HOSTNAME ]]; then
     SERVICEABILITY_FOLDER="/serviceability/$SERVICEABILITY_NAMESPACE/$HOSTNAME"
-    mkdir -p $SERVICEABILITY_FOLDER
+    SERVICEABILITY_LOG_DIR="$SERVICEABILITY_FOLDER/logs"
+    mkdir -p $SERVICEABILITY_LOG_DIR
     rm /liberty/logs
-    ln -s $SERVICEABILITY_FOLDER /liberty/logs
+    ln -s $SERVICEABILITY_LOG_DIR /liberty/logs
   fi
   # The default is to just exec the supplied CMD
   exec "$@"
