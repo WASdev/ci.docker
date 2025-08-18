@@ -158,11 +158,13 @@ elif [[ ! -z "$WLP_CHECKPOINT" ]]; then
   checkpoint.sh "$TMP_CHECKPOINT"
 else
   if [[ ! -z "$SERVICEABILITY_NAMESPACE" ]] && [[ ! -z $HOSTNAME ]]; then
-    SERVICEABILITY_FOLDER="/serviceability/$SERVICEABILITY_NAMESPACE/$HOSTNAME"
-    SERVICEABILITY_LOG_DIR="$SERVICEABILITY_FOLDER/logs"
-    mkdir -p $SERVICEABILITY_LOG_DIR
+    SERVICEABILITY_FOLDER="/serviceability/$SERVICEABILITY_NAMESPACE/$HOSTNAME/logs"
+    export IBM_HEAPDUMPDIR=$SERVICEABILITY_FOLDER
+	  export IBM_COREDIR=$SERVICEABILITY_FOLDER 
+		export IBM_JAVACOREDIR=$SERVICEABILITY_FOLDER
+    mkdir -p $SERVICEABILITY_FOLDER
     rm /liberty/logs
-    ln -s $SERVICEABILITY_LOG_DIR /liberty/logs
+    ln -s $SERVICEABILITY_FOLDER /liberty/logs
   fi
   # The default is to just exec the supplied CMD
   exec "$@"
