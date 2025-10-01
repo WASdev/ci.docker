@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-25-m2-jre-ubi9-minimal AS getRuntime
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-25-jre-ubi9-minimal AS getRuntime
 
 USER root
 
@@ -40,7 +40,7 @@ RUN microdnf -y install shadow-utils unzip wget findutils openssl \
     && chmod -R g+rw /opt/ibm/wlp \
     && cp -a /opt/ibm/wlp/lafiles/. /licenses/
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-25-m2-jre-ubi9-minimal
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-25-jre-ubi9-minimal
 
 USER root
 
