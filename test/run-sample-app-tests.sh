@@ -2,8 +2,7 @@
 
 tests=(test-pet-clinic test-stock-quote test-stock-trader)
 # Set the images below - i.e. images=(test-image-1:tag-1 test-image-2:tag-2)
-#images=()
-images=(stg.icr.io/cp/wlc/websphere-liberty-vnext-20251006:kernel-java25-openj9-ubi-minimal stg.icr.io/cp/wlc/websphere-liberty-vnext-20251006:full-java25-openj9-ubi-minimal)
+images=()
 
 for image in "${images[@]}"; do
     echo ""
