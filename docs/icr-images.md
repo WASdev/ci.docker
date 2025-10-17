@@ -10,11 +10,11 @@ Available image tags are listed below. The tags use the following naming convent
 <optional fix pack version-><liberty image type>-<java version>-<java type>-<base image type>
 ```
 
-Liberty images based on Universal Base Image (UBI) 9 minimal include the JRE of IBM Semeru Runtime 21, 17, 11 or 8 or IBM Java 8. This combination offers a compact and effective Java runtime.
+Liberty images based on Universal Base Image (UBI) 9 Minimal end with `-ubi-minimal` and include the JRE of IBM Semeru Runtime 25, 21, 17, 11 or 8 or IBM Java 8. We recommend using this combination as it offers a compact and effective Java runtime. Liberty images with Java 21 and higher are only available on UBI Minimal.
 
-Liberty images with Java 17, 11 and 8, the `openj9` type and based on UBI 8 standard include IBM Semeru Runtime for the respective Java version with the JDK. Java 8 images with the `ibmjava` type and based on UBI 8 standard include IBM Java 8 JRE.
+Liberty images based on UBI 8 Standard end with `-ubi` and include Java 17, 11 or 8. The `openj9` type includes IBM Semeru Runtime for the respective Java version with the JDK. Java 8 images with the `ibmjava` type and based on UBI 8 standard include IBM Java 8 JRE.
 
-The `latest` tag simplifies pulling the full latest Open Liberty release with the latest Java JRE. It is an alias for the full-java21-openj9-ubi-minimal tag. If you do not specify a tag value, `latest` is used by default.
+The `latest` tag simplifies pulling the full latest Open Liberty release with the latest Java JRE. It is an alias for the `full-java25-openj9-ubi-minimal` tag. If you do not specify a tag value, `latest` is used by default.
 
 Append a tag to `icr.io/appcafe/websphere-liberty` to pull a specific image. For example, 
 ```
@@ -30,9 +30,10 @@ ibmcloud cr images --restrict appcafe/websphere-liberty
 
 ## Latest version
 
-The following tags include the most recent WebSphere Liberty version: `25.0.0.9` 
+The following tags include the most recent WebSphere Liberty version: `25.0.0.10` 
 
 ```
+kernel-java25-openj9-ubi-minimal
 kernel-java21-openj9-ubi-minimal
 kernel-java17-openj9-ubi-minimal
 kernel-java11-openj9-ubi-minimal
@@ -44,6 +45,7 @@ kernel-java11-openj9-ubi
 kernel-java8-openj9-ubi
 kernel-java8-ibmjava-ubi
 
+full-java25-openj9-ubi-minimal
 full-java21-openj9-ubi-minimal
 full-java17-openj9-ubi-minimal
 full-java11-openj9-ubi-minimal
@@ -57,6 +59,37 @@ full-java8-ibmjava-ubi
 
 latest
 ```
+
+
+## 25.0.0.10
+
+```
+25.0.0.10-kernel-java25-openj9-ubi-minimal
+25.0.0.10-kernel-java21-openj9-ubi-minimal
+25.0.0.10-kernel-java17-openj9-ubi-minimal
+25.0.0.10-kernel-java11-openj9-ubi-minimal
+25.0.0.10-kernel-java8-openj9-ubi-minimal
+25.0.0.10-kernel-java8-ibmjava-ubi-minimal
+
+25.0.0.10-kernel-java17-openj9-ubi
+25.0.0.10-kernel-java11-openj9-ubi
+25.0.0.10-kernel-java8-openj9-ubi
+25.0.0.10-kernel-java8-ibmjava-ubi
+
+25.0.0.10-full-java25-openj9-ubi-minimal
+25.0.0.10-full-java21-openj9-ubi-minimal
+25.0.0.10-full-java17-openj9-ubi-minimal
+25.0.0.10-full-java11-openj9-ubi-minimal
+25.0.0.10-full-java8-openj9-ubi-minimal
+25.0.0.10-full-java8-ibmjava-ubi-minimal
+
+25.0.0.10-full-java17-openj9-ubi
+25.0.0.10-full-java11-openj9-ubi
+25.0.0.10-full-java8-openj9-ubi
+25.0.0.10-full-java8-ibmjava-ubi
+```
+
+
 
 ## 25.0.0.9
 
