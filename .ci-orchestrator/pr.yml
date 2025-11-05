@@ -5,4 +5,4 @@ triggers:
 - type: github
   keyword: "!wlc-pr"
   triggerName: "WLCSPSViaPR"
-  groups: ["LibertyContainers"]
+  groups: ["LibertyContainersPersonal"]
