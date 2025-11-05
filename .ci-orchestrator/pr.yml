@@ -1,0 +1,8 @@
+type: pipeline_definition
+name: Liberty Containers WebSphere Liberty SPS - PR
+description: "Runs a set of compliance status checks for the WASDev/ci.docker app repo."
+triggers:
+- type: github
+  keyword: "!wlc-pr"
+  triggerName: "WLCSPSViaPR"
+  groups: ["LibertyContainers"]
