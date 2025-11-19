@@ -12,17 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-8-jdk-ubi AS getRuntime
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-11-jdk-ubi AS getRuntime
 
 USER root
 
 ARG VERBOSE=false
 
 # Install WebSphere Liberty
-ARG LIBERTY_VERSION=25.0.0.11
+ARG LIBERTY_VERSION=25.0.0.12
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
-ARG LIBERTY_SHA=698f922ad71f49cf40936e3b0313fc2e86a7a4c8
+ARG LIBERTY_SHA=8628e03c14da383ea977cf5feb834b00b5d27840
+
 
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
@@ -41,15 +42,15 @@ RUN yum -y install shadow-utils unzip wget findutils openssl \
     && chmod -R g+rw /opt/ibm/wlp \
     && cp -a /opt/ibm/wlp/lafiles/. /licenses/
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-8-jdk-ubi
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-11-jdk-ubi
 
 USER root
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
-ARG LIBERTY_VERSION=25.0.0.11
-ARG LIBERTY_BUILD_LABEL=cl251120251020-0302
+ARG LIBERTY_VERSION=25.0.0.12
+ARG LIBERTY_BUILD_LABEL=cl251220251117-0302
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
