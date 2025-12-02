@@ -142,19 +142,3 @@ latest
 25.0.0.6-full-java8-openj9-ubi
 25.0.0.6-full-java8-ibmjava-ubi
 ```
-
-## 25.0.0.3
-
-```
-25.0.0.3-kernel-java21-openj9-ubi-minimal
-25.0.0.3-kernel-java17-openj9-ubi
-25.0.0.3-kernel-java11-openj9-ubi
-25.0.0.3-kernel-java8-ibmjava-ubi
-25.0.0.3-kernel-java8-openj9-ubi
-
-25.0.0.3-full-java21-openj9-ubi-minimal
-25.0.0.3-full-java17-openj9-ubi
-25.0.0.3-full-java11-openj9-ubi
-25.0.0.3-full-java8-openj9-ubi
-25.0.0.3-full-java8-ibmjava-ubi
-```
