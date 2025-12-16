@@ -14,7 +14,7 @@
 # limitations under the License.
 . /opt/ibm/helpers/build/internal/logger.sh
 
-set -Eeox pipefail
+set -Eeo pipefail
 
 # 32-bit JVMs don't supported multi-layered SCCs.
 [ -e "$JAVA_HOME/lib/i386" -o -e "$JAVA_HOME/lib/ppc" -o -e "$JAVA_HOME/lib/s390" ] && exit 0

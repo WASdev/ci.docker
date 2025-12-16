@@ -14,7 +14,7 @@
 # limitations under the License.
 . /opt/ibm/helpers/build/internal/logger.sh
 
-set -Eeox pipefail
+set -Eeo pipefail
 
 pkgcmd=yum
 if ! command $pkgcmd
