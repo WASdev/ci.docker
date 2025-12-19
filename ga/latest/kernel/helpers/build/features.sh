@@ -14,7 +14,7 @@
 # limitations under the License.
 . /opt/ibm/helpers/build/internal/logger.sh
 
-set -Eeox pipefail
+set -Eeo pipefail
 
 ##Define variables for XML snippets source and target paths
 SNIPPETS_SOURCE=/opt/ibm/helpers/build/configuration_snippets
