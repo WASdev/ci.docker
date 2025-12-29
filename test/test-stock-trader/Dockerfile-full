@@ -1,4 +1,3 @@
-
 #       Copyright 2017-2025 IBM Corp All Rights Reserved
 
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,8 +19,8 @@ COPY --chown=1001:0 config /config/
 
 ARG VERBOSE=false
 
-RUN features.sh
+# RUN features.sh
 
-COPY --chown=1001:0 stock-quote-1.0-SNAPSHOT.war /config/apps/StockQuote.war
+COPY --chown=1001:0 trader-1.0-SNAPSHOT.war /config/apps/TraderUI.war
 
 RUN configure.sh
