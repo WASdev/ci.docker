@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) Copyright IBM Corporation 2025.
+# (C) Copyright IBM Corporation 2025, 2026.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 # limitations under the License.
 
 function main() {
+    WLP_TYPE=ibm
+    WLP_INSTALL_DIR=/opt/$WLP_TYPE/wlp
     if [ "$VERBOSE" != "true" ]; then
         exec >/dev/null
     else
@@ -27,6 +29,17 @@ function hideLogs() {
 
 function showLogs() {
     exec 1>&3 3>&- 2>&4 4>&-
+}
+
+function installFixes() {
+    if [ ! -f "/logs/fixes.log" ] && ls "/opt/$WLP_TYPE/fixes"/*.jar 1> /dev/null 2>&1; then
+        find /opt/$WLP_TYPE/fixes -type f -name "*.jar"  -print0 | sort -z | xargs -0 -n 1 -r -I {} java -jar {} --installLocation $WLP_INSTALL_DIR
+        echo "installFixes has been run" > /logs/fixes.log
+    fi 
+}
+
+function removeBuildArtifacts() {
+    rm -f /logs/fixes.log
 }
 
 main
