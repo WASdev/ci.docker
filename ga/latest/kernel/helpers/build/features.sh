@@ -48,4 +48,4 @@ find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod
 # Note: This step should only be done ONCE needed features are enabled and installed.
 installFixes
 
-echo "features.sh script has been run" > /logs/features.log
+echo "features.sh script has been run successfully" > /logs/features.log

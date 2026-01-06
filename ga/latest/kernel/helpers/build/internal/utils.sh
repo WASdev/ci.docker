@@ -34,7 +34,7 @@ function showLogs() {
 function installFixes() {
     if [ ! -f "/logs/fixes.log" ] && ls "/opt/$WLP_TYPE/fixes"/*.jar 1> /dev/null 2>&1; then
         find /opt/$WLP_TYPE/fixes -type f -name "*.jar"  -print0 | sort -z | xargs -0 -n 1 -r -I {} java -jar {} --installLocation $WLP_INSTALL_DIR
-        echo "installFixes has been run" > /logs/fixes.log
+        echo "installFixes has been run successfully" > /logs/fixes.log
     fi 
 }
 
