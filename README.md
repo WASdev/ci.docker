@@ -12,6 +12,7 @@
   - [Installing Liberty Features from local repository (19.0.0.8+)](#installing-liberty-features-from-local-repository-19008)
       - [Locally hosting feature repository](#locally-hosting-feature-repository)
       - [Using locally hosted feature repository in Dockerfile](#using-locally-hosted-feautre-repository-in-dockerfile)
+  - [Running Liberty MustGather](#running-liberty-mustgather)
 - [Known Issues](#known-issues)
 - [Issues and Contributions](#issues-and-contributions)
 - [License](#license)
@@ -320,6 +321,19 @@ USER 1001
 ARG FEATURE_REPO_URL=http://wlprepos:8080/19.0.0.x/repo.zip
 ARG VERBOSE=false
 RUN configure.sh
+```
+
+## Running Liberty MustGather
+
+The [Liberty MustGather script](https://www.ibm.com/support/pages/mustgather-performance-hang-or-high-cpu-issues-liberty-linux) can be run within your container to collect critical data for debugging issues relating to performance degradation, hang, no response, hung threads, CPU starvation, high CPU utilization, or deadlocks with Liberty on Linux.
+
+Include the following snippet into your Dockerfile definition to install the required packages for running `linperf.sh` in the Liberty container.
+
+```
+# Temporarily provide root access to install required packages
+USER 0
+RUN performance-data-setup.sh
+USER 1001
 ```
 
 # Known Issues
