@@ -176,7 +176,7 @@ For more information regarding the configuration of WebSphere Liberty's logging 
 
 [Liberty InstantOn](https://www.ibm.com/docs/en/was-liberty/nd?topic=images-faster-startup-instanton) provides fast startup times for MicroProfile and Jakarta EE applications. With InstantOn, your applications can start in milliseconds, without compromising on throughput, memory, development-production parity, or Java language features.
 
-Check out our guide on [Containerizing, packaging, and running a Spring Boot application](https://openliberty.io/guides/spring-boot.html) where you can learn how to use Liberty InstantOn with a Spring Boot application for faster startup.
+View the guide on [Containerizing, packaging, and running a Spring Boot application](https://openliberty.io/guides/spring-boot.html) to learn how to use Liberty InstantOn with a Spring Boot application for faster startup.
 
 ## Session Caching
 
