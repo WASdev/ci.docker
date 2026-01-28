@@ -9,7 +9,6 @@
     <properties infinispan.client.hotrod.sasl_mechanism="DIGEST-MD5"/>
     <properties infinispan.client.hotrod.auth_server_name="infinispan"/>
   </httpSessionCache>
-  <httpSessionCache enableBetaSupportForInfinispan="true"/> <!-- TODO remove once no longer gated -->
   <library id="InfinispanLib">
     <fileset dir="${shared.resource.dir}/infinispan" includes="*.jar"/>
   </library>
