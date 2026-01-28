@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) Copyright IBM Corporation 2023, 2025.
+# (C) Copyright IBM Corporation 2023, 2026.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-. /opt/ibm/helpers/build/internal/logger.sh
+. /opt/ibm/helpers/build/internal/utils.sh
 
 set -Eeo pipefail
 
@@ -43,4 +43,9 @@ fi
 featureUtility installServerFeatures --acceptLicense defaultServer --noCache
 find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw
 
-echo "features.sh script has been run" > /logs/features.log
+# Apply interim fixes found in /opt/ibm/fixes
+# Fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in /opt/ibm/fixes
+# Note: This step should only be done ONCE needed features are enabled and installed.
+installFixes
+
+echo "features.sh script has been run successfully" > /logs/features.log
