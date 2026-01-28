@@ -16,6 +16,15 @@
 
 set -Eeo pipefail
 
+# Recommended stable baseline for Jakarta EE 10 / JDK 17+ environments.
+INFINISPAN_DEFAULT_VERSION="15.2.6.Final"
+INFINISPAN_CLIENT_VERSION=${INFINISPAN_CLIENT_VERSION:-$INFINISPAN_DEFAULT_VERSION}
+
+# Resolves the latest patch release (x.y.Z) within the specified major.minor version.
+INFINISPAN_USE_LATEST_PATCH=${INFINISPAN_USE_LATEST_PATCH:-false}
+# Required for Infinispan 11+ on Liberty. Hard dependency for Liberty sessionCache-1.0.
+INFINISPAN_ENABLE_REACTIVE_STREAMS=${INFINISPAN_ENABLE_REACTIVE_STREAMS:-true}
+
 pkgcmd=yum
 if ! command $pkgcmd
 then
@@ -24,17 +33,58 @@ fi
 
 $pkgcmd update -y
 $pkgcmd install -y maven
-mkdir -p /opt/ibm/wlp/usr/shared/resources/infinispan
-echo '<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  <modelVersion>4.0.0</modelVersion>   <groupId>io.openliberty</groupId>  <artifactId>openliberty-infinispan-client</artifactId>  <version>1.0</version>  <!-- https://mvnrepository.com/artifact/org.infinispan/infinispan-jcache-remote -->  <dependencies>    <dependency>      <groupId>org.infinispan</groupId>      <artifactId>infinispan-jcache-remote</artifactId>      <version>10.1.3.Final</version>    </dependency>  </dependencies></project>' > /opt/ibm/wlp/usr/shared/resources/infinispan/pom.xml
-mvn -f /opt/ibm/wlp/usr/shared/resources/infinispan/pom.xml versions:use-latest-releases -DallowMajorUpdates=false
-mvn -f /opt/ibm/wlp/usr/shared/resources/infinispan/pom.xml dependency:copy-dependencies -DoutputDirectory=/opt/ibm/wlp/usr/shared/resources/infinispan
+
+CLIENT_JARS_DIR="/opt/ibm/wlp/usr/shared/resources/infinispan"
+mkdir -p "${CLIENT_JARS_DIR}"
+
+cat << EOF > /opt/ibm/wlp/usr/shared/resources/infinispan/pom.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.openliberty</groupId>
+  <artifactId>openliberty-infinispan-client</artifactId>
+  <version>1.0</version>
+
+  <!-- https://mvnrepository.com/artifact/org.infinispan/infinispan-jcache-remote -->
+  <dependencies>
+    <dependency>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-jcache-remote</artifactId>
+      <version>${INFINISPAN_CLIENT_VERSION}</version>
+    </dependency>
+  </dependencies>
+</project>
+EOF
+
+if [ "${INFINISPAN_USE_LATEST_PATCH}" = "true" ]; then
+  echo "Resolving latest Infinispan client patch release (no major upgrades)..."
+  mvn -f "${CLIENT_JARS_DIR}/pom.xml" versions:use-latest-releases -DallowMajorUpdates=false
+fi
+
+mvn -f /opt/ibm/wlp/usr/shared/resources/infinispan/pom.xml dependency:copy-dependencies -DoutputDirectory="${CLIENT_JARS_DIR}"
 # This fails with dependency errors using microdnf on ubi-minimal, but it is okay to let it fail
 yum remove -y maven || true
-rm -f /opt/ibm/wlp/usr/shared/resources/infinispan/pom.xml
-rm -f /opt/ibm/wlp/usr/shared/resources/infinispan/jboss-transaction-api*.jar
-rm -f /opt/ibm/wlp/usr/shared/resources/infinispan/reactive-streams-*.jar
-rm -f /opt/ibm/wlp/usr/shared/resources/infinispan/rxjava-*.jar
-rm -rf ~/.m2
-chown -R 1001:0 /opt/ibm/wlp/usr/shared/resources/infinispan
-chmod -R g+rw /opt/ibm/wlp/usr/shared/resources/infinispan
+rm -f "${CLIENT_JARS_DIR}/pom.xml"
 
+# Remove unnecessary spec jars
+rm -f "${CLIENT_JARS_DIR}"/jboss-transaction-api*.jar
+rm -f "${CLIENT_JARS_DIR}"/jakarta.transaction-api*.jar
+
+# Reactive streams are required for Infinispan 11+ on Liberty sessionCache-1.0
+# Only remove if explicitly disabled (default: enabled)
+if [ "${INFINISPAN_ENABLE_REACTIVE_STREAMS}" != "true" ]; then
+  echo "Removing reactive-streams and rxjava jars as INFINISPAN_ENABLE_REACTIVE_STREAMS is not set to true..."
+  rm -f "${CLIENT_JARS_DIR}"/reactive-streams-*.jar
+  rm -f "${CLIENT_JARS_DIR}"/rxjava-*.jar
+fi
+
+rm -rf ~/.m2
+chown -R 1001:0 "${CLIENT_JARS_DIR}"
+chmod -R g+rw "${CLIENT_JARS_DIR}"
+
+INSTALLED_VERSION=$(find "${CLIENT_JARS_DIR}/" -name "*infinispan-commons*.jar" -printf "%f" | sed 's/infinispan-commons-\(.*\).jar/\1/')
+
+if [ -n "$INSTALLED_VERSION" ]; then
+  echo "Successfully installed Infinispan client version: ${INSTALLED_VERSION}"
+fi
