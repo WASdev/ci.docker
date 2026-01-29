@@ -62,7 +62,7 @@ if [ "${INFINISPAN_USE_LATEST_PATCH}" = "true" ]; then
   mvn -f "${CLIENT_JARS_DIR}/pom.xml" versions:use-latest-releases -DallowMajorUpdates=false
 fi
 
-mvn -f ${CLIENT_JARS_DIR}/pom.xml dependency:copy-dependencies -DoutputDirectory="${CLIENT_JARS_DIR}"
+mvn -f "${CLIENT_JARS_DIR}/pom.xml" dependency:copy-dependencies -DoutputDirectory="${CLIENT_JARS_DIR}"
 # This fails with dependency errors using microdnf on ubi-minimal, but it is okay to let it fail
 yum remove -y maven || true
 rm -f "${CLIENT_JARS_DIR}/pom.xml"
