@@ -208,7 +208,7 @@ The Liberty session caching feature builds on top of an existing technology call
 
     * **Dockerfile Example** - An example Dockerfilethat can be used for enabling Infinispan functionality in Liberty is provided below. This Dockerfile assumes an Infinispan service name of `example-infinispan`, which is the default used in the [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/main/infinispan-remote/operator/openshift). To customize your Infinispan service see [Creating Infinispan Clusters](https://infinispan.org/docs/infinispan-operator/main/operator.html#creating-clusters). The `INFINISPAN_SERVICE_NAME` environment variable must be set at build time as shown in the example Dockerfile, or overridden at image deploy time.
 
-        * **TIP** - If your Infinispan deployment and Liberty deployment are in different namespaces/projects, you will need to set the `INFINISPAN_HOST`, `INFINISPAN_PORT`, `INFINISPAN_USER`, and `INFINISPAN_PASS` environment variables in addition to the `INFINISPAN_SERVICE_NAME` environment variable.
+        * **TIP** - If your Infinispan deployment and Liberty deployment are in different namespaces/projects, you will need to set the `INFINISPAN_HOST`, `INFINISPAN_PORT`, `INFINISPAN_USER`, and `INFINISPAN_PASS` environment variables in addition to the `INFINISPAN_SERVICE_NAME` environment variable. This is due to the Liberty deployment not having the access to the Infinispan service environment variables it requires.
 
         ```dockerfile
             ### Infinispan Session Caching ###
