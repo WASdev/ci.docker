@@ -83,7 +83,7 @@ rm -rf ~/.m2
 chown -R 1001:0 "${CLIENT_JARS_DIR}"
 chmod -R g+rw "${CLIENT_JARS_DIR}"
 
-INSTALLED_VERSION=$(find "${CLIENT_JARS_DIR}/" -name "*infinispan-commons*.jar" -printf "%f" | sed 's/infinispan-commons-\(.*\).jar/\1/')
+INSTALLED_VERSION=$(find "${CLIENT_JARS_DIR}/" -name "infinispan-jcache-remote-*.jar" -printf "%f" | sed 's/infinispan-commons-\(.*\).jar/\1/')
 
 if [ -n "$INSTALLED_VERSION" ]; then
   echo "Successfully installed Infinispan client version: ${INSTALLED_VERSION}"
