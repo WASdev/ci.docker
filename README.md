@@ -184,9 +184,9 @@ The Liberty session caching feature builds on top of an existing technology call
           - Description: Sets the Infinispan client version. Refer to [Infinispan Release Notes](https://infinispan.org/release-notes) for major version and compatibility details.  
           - Default: `"15.2.6.Final"`
         * `INFINISPAN_USE_LATEST_PATCH`  
-          - Description: When set to "true", `INFINISPAN_CLIENT_VERSION` will resolve to the newest available micro-release within its specified major.  
+          - Description: When set to "true", `INFINISPAN_CLIENT_VERSION` will resolve to the latest patch update within its specified major-minor.  
           - Default: `"false"`  
-          - Note: This will resolve the highest version string found in [Maven Central](https://mvnrepository.com/artifact/org.infinispan/infinispan-jcache), which may include non-final releases (e.g., .Dev01, .Beta, or .RC versions) if they are newer than the current .Final release. For a strictly stable and immutable build, keep as "false".
+          - Note: This will resolve the highest version string found in [Maven Central](https://mvnrepository.com/artifact/org.infinispan/infinispan-jcache), which may include non-final releases (e.g., .Dev01, .Beta, or .RC versions) if they are newer than the current .Final release.
         * `INFINISPAN_ENABLE_REACTIVE_STREAMS`  
           - Description: Enables the inclusion of Reactive Streams and RxJava transitive dependencies.  
           - Default: `"true"`  
@@ -198,11 +198,11 @@ The Liberty session caching feature builds on top of an existing technology call
 
         | Major Version | Java Baseline | Namespace | Support Until | Notes |
         | :--- | :--- | :--- | :--- | :--- |
-        | **16.0** | Java 17+ | **Jakarta.* (EE 10+)** | 6 months after 17.0 (Full) | Release versions no longer end with .Final |
-        | **15.2** | Java 17+ | **Jakarta.* (EE 10+)** | May 2026 (Full) | |
-        | **14.0** | Java 11+ | **Javax.* / jakarta.*** | October 2027 (Limited) | |
-        | **13.0** | Java 8+ | **Javax.*** | November 2026 (Limited) | |
-        | **10.x - 12.0**| Java 8 | **Javax.*** | End of life | Unsupported |
+        | **16.0** | Java 17+ | **jakarta.* (EE 10+)** | 6 months after 17.0 (Full) | Release versions no longer end with .Final |
+        | **15.2** | Java 17+ | **jakarta.* (EE 10+)** | May 2026 (Full) | |
+        | **14.0** | Java 11+ | **javax.* / jakarta.*** | October 2027 (Limited) | |
+        | **13.0** | Java 8+ | **javax.*** | November 2026 (Limited) | |
+        | **10.x - 12.0**| Java 8 | **javax.*** | End of life | Unsupported |
 
         </details>
 

@@ -59,7 +59,7 @@ EOF
 
 if [ "${INFINISPAN_USE_LATEST_PATCH}" = "true" ]; then
   echo "Resolving latest Infinispan client patch release (no major upgrades)..."
-  mvn -f "${CLIENT_JARS_DIR}/pom.xml" versions:use-latest-releases -DallowMajorUpdates=false
+  mvn -f "${CLIENT_JARS_DIR}/pom.xml" versions:use-latest-releases -DallowMajorUpdates=false -DallowMinorUpdates=false
 fi
 
 mvn -f "${CLIENT_JARS_DIR}/pom.xml" dependency:copy-dependencies -DoutputDirectory="${CLIENT_JARS_DIR}"
