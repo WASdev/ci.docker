@@ -179,40 +179,71 @@ The Liberty session caching feature builds on top of an existing technology call
 
     *  **Setup Infinispan Service** - Configuring Liberty session caching with Infinispan depends on an Infinispan service being available in your Kubernetes environment. It is preferable to create your Infinispan service by utilizing the [Infinispan Operator](https://infinispan.org/docs/infinispan-operator/main/operator.html). The [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/main/infinispan-remote/operator/openshift) provides a good example of getting started with Infinispan in OpenShift.
 
-    *  **Install Client Jars and Set INFINISPAN_SERVICE_NAME** - To enable Infinispan functionality in Liberty, the container image author can use the Dockerfile provided below. This Dockerfile assumes an Infinispan service name of `example-infinispan`, which is the default used in the [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/main/infinispan-remote/operator/openshift). To customize your Infinispan service see [Creating Infinispan Clusters](https://infinispan.org/docs/infinispan-operator/main/operator.html#creating-clusters). The `INFINISPAN_SERVICE_NAME` environment variable must be set at build time as shown in the example Dockerfile, or overridden at image deploy time.
-        *  **TIP** - If your Infinispan deployment and Liberty deployment are in different namespaces/projects, you will need to set the `INFINISPAN_HOST`, `INFINISPAN_PORT`, `INFINISPAN_USER`, and `INFINISPAN_PASS` environment variables in addition to the `INFINISPAN_SERVICE_NAME` environment variable. This is due to the Liberty deployment not having the access to the Infinispan service environment variables it requires.
+    *  **Install Client Jars and Set INFINISPAN_SERVICE_NAME** - The [infinispan-client-setup.sh](ga/latest/kernel/helpers/build/infinispan-client-setup.sh) script automates the retrieval of client libraries. To ensure compatibility between your Liberty features and the Infinispan client, the following variables can be configured during image build time:
+        * `INFINISPAN_CLIENT_VERSION`  
+          - Description: Sets the Infinispan client version. Refer to [Infinispan Release Notes](https://infinispan.org/release-notes) for major version and compatibility details.  
+          - Default: `"15.2.6.Final"`
+        * `INFINISPAN_USE_LATEST_PATCH`  
+          - Description: When set to "true", `INFINISPAN_CLIENT_VERSION` will resolve to the newest available micro-release within its specified major.  
+          - Default: `"false"`  
+          - Note: This will resolve the highest version string found in [Maven Central](https://mvnrepository.com/artifact/org.infinispan/infinispan-jcache), which may include non-final releases (e.g., .Dev01, .Beta, or .RC versions) if they are newer than the current .Final release. For a strictly stable and immutable build, keep as "false".
+        * `INFINISPAN_ENABLE_REACTIVE_STREAMS`  
+          - Description: Enables the inclusion of Reactive Streams and RxJava transitive dependencies.  
+          - Default: `"true"`  
+          - Note: This is required for Infinispan 12+ to prevent runtime errors during Liberty session cache initialization but can be disabled for EOL (<12.0) client versions.      
+        * **TIP** - Liberty enforces specific API namespaces based on the Java EE / Jakarta EE specification level of your enabled features. When using Jakarta EE 10 features, the runtime environment is strictly `jakarta.*`, necessitating an Infinispan client that aligns with that specification. For further details on lifecycle and Java baseline requirements, refer to the [Infinispan Release Posts](https://infinispan.org/blog/tag/release/) and official [Download pages](https://infinispan.org/download/).
 
-    ```dockerfile
-    ### Infinispan Session Caching ###
-    FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi AS infinispan-client
+        <details>
+        <summary><b>Infinispan Client Compatibility Table</b></summary>
 
-    # Install Infinispan client jars
-    USER root
-    RUN infinispan-client-setup.sh
-    USER 1001
+        | Major Version | Java Baseline | Namespace | Support Until | Notes |
+        | :--- | :--- | :--- | :--- | :--- |
+        | **16.0** | Java 17+ | **Jakarta.* (EE 10+)** | 6 months after 17.0 (Full) | Release versions no longer end with .Final |
+        | **15.2** | Java 17+ | **Jakarta.* (EE 10+)** | May 2026 (Full) | |
+        | **14.0** | Java 11+ | **Javax.* / jakarta.*** | October 2027 (Limited) | |
+        | **13.0** | Java 8+ | **Javax.*** | November 2026 (Limited) | |
+        | **10.x - 12.0**| Java 8 | **Javax.*** | End of life | Unsupported |
 
-    FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi AS open-liberty-infinispan
+        </details>
 
-    # Copy Infinispan client jars to Open Liberty shared resources
-    COPY --chown=1001:0 --from=infinispan-client /opt/ibm/wlp/usr/shared/resources/infinispan /opt/ibm/wlp/usr/shared/resources/infinispan
+    * **Dockerfile Example** - An example Dockerfile for enabling Infinispan functionality in Liberty is provided below that can be used. This Dockerfile assumes an Infinispan service name of `example-infinispan`, which is the default used in the [Infinispan Operator Tutorial](https://github.com/infinispan/infinispan-simple-tutorials/tree/main/infinispan-remote/operator/openshift). To customize your Infinispan service see [Creating Infinispan Clusters](https://infinispan.org/docs/infinispan-operator/main/operator.html#creating-clusters). The `INFINISPAN_SERVICE_NAME` environment variable must be set at build time as shown in the example Dockerfile, or overridden at image deploy time.
 
-    # Instruct configure.sh to use Infinispan for session caching.
-    # This should be set to the Infinispan service name.
-    # TIP - Run the following oc/kubectl command with admin permissions to determine this value:
-    #       oc get infinispan -o jsonpath={.items[0].metadata.name}
-    ENV INFINISPAN_SERVICE_NAME=example-infinispan
+        * **TIP** - If your Infinispan deployment and Liberty deployment are in different namespaces/projects, you will need to set the `INFINISPAN_HOST`, `INFINISPAN_PORT`, `INFINISPAN_USER`, and `INFINISPAN_PASS` environment variables in addition to the `INFINISPAN_SERVICE_NAME` environment variable.
 
-    # Uncomment and set to override auto detected values.
-    # These are normally not needed if running in a Kubernetes environment.
-    # One such scenario would be when the Infinispan and Liberty deployments are in different namespaces/projects.
-    #ENV INFINISPAN_HOST=
-    #ENV INFINISPAN_PORT=
-    #ENV INFINISPAN_USER=
-    #ENV INFINISPAN_PASS=
-
-    # This script will add the requested XML snippets and grow image to be fit-for-purpose
-    RUN configure.sh
-    ```
+        ```dockerfile
+            ### Infinispan Session Caching ###
+            FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi AS infinispan-client
+        
+            # Install Infinispan client jars
+            USER root
+        
+            # Set 15.2.6.Final as client version for Jakarta EE 10 with latest security patches
+            ARG INFINISPAN_CLIENT_VERSION=15.2.6.Final
+            RUN infinispan-client-setup.sh
+            USER 1001
+        
+            FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi AS open-liberty-infinispan
+        
+            # Copy Infinispan client jars to Open Liberty shared resources
+            COPY --chown=1001:0 --from=infinispan-client /opt/ibm/wlp/usr/shared/resources/infinispan /opt/ibm/wlp/usr/shared/resources/infinispan
+        
+            # Instruct configure.sh to use Infinispan for session caching.
+            # This should be set to the Infinispan service name.
+            # TIP - Run the following oc/kubectl command with admin permissions to determine this value:
+            #       oc get infinispan -o jsonpath={.items[0].metadata.name}
+            ENV INFINISPAN_SERVICE_NAME=example-infinispan
+        
+            # Uncomment and set to override auto detected values.
+            # These are normally not needed if running in a Kubernetes environment.
+            # One such scenario would be when the Infinispan and Liberty deployments are in different namespaces/projects.
+            #ENV INFINISPAN_HOST=
+            #ENV INFINISPAN_PORT=
+            #ENV INFINISPAN_USER=
+            #ENV INFINISPAN_PASS=
+        
+            # This script will add the requested XML snippets and grow image to be fit-for-purpose
+            RUN configure.sh
+        ```
 
     *  **Mount Infinispan Secret** - Finally, the Infinispan generated secret must be mounted as a volume under the mount point of `/platform/bindings/infinispan/secret/` on Liberty containers. The default location, for versions latest and 20.0.0.6+, of `/platform/bindings/infinispan/secret/` can to be overridden by setting the `LIBERTY_INFINISPAN_SECRET_DIR` environment variable. When using the Infinispan Operator, this secret is automatically generated as part of the Infinispan service with the name of `<INFINISPAN_CLUSTER_NAME>-generated-secret`. For the mounting of this secret to succeed, the Infinispan Operator and Liberty must share the same namespace. If they do not share the same namespace, the `INFINISPAN_HOST`, `INFINISPAN_PORT`, `INFINISPAN_USER`, and `INFINISPAN_PASS` environment variables can be used instead(see the dockerfile example above). For an example of mounting this secret, review the `volumes` and `volumeMounts` portions of the YAML below.
 
