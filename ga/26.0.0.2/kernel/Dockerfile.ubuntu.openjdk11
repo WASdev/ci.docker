@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2023.
+# (C) Copyright IBM Corporation 2023, 2026
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,45 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-11-jdk-ubi AS getRuntime
-
-USER root
-
-ARG VERBOSE=false
-
-# Install WebSphere Liberty
-ARG LIBERTY_VERSION=26.0.0.1
-ARG LIBERTY_URL
-ARG DOWNLOAD_OPTIONS=""
-ARG LIBERTY_SHA=060600dd0e7f6e4a3e102a31245b11cf069559e8
-
-
-# If there is a local copy of the image use that instead
-COPY resources/ /tmp/
-
-RUN yum -y install shadow-utils unzip wget findutils openssl \
-    && yum clean all \
-    && mkdir -p /licenses \
-    && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
-    && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | grep -E "^\s*kernel:.*${LIBERTY_VERSION}\.zip" | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
-    && if [ ! -f /tmp/wlp.zip ]; then wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip; fi \
-    && echo "$LIBERTY_SHA  /tmp/wlp.zip" > /tmp/wlp.zip.sha1 \
-    && sha1sum -c /tmp/wlp.zip.sha1 \
-    && chmod -R g+x /usr/bin \
-    && unzip -q /tmp/wlp.zip -d /opt/ibm \
-    && chown -R 1001:0 /opt/ibm/wlp \
-    && chmod -R g+rw /opt/ibm/wlp \
-    && cp -a /opt/ibm/wlp/lafiles/. /licenses/
-
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-11-jdk-ubi
+FROM ibm-semeru-runtimes:open-11-jre-noble
 
 USER root
 
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
-ARG LIBERTY_VERSION=26.0.0.1
-ARG LIBERTY_BUILD_LABEL=cl260120260112-1902
+ARG LIBERTY_VERSION=26.0.0.2
+ARG LIBERTY_BUILD_LABEL=cl260220260207-1901
+ARG LIBERTY_SHA={replace_with_correct_sha}
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
@@ -58,15 +29,10 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wend
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="$LIBERTY_VERSION" \
       org.opencontainers.image.revision="$LIBERTY_BUILD_LABEL" \
-      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Ubuntu as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
       org.opencontainers.image.title="IBM WebSphere Liberty" \
       liberty.version="$LIBERTY_VERSION" \
-      com.ibm.websphere.liberty.version="$LIBERTY_VERSION" \
-      vendor="IBM" \
-      name="IBM WebSphere Liberty" \
-      version="$LIBERTY_VERSION" \
-      summary="Image for WebSphere Liberty with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8" \
-      description="This image contains the WebSphere Liberty runtime with IBM Semeru Runtime Open Edition OpenJDK with OpenJ9 and Red Hat's UBI 8 as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
+      com.ibm.websphere.liberty.version="$LIBERTY_VERSION"
 
 ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build:/opt/ibm/helpers/runtime
 
@@ -78,7 +44,7 @@ LABEL "ProductID"="fbf6a96d49214c0abc6a3bc5da6e48cd" \
 
 # Install dumb-init
 RUN set -eux; \
-    ARCH="$(uname -m)"; \
+    ARCH="$(dpkg --print-architecture)"; \
     case "${ARCH}" in \
        aarch64|arm64) \
          DUMB_INIT_URL='https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_aarch64'; \
@@ -105,18 +71,27 @@ RUN set -eux; \
     echo "${DUMB_INIT_SHA256} */usr/bin/dumb-init" | sha256sum -c -; \
     chmod +x /usr/bin/dumb-init;
 
-# Add default user 1001 and create wlp with right user/permissions before copying
-RUN adduser -u 1001 -r -g root -s /usr/sbin/nologin default \
-    && mkdir -p /opt/ibm/wlp \
+# Install WebSphere Liberty
+ARG LIBERTY_URL
+ARG DOWNLOAD_OPTIONS=""
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends unzip openssl wget \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /licenses/ \
+    && useradd -u 1001 -r -g 0 -s /usr/sbin/nologin default \
+    && LIBERTY_URL=${LIBERTY_URL:-$(wget -q -O - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/downloads/wlp/index.yml | grep -E "^\s*kernel:.*${LIBERTY_VERSION}\.zip" | sed -n 's/\s*kernel:\s//p' | tr -d '\r' )}  \
+    && wget $DOWNLOAD_OPTIONS $LIBERTY_URL -U UA-IBM-WebSphere-Liberty-Docker -O /tmp/wlp.zip \
+    && echo "$LIBERTY_SHA  /tmp/wlp.zip" > /tmp/wlp.zip.sha1 \
+    && sha1sum -c /tmp/wlp.zip.sha1 \
+    && unzip -q /tmp/wlp.zip -d /opt/ibm \
+    && rm /tmp/wlp.zip \
     && chown -R 1001:0 /opt/ibm/wlp \
-    && chmod -R g+rw /opt/ibm/wlp
+    && chmod -R g+rw /opt/ibm/wlp \
+    && cp -a /opt/ibm/wlp/lafiles/. /licenses/ \
+    && apt-get purge --auto-remove -y unzip \
+    && apt-get purge --auto-remove -y wget \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the runtime and licenses
-COPY --from=getRuntime --chown=1001:0 /opt/ibm/wlp /opt/ibm/wlp
-COPY --from=getRuntime /licenses /licenses
-
-RUN yum -y install openssl \
-    && yum clean all
 # Set Path Shortcuts
 ENV LOG_DIR=/liberty/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
@@ -160,7 +135,6 @@ RUN mkdir /logs \
     && chmod -R g+rw /opt/ibm/wlp/output \
     && chown -R 1001:0 /etc/wlp \
     && chmod -R g+rw /etc/wlp \
-    && if [ -e /etc/instanton.ld.so.cache ]; then chmod g+w /etc/ld.so.cache; fi \
     && chown -R 1001:0 /home/default \
     && chmod -R g+rw /home/default \
     && ln -s /logs /liberty/logs \
