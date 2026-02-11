@@ -22,8 +22,6 @@ INFINISPAN_CLIENT_VERSION=${INFINISPAN_CLIENT_VERSION:-$INFINISPAN_DEFAULT_VERSI
 
 # Resolves the latest patch release (x.y.Z) within the specified major.minor version.
 INFINISPAN_USE_LATEST_PATCH=${INFINISPAN_USE_LATEST_PATCH:-false}
-# Required for Infinispan 11+ on Liberty. Hard dependency for Liberty sessionCache-1.0.
-INFINISPAN_ENABLE_REACTIVE_STREAMS=${INFINISPAN_ENABLE_REACTIVE_STREAMS:-true}
 
 pkgcmd=yum
 if ! command $pkgcmd
@@ -71,10 +69,12 @@ rm -f "${CLIENT_JARS_DIR}/pom.xml"
 rm -f "${CLIENT_JARS_DIR}"/jboss-transaction-api*.jar
 rm -f "${CLIENT_JARS_DIR}"/jakarta.transaction-api*.jar
 
+# Extract major version set
+MAJOR_VERSION=$(echo "${INFINISPAN_CLIENT_VERSION}" | sed -E 's/^([0-9]+)\..*/\1/')
 # Reactive streams are required for Infinispan 11+ on Liberty sessionCache-1.0
-# Only remove if explicitly disabled (default: enabled)
-if [ "${INFINISPAN_ENABLE_REACTIVE_STREAMS}" != "true" ]; then
-  echo "Removing reactive-streams and rxjava jars as INFINISPAN_ENABLE_REACTIVE_STREAMS is not set to true..."
+# For versions < 11.0.0, remove reactive streams
+if [ "${MAJOR_VERSION}" -lt 11 ]; then
+  echo "Removing reactive-streams and rxjava jars as Infinispan version ${INFINISPAN_CLIENT_VERSION} is < 11.0.0..."
   rm -f "${CLIENT_JARS_DIR}"/reactive-streams-*.jar
   rm -f "${CLIENT_JARS_DIR}"/rxjava-*.jar
 fi

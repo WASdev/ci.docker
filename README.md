@@ -187,10 +187,6 @@ The Liberty session caching feature builds on top of an existing technology call
           - Description: When set to "true", `INFINISPAN_CLIENT_VERSION` will resolve to the latest patch update within its specified major-minor.  
           - Default: `"false"`  
           - Note: This will resolve the highest version string found in [Maven Central](https://mvnrepository.com/artifact/org.infinispan/infinispan-jcache), which may include non-final releases (e.g., .Dev01, .Beta, or .RC versions) if they are newer than the current .Final release.
-        * `INFINISPAN_ENABLE_REACTIVE_STREAMS`  
-          - Description: Enables the inclusion of Reactive Streams and RxJava transitive dependencies.  
-          - Default: `"true"`  
-          - Note: This is required for Infinispan 12+ to prevent runtime errors during Liberty session cache initialization but can be disabled for EOL (<12.0) client versions.      
         * **TIP** - Liberty enforces specific API namespaces based on the Java EE / Jakarta EE specification level of your enabled features. When using Jakarta EE 10 features, the runtime environment is strictly `jakarta.*`, necessitating an Infinispan client that aligns with that specification. For further details on lifecycle and Java baseline requirements, refer to the [Infinispan Release Posts](https://infinispan.org/blog/tag/release/) and official [Download pages](https://infinispan.org/download/).
 
         <details>
