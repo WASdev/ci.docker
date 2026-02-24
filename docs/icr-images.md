@@ -1,7 +1,7 @@
 
 # IBM Container Registry (ICR)
 
-WebSphere Liberty container images are available from the IBM Container Registry (ICR) at `icr.io/appcafe/websphere-liberty`. Our recommendation is to use ICR instead of Docker Hub since ICR doesn't impose rate limits on image pulls. Images can be pulled from ICR without authentication. Only images with Universal Base Image (UBI) as the Operating System are available in ICR.
+WebSphere Liberty container images are available from the IBM Container Registry (ICR) at `icr.io/appcafe/websphere-liberty`. Our recommendation is to use ICR instead of Docker Hub. ICR doesn't impose rate limits on image pulls. Images can be pulled from ICR without authentication. Only images with Universal Base Image (UBI) as the Operating System are available in ICR.
 
 The images for the latest Liberty release and the last three quarterly releases (versions ending in _.3_, _.6_, _.9_ and _.12_) are available and are refreshed regularly (every 1-2 weeks) to include fixes for the operating system (OS) and Java.
 
@@ -30,7 +30,7 @@ ibmcloud cr images --restrict appcafe/websphere-liberty
 
 ## Latest version
 
-The following tags include the most recent WebSphere Liberty version: `26.0.0.1` 
+The following tags include the most recent WebSphere Liberty version: `26.0.0.2` 
 
 ```
 kernel-java25-openj9-ubi-minimal
@@ -60,32 +60,32 @@ full-java8-ibmjava-ubi
 latest
 ```
 
-## 26.0.0.1
+## 26.0.0.2
 
 ```
-26.0.0.1-kernel-java25-openj9-ubi-minimal
-26.0.0.1-kernel-java21-openj9-ubi-minimal
-26.0.0.1-kernel-java17-openj9-ubi-minimal
-26.0.0.1-kernel-java11-openj9-ubi-minimal
-26.0.0.1-kernel-java8-openj9-ubi-minimal
-26.0.0.1-kernel-java8-ibmjava-ubi-minimal
+26.0.0.2-kernel-java25-openj9-ubi-minimal
+26.0.0.2-kernel-java21-openj9-ubi-minimal
+26.0.0.2-kernel-java17-openj9-ubi-minimal
+26.0.0.2-kernel-java11-openj9-ubi-minimal
+26.0.0.2-kernel-java8-openj9-ubi-minimal
+26.0.0.2-kernel-java8-ibmjava-ubi-minimal
 
-26.0.0.1-kernel-java17-openj9-ubi
-26.0.0.1-kernel-java11-openj9-ubi
-26.0.0.1-kernel-java8-openj9-ubi
-26.0.0.1-kernel-java8-ibmjava-ubi
+26.0.0.2-kernel-java17-openj9-ubi
+26.0.0.2-kernel-java11-openj9-ubi
+26.0.0.2-kernel-java8-openj9-ubi
+26.0.0.2-kernel-java8-ibmjava-ubi
 
-26.0.0.1-full-java25-openj9-ubi-minimal
-26.0.0.1-full-java21-openj9-ubi-minimal
-26.0.0.1-full-java17-openj9-ubi-minimal
-26.0.0.1-full-java11-openj9-ubi-minimal
-26.0.0.1-full-java8-openj9-ubi-minimal
-26.0.0.1-full-java8-ibmjava-ubi-minimal
+26.0.0.2-full-java25-openj9-ubi-minimal
+26.0.0.2-full-java21-openj9-ubi-minimal
+26.0.0.2-full-java17-openj9-ubi-minimal
+26.0.0.2-full-java11-openj9-ubi-minimal
+26.0.0.2-full-java8-openj9-ubi-minimal
+26.0.0.2-full-java8-ibmjava-ubi-minimal
 
-26.0.0.1-full-java17-openj9-ubi
-26.0.0.1-full-java11-openj9-ubi
-26.0.0.1-full-java8-openj9-ubi
-26.0.0.1-full-java8-ibmjava-ubi
+26.0.0.2-full-java17-openj9-ubi
+26.0.0.2-full-java11-openj9-ubi
+26.0.0.2-full-java8-openj9-ubi
+26.0.0.2-full-java8-ibmjava-ubi
 ```
 
 ## 25.0.0.12
