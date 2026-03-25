@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<server>
-    <variable name="HTTP_PORT" defaultValue="9080" />
-    <variable name="HTTPS_PORT" defaultValue="9443" />
-    <httpEndpoint id="defaultHttpEndpoint" host="*" httpsPort="${HTTPS_PORT}" httpPort="${HTTP_PORT}" />
-</server>
