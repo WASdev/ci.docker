@@ -23,23 +23,11 @@
 
 set -Eeo pipefail
 
-readonly USAGE="Usage: ./test.sh --image=<local-image> --repository=<docker-registry-repo>"
+readonly USAGE="Usage: ./verify.sh <local-image>"
+
+IMAGE=$1
 
 main () {
-   parse_args $@
-
-
-   case "$(uname -p)" in
-       "ppc64le")
-           readonly arch="ppc64le"
-           ;;
-       "s390x")
-           readonly arch="s390x"
-           ;;
-       *)
-           readonly arch="amd64"
-           ;;
-   esac
 
    local tests=$(declare -F | cut -d" " -f3 | grep "^test")
    echo "****** Testing ${IMAGE}..."
@@ -150,28 +138,5 @@ handle_test_failure () {
     docker rm -f "${cid}" >/dev/null
     exit 1
 }
-parse_args() {
-    while [ $# -gt 0 ]; do
-        case "$1" in
-            --repository=*)
-                readonly REPO="${1#*=}"
-                ;;
-            --image=*)
-                ## currently unused variable but ideally dockerfiles take as arg
-                readonly IMAGE="${1#*=}"
-                ;;
-            *)
-                echo "Error: Invalid argument - $1"
-                echo "$USAGE"
-                exit 1
-        esac
-        shift
-    done
 
-    if [[ -z "${REPO}" || -z "${IMAGE}" ]]; then
-        echo "****** Error: missing required params"
-        echo "${USAGE}"
-        exit 1
-    fi
-}
 main $@
