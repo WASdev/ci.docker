@@ -1,0 +1,4 @@
+<server description="Default Server">
+    <ssl id="defaultSSLConfig"  trustDefaultCerts="${SEC_TLS_TRUSTDEFAULTCERTS}"/>
+    <variable name="SEC_TLS_TRUSTDEFAULTCERTS" defaultValue="true"/>
+</server>
