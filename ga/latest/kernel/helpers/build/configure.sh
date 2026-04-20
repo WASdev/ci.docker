@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) Copyright IBM Corporation 2020, 2025.
+# (C) Copyright IBM Corporation 2020, 2026.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ else
   FEATURES_INSTALLED=false
 fi
 
-. /opt/ibm/helpers/build/internal/logger.sh
+. /opt/ibm/helpers/build/internal/utils.sh
 
 set -Eeo pipefail
 
@@ -150,10 +150,6 @@ function main() {
     fi
   fi
 
-  # Apply interim fixes found in /opt/ibm/fixes
-  # Fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in /opt/ibm/fixes
-  # Note: This step should be done once needed features are enabled and installed using installUtility.
-
   # Do not create a SCC
   if [ -n "${IBM_JAVA_OPTIONS}" ]; then
     IBM_JAVA_OPTIONS="${IBM_JAVA_OPTIONS} -Xshareclasses:none"
@@ -163,7 +159,10 @@ function main() {
     OPENJ9_JAVA_OPTIONS="${OPENJ9_JAVA_OPTIONS} -Xshareclasses:none"
   fi
 
-  find /opt/ibm/fixes -type f -name "*.jar"  -print0 | sort -z | xargs -0 -n 1 -r -I {} java -jar {} --installLocation $WLP_INSTALL_DIR
+  # Apply interim fixes found in /opt/ibm/fixes
+  # Fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in /opt/ibm/fixes
+  # Note: This step should only be done ONCE needed features are enabled and installed.
+  installFixes
   #Make sure that group write permissions are set correctly after installing new features
   find /opt/ibm/wlp ! -perm -g=rw -print0 | xargs -r -0 chmod g+rw
 
@@ -193,6 +192,8 @@ function main() {
     fi
     eval $cmd
   fi
+
+  removeBuildArtifacts
 }
 
 ## parse provider list to generate files into configDropins
