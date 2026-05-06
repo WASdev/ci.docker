@@ -66,7 +66,8 @@ if [[ $(( $OLD_SHORT_VERSION % 3 )) -eq 0 ]]
 # directories can be committed and pushed.
 sed -i'.bak' -e "s/ga\/\*\/\*\/resources\/\*/#ga\/\*\/\*\/resources\/\*/g" .gitignore
 rm ./.gitignore.bak
-git restore .gitignore
 
-echo "**** Please be sure the new release's 'resources' subdirectories are commited and pushed because the vNext pipelines will fail without them. ****"
 echo "Done performing file updates.";
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "!!!!!! Please do NOT commit and push the changed .gitignore file, which is only a temporary LOCAL change. !!!!!!"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
