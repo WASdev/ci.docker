@@ -19,3 +19,10 @@ repos:
         # when "--baseline" with "--use-all-plugins", pre-commit scan with all available plugins
         # add "--fail-on-unaudited" to fail pre-commit for unaudited potential secrets
         args: [--baseline, .secrets.baseline, --use-all-plugins]
+  - repo: local
+    hooks:
+      - id: no-gitignore-commit
+        name: Prevent .gitignore from getting committed
+        entry: ".gitignore file commit detected"
+        language: fail
+        files: ^.gitignore$

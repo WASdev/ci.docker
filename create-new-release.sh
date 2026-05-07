@@ -68,3 +68,6 @@ sed -i'.bak' -e "s/ga\/\*\/\*\/resources\/\*/#ga\/\*\/\*\/resources\/\*/g" .giti
 rm ./.gitignore.bak
 
 echo "Done performing file updates.";
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "!!!!!! Please do NOT commit and push the changed .gitignore file, which is only a temporary LOCAL change. !!!!!!"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
