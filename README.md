@@ -118,6 +118,13 @@ The following container image build variables are now **deprecated** and will be
 Single Sign-On can be optionally configured by adding Liberty server variables in an xml file, by passing environment variables (less secure),
 or by passing Liberty server variables in through the Liberty operator. See [SECURITY.md](SECURITY.md).
 
+The following runtime environment variables control security-related behavior:
+
+* `GENERATE_LTPA_KEYS_PASSWORD` (environment variable, 26.0.0.5+)
+  * Description: Automatically generates a secure random password for LTPA keys and exports it as the `ltpa_keys_password` environment variable. This prevents the LTPA service from failing with error `CWWKS4118E` when no LTPA keys password is configured.
+  * Default: `"true"`.
+  * Note: If `ltpa_keys_password` is already set, automatic generation is skipped. Set to `"false"` to disable.
+
 ## OpenJ9 Shared Class Cache (SCC)
 
 OpenJ9's SCC allows the VM to store Java classes in an optimized form that can be loaded very quickly, JIT compiled code, and profiling data. Deploying an SCC file together with your application can significantly improve start-up time. The SCC can also be shared by multiple VMs, thereby reducing total memory consumption.
