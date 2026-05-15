@@ -114,6 +114,12 @@ keystorePathOverride="$SNIPPETS_TARGET_OVERRIDES/keystore.xml"
 
 importKeyCert
 
+
+if [ "${GENERATE_LTPA_KEYS_PASSWORD:-true}" = "true" ] && [ -z "$ltpa_keys_password" ]; then
+  export ltpa_keys_password=$(openssl rand -base64 32 2>/dev/null)
+  echo "Generated ltpa_keys_password for LTPA configuration"
+fi
+
 # Infinispan Session Caching
 if [[ -n "$INFINISPAN_SERVICE_NAME" ]]; then
  echo "INFINISPAN_SERVICE_NAME(original): ${INFINISPAN_SERVICE_NAME}"
