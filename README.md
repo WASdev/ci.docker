@@ -82,6 +82,10 @@ This section describes the optional build variables that can be enabled via the 
   *  XML Snippet Location:  [keystore.xml](ga/latest/kernel/helpers/build/configuration_snippets/keystore.xml).
 * `VERBOSE`
   *  Description: When set to `true` it outputs the commands and results to stdout from `configure.sh`. Otherwise, default setting is `false` and `configure.sh` is silenced.
+* `GENERATE_LTPA_KEYS_PASSWORD` (26.0.0.5+)
+  * Description: Automatically generates a secure random password for LTPA keys and exports it as the `ltpa_keys_password` environment variable. This prevents the LTPA service from failing with error `CWWKS4118E` when no LTPA keys password is configured.
+  * Default: `"true"`.
+  * Note: If `ltpa_keys_password` is already set, automatic generation is skipped. Set to `"false"` to disable.
 
 
 ### Deprecated Build Variables
