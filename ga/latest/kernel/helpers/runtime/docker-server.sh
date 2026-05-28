@@ -117,7 +117,9 @@ importKeyCert
 
 if [ "${GENERATE_LTPA_KEYS_PASSWORD:-true}" = "true" ] && [ -z "$ltpa_keys_password" ]; then
   export ltpa_keys_password=$(openssl rand -base64 32 2>/dev/null)
-  echo "Generated ltpa_keys_password for LTPA configuration"
+  if [ "$VERBOSE" == "true" ]; then
+    echo "Generated ltpa_keys_password for LTPA configuration"
+  fi
 fi
 
 # Infinispan Session Caching
