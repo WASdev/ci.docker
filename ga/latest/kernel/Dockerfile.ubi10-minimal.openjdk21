@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2023.
+# (C) Copyright IBM Corporation 2023, 2026.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-8-jre-ubi9-minimal AS getRuntime
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-21-jre-ubi10-minimal AS getRuntime
 
 USER root
 
@@ -40,7 +40,7 @@ RUN microdnf -y install shadow-utils unzip wget findutils openssl \
     && chmod -R g+rw /opt/ibm/wlp \
     && cp -a /opt/ibm/wlp/lafiles/. /licenses/
 
-FROM icr.io/appcafe/ibm-semeru-runtimes:open-8-jre-ubi9-minimal
+FROM icr.io/appcafe/ibm-semeru-runtimes:open-21-jre-ubi10-minimal
 
 USER root
 
@@ -50,7 +50,7 @@ ARG OPENJ9_SCC=true
 ARG LIBERTY_VERSION=26.0.0.6
 ARG LIBERTY_BUILD_LABEL=cl260620260531-0302
 
-LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Iain Lewis, Melissa Lee, Kirby Chin" \
+LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Thomas Watson, Wendy Raschke, Michal Broz" \
       org.opencontainers.image.vendor="IBM" \
       org.opencontainers.image.url="https://github.com/WASdev/ci.docker" \
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
