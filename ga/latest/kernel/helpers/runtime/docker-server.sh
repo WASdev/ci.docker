@@ -1,5 +1,5 @@
 #!/bin/bash
-# (C) Copyright IBM Corporation 2020.
+# (C) Copyright IBM Corporation 2020, 2026.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ function importKeyCert() {
   local KEY_FILE="tls.key"
   local CA_FILE="ca.crt"
   local PASSWORD=$(openssl rand -base64 32 2>/dev/null)
-  local TRUSTSTORE_PASSWORD=$(openssl rand -base64 32 2>/dev/null)
+  local LOCAL_TRUSTSTORE_PASSWORD=${TRUSTSTORE_PASSWORD:-$(openssl rand -base64 32 2>/dev/null)}
   local TMP_CERT=ca-bundle-temp.crt
   local -r CRT_DELIMITER="/-----BEGIN CERTIFICATE-----/"
   local KUBE_SA_FOLDER="/var/run/secrets/kubernetes.io/serviceaccount"
@@ -56,7 +56,7 @@ function importKeyCert() {
     if [ -f "${CERT_FOLDER}/${CA_FILE}" ]; then
         echo "Found mounted TLS CA certificate, adding to truststore"
         keytool -import -storetype pkcs12 -noprompt -keystore "${TRUSTSTORE_FILE}" -file "${CERT_FOLDER}/${CA_FILE}" \
-          -storepass "${TRUSTSTORE_PASSWORD}" -alias "service-ca" >&/dev/null    
+          -storepass "${LOCAL_TRUSTSTORE_PASSWORD}" -alias "service-ca" >&/dev/null    
     fi
   fi
 
@@ -69,7 +69,7 @@ function importKeyCert() {
     csplit -s -z -f crt- "${TMP_CERT}" "${CRT_DELIMITER}" '{*}'
     for CERT_FILE in crt-*; do
       keytool -import -storetype pkcs12 -noprompt -keystore "${TRUSTSTORE_FILE}" -file "${CERT_FILE}" \
-        -storepass "${TRUSTSTORE_PASSWORD}" -alias "service-sa-${CERT_FILE}" >&/dev/null
+        -storepass "${LOCAL_TRUSTSTORE_PASSWORD}" -alias "service-sa-${CERT_FILE}" >&/dev/null
     done
     popd >&/dev/null
     rm -rf /tmp/certs
@@ -80,7 +80,11 @@ function importKeyCert() {
     sed "s|REPLACE|$PASSWORD|g" $SNIPPETS_SOURCE/keystore.xml > $keystorePathDefault
   fi
   if [ -e $TRUSTSTORE_FILE ]; then
-    sed "s|PWD_TRUST|$TRUSTSTORE_PASSWORD|g" $SNIPPETS_SOURCE/truststore.xml > $SNIPPETS_TARGET_OVERRIDES/truststore.xml
+    if [ -z "$TRUSTSTORE_PASSWORD" ]; then
+      sed "s|PWD_TRUST|$LOCAL_TRUSTSTORE_PASSWORD|g" $SNIPPETS_SOURCE/truststore.xml > $SNIPPETS_TARGET_OVERRIDES/truststore.xml
+    else
+      sed 's|PWD_TRUST|${TRUSTSTORE_PASSWORD}|g' $SNIPPETS_SOURCE/truststore.xml > $SNIPPETS_TARGET_OVERRIDES/truststore.xml
+    fi
   elif [ ! -z $SEC_TLS_TRUSTDEFAULTCERTS ]; then 
     cp $SNIPPETS_SOURCE/trustDefault.xml $SNIPPETS_TARGET_OVERRIDES/trustDefault.xml  
   fi
