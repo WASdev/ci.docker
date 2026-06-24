@@ -20,7 +20,7 @@
 # $> sed -i -e 's/ubi8/ubi10/' -e 's/microdnf install/microdnf -y install/' -e 's/microdnf update/microdnf update -y/' Dockerfile.ubi10-minimal.ibmjava8
 # $> rm ./java/Dockerfile.ubi10.minimal.bak
 # Then build and tag as 'ibmjava:10-ubi'
-# $> docker build -t ibmjava:9-ubi -f ./java/Dockerfile.ubi10.minimal java
+# $> docker build -t ibmjava:10-ubi -f ./java/Dockerfile.ubi10.minimal java
 
 FROM ibmjava:10-ubi AS getRuntime
 
@@ -68,15 +68,15 @@ LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Iain Lewis, Melissa
       org.opencontainers.image.documentation="https://www.ibm.com/support/knowledgecenter/SSAW57_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/cwlp_about.html" \
       org.opencontainers.image.version="$LIBERTY_VERSION" \
       org.opencontainers.image.revision="$LIBERTY_BUILD_LABEL" \
-      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM's Java and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
+      org.opencontainers.image.description="This image contains the WebSphere Liberty runtime with IBM's Java and Red Hat's UBI 10 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template" \
       org.opencontainers.image.title="IBM WebSphere Liberty" \
       liberty.version="$LIBERTY_VERSION" \
       com.ibm.websphere.liberty.version="$LIBERTY_VERSION" \
       vendor="IBM" \
       name="IBM WebSphere Liberty" \
       version="$LIBERTY_VERSION" \
-      summary="Image for WebSphere Liberty with IBM's Java and Red Hat's UBI 9 minimal" \
-      description="This image contains the WebSphere Liberty runtime with IBM's Java and Red Hat's UBI 9 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
+      summary="Image for WebSphere Liberty with IBM's Java and Red Hat's UBI 10 minimal" \
+      description="This image contains the WebSphere Liberty runtime with IBM's Java and Red Hat's UBI 10 minimal as the base OS.  For more information on this image please see https://ibm.biz/wl-app-image-template"
 
 ENV PATH=$PATH:/opt/ibm/wlp/bin:/opt/ibm/helpers/build:/opt/ibm/helpers/runtime
 
