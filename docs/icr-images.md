@@ -10,9 +10,9 @@ Available image tags are listed below. The tags use the following naming convent
 <optional fix pack version-><liberty image type>-<java version>-<java type>-<base image type>
 ```
 
-Liberty images based on Universal Base Image (UBI) 9 Minimal end with `-ubi-minimal` and include the JRE of IBM Semeru Runtime 25, 21, 17, 11 or 8 or IBM Java 8. We recommend using this combination as it offers a compact and effective Java runtime. Liberty images with Java 21 and higher are only available on UBI Minimal.
+Liberty images based on Universal Base Image (UBI) Minimal end with `-ubi-minimal` and include the JRE of IBM Semeru Runtime 25, 21, 17, 11 or 8 or IBM Java 8. We recommend using this combination as it offers a compact and effective Java runtime. Liberty images with Java 21 and higher are only available on UBI Minimal. The version of UBI Minimal for 26.0.0.7+ is UBI 10 Minimal. The version of UBI Minimal for 26.0.0.6 and prior releases is UBI 9 Minimal.
 
-Liberty images based on UBI 8 Standard end with `-ubi` and include Java 17, 11 or 8. The `openj9` type includes IBM Semeru Runtime for the respective Java version with the JDK. Java 8 images with the `ibmjava` type and based on UBI 8 standard include IBM Java 8 JRE.
+Liberty images based on UBI 8 Standard end with `-ubi` and include Java 17, 11 or 8. The `openj9` type includes IBM Semeru Runtime for the respective Java version with the JDK. Java 8 images with the `ibmjava` type and based on UBI 8 standard include IBM Java 8 JRE. The final Liberty release that will publish container images built on UBI Standard will be 26.0.0.12. Avoid trouble by using a UBI Minimal based image instead of UBI Standard. See announcement at https://www.ibm.com/support/pages/node/7268632 for more information.
 
 The `latest` tag simplifies pulling the full latest Open Liberty release with the latest Java JRE. It is an alias for the `full-java25-openj9-ubi-minimal` tag. If you do not specify a tag value, `latest` is used by default.
 
