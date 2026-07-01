@@ -48,7 +48,7 @@ ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
 ARG LIBERTY_VERSION=26.0.0.7
-ARG LIBERTY_BUILD_LABEL=cl260620260531-0302
+ARG LIBERTY_BUILD_LABEL=cl260820260630-1352
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Iain Lewis, Melissa Lee, Kirby Chin" \
       org.opencontainers.image.vendor="IBM" \
