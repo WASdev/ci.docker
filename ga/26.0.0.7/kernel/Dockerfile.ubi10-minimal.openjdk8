@@ -22,7 +22,7 @@ ARG VERBOSE=false
 ARG LIBERTY_VERSION=26.0.0.7
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
-ARG LIBERTY_SHA=d298ba7de10d711dd95f896e9256ad23f896dfc6
+ARG LIBERTY_SHA=840bc8bd1677b3765dfb704521174c66f637415c
 
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
@@ -48,7 +48,7 @@ ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
 ARG LIBERTY_VERSION=26.0.0.7
-ARG LIBERTY_BUILD_LABEL=cl260820260630-1352
+ARG LIBERTY_BUILD_LABEL=cl260720260702-0043
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Iain Lewis, Melissa Lee, Kirby Chin" \
       org.opencontainers.image.vendor="IBM" \
