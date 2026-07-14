@@ -18,7 +18,7 @@ The `latest` tag simplifies pulling the full latest Open Liberty release with th
 
 Append a tag to `icr.io/appcafe/websphere-liberty` to pull a specific image. For example, 
 ```
-icr.io/appcafe/websphere-liberty:26.0.0.3-kernel-java25-openj9-ubi-minimal
+icr.io/appcafe/websphere-liberty:26.0.0.6-kernel-java25-openj9-ubi-minimal
 ```
 
 Available images can be listed using [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started). Log in with your IBMid prior to running the following commands. Note that authentication is only required to list the images. **Images can be pulled from ICR without authentication** : 
@@ -30,7 +30,7 @@ ibmcloud cr images --restrict appcafe/websphere-liberty
 
 ## Latest version
 
-The following tags include the most recent WebSphere Liberty version: `26.0.0.6` 
+The following tags include the most recent WebSphere Liberty version: `26.0.0.7`
 
 ```
 kernel-java25-openj9-ubi-minimal
@@ -58,6 +58,34 @@ full-java8-openj9-ubi
 full-java8-ibmjava-ubi
 
 latest
+```
+
+## 26.0.0.7
+
+```
+26.0.0.7-kernel-java25-openj9-ubi-minimal
+26.0.0.7-kernel-java21-openj9-ubi-minimal
+26.0.0.7-kernel-java17-openj9-ubi-minimal
+26.0.0.7-kernel-java11-openj9-ubi-minimal
+26.0.0.7-kernel-java8-openj9-ubi-minimal
+26.0.0.7-kernel-java8-ibmjava-ubi-minimal
+
+26.0.0.7-kernel-java17-openj9-ubi
+26.0.0.7-kernel-java11-openj9-ubi
+26.0.0.7-kernel-java8-openj9-ubi
+26.0.0.7-kernel-java8-ibmjava-ubi
+
+26.0.0.7-full-java25-openj9-ubi-minimal
+26.0.0.7-full-java21-openj9-ubi-minimal
+26.0.0.7-full-java17-openj9-ubi-minimal
+26.0.0.7-full-java11-openj9-ubi-minimal
+26.0.0.7-full-java8-openj9-ubi-minimal
+26.0.0.7-full-java8-ibmjava-ubi-minimal
+
+26.0.0.7-full-java17-openj9-ubi
+26.0.0.7-full-java11-openj9-ubi
+26.0.0.7-full-java8-openj9-ubi
+26.0.0.7-full-java8-ibmjava-ubi
 ```
 
 ## 26.0.0.6
