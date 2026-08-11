@@ -30,7 +30,7 @@ ibmcloud cr images --restrict appcafe/websphere-liberty
 
 ## Latest version
 
-The following tags include the most recent WebSphere Liberty version: `26.0.0.7`
+The following tags include the most recent WebSphere Liberty version: `26.0.0.8`
 
 ```
 kernel-java25-openj9-ubi-minimal
@@ -60,32 +60,32 @@ full-java8-ibmjava-ubi
 latest
 ```
 
-## 26.0.0.7
+## 26.0.0.8
 
 ```
-26.0.0.7-kernel-java25-openj9-ubi-minimal
-26.0.0.7-kernel-java21-openj9-ubi-minimal
-26.0.0.7-kernel-java17-openj9-ubi-minimal
-26.0.0.7-kernel-java11-openj9-ubi-minimal
-26.0.0.7-kernel-java8-openj9-ubi-minimal
-26.0.0.7-kernel-java8-ibmjava-ubi-minimal
+26.0.0.8-kernel-java25-openj9-ubi-minimal
+26.0.0.8-kernel-java21-openj9-ubi-minimal
+26.0.0.8-kernel-java17-openj9-ubi-minimal
+26.0.0.8-kernel-java11-openj9-ubi-minimal
+26.0.0.8-kernel-java8-openj9-ubi-minimal
+26.0.0.8-kernel-java8-ibmjava-ubi-minimal
 
-26.0.0.7-kernel-java17-openj9-ubi
-26.0.0.7-kernel-java11-openj9-ubi
-26.0.0.7-kernel-java8-openj9-ubi
-26.0.0.7-kernel-java8-ibmjava-ubi
+26.0.0.8-kernel-java17-openj9-ubi
+26.0.0.8-kernel-java11-openj9-ubi
+26.0.0.8-kernel-java8-openj9-ubi
+26.0.0.8-kernel-java8-ibmjava-ubi
 
-26.0.0.7-full-java25-openj9-ubi-minimal
-26.0.0.7-full-java21-openj9-ubi-minimal
-26.0.0.7-full-java17-openj9-ubi-minimal
-26.0.0.7-full-java11-openj9-ubi-minimal
-26.0.0.7-full-java8-openj9-ubi-minimal
-26.0.0.7-full-java8-ibmjava-ubi-minimal
+26.0.0.8-full-java25-openj9-ubi-minimal
+26.0.0.8-full-java21-openj9-ubi-minimal
+26.0.0.8-full-java17-openj9-ubi-minimal
+26.0.0.8-full-java11-openj9-ubi-minimal
+26.0.0.8-full-java8-openj9-ubi-minimal
+26.0.0.8-full-java8-ibmjava-ubi-minimal
 
-26.0.0.7-full-java17-openj9-ubi
-26.0.0.7-full-java11-openj9-ubi
-26.0.0.7-full-java8-openj9-ubi
-26.0.0.7-full-java8-ibmjava-ubi
+26.0.0.8-full-java17-openj9-ubi
+26.0.0.8-full-java11-openj9-ubi
+26.0.0.8-full-java8-openj9-ubi
+26.0.0.8-full-java8-ibmjava-ubi
 ```
 
 ## 26.0.0.6
