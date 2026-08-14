@@ -130,6 +130,10 @@ COPY --from=builder /usr/bin/wget /usr/bin/wget
 COPY --from=builder /usr/lib64/libpsl.so* /usr/lib64/
 COPY --from=builder /usr/lib64/libmpfr.so* /usr/lib64/
 COPY --from=builder /usr/lib64/libreadline.so* /usr/lib64/
+COPY --from=builder /usr/lib64/libgnutls.so* /usr/lib64/
+COPY --from=builder /usr/lib64/libidn2.so* /usr/lib64/
+COPY --from=builder /usr/lib64/libunistring.so* /usr/lib64/
+COPY --from=builder /usr/lib64/libuuid.so* /usr/lib64/
 
 # Copy the runtime and licenses
 COPY --from=builder --chown=1001:0 /opt/ibm/wlp /opt/ibm/wlp
