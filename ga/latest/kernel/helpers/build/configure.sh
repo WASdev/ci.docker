@@ -13,6 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Use curl if available, otherwise use wget
+if command -v curl > /dev/null 2>&1; then
+  http_download() { curl -sS --insecure -o "$1" "$2"; }
+else
+  http_download() { wget -q --no-check-certificate -O "$1" "$2"; }
+fi
+
 # Determine if featureUtility ran in an earlier build step
 if /opt/ibm/helpers/build/internal/features-installed.sh; then
   FEATURES_INSTALLED=true
@@ -142,7 +149,7 @@ function main() {
   if [ "$SKIP_FEATURE_INSTALL" != "true" ] && [ "$FEATURES_INSTALLED" == "false" ]; then
     # Install needed features
     if [ "$FEATURE_REPO_URL" ]; then
-      wget -q --no-check-certificate -O /tmp/repo.zip $FEATURE_REPO_URL
+      http_download /tmp/repo.zip $FEATURE_REPO_URL
       installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
       rm -rf /tmp/repo.zip
     else
