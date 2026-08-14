@@ -142,7 +142,7 @@ function main() {
   if [ "$SKIP_FEATURE_INSTALL" != "true" ] && [ "$FEATURES_INSTALLED" == "false" ]; then
     # Install needed features
     if [ "$FEATURE_REPO_URL" ]; then
-      curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
+      wget -q --no-check-certificate -O /tmp/repo.zip $FEATURE_REPO_URL
       installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || rc=$?; if [ $rc -ne 22 ]; then exit $rc; fi
       rm -rf /tmp/repo.zip
     else

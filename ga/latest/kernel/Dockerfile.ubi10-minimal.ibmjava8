@@ -116,7 +116,7 @@ RUN set -eux; \
     chmod +x /usr/bin/dumb-init;
 
 # Add default user 1001 and create wlp with right user/permissions before copying
-RUN microdnf -y install shadow-utils findutils openssl \
+RUN microdnf -y install shadow-utils findutils wget openssl \
 #   This is removed compared to the UBI8 dockerfile as the base
 #   java dockerfile already adds this user
 #   && adduser -u 1001 -r -g root -s /usr/sbin/nologin default \
