@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Use curl if available, otherwise use wget
+# Use curl/wget to warm endpoints
 if command -v curl > /dev/null 2>&1; then
   http_download() { curl -sS --insecure -o "$1" "$2"; }
 else
