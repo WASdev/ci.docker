@@ -52,7 +52,12 @@ fi
 # option to revert to the old criteria, which results in AOT code that is more compatible, on average, with typical heap sizes/positions.
 # The option has no effect on later JDKs.
 # Using -XX:+IProfileDuringStartupPhase to enforce IProfiler collection during the startup phase to better populate the SCC.
-export OPENJ9_JAVA_OPTIONS="-XX:+OriginalJDK8HeapSizeCompatibilityMode -XX:+IProfileDuringStartupPhase $SCC"
+# Disable GCContainerHeuristics for ibmjava JVMs as workaround for ibmjava 8.0.8.70 build failures
+GC_OPT=""
+if [ -d "/opt/ibm/java" ]; then
+  GC_OPT="-XX:-GCContainerHeuristics "
+fi
+export OPENJ9_JAVA_OPTIONS="${GC_OPT}-XX:+OriginalJDK8HeapSizeCompatibilityMode -XX:+IProfileDuringStartupPhase $SCC"
 export IBM_JAVA_OPTIONS="$OPENJ9_JAVA_OPTIONS"
 CREATE_LAYER="$OPENJ9_JAVA_OPTIONS,createLayer,groupAccess"
 DESTROY_LAYER="$OPENJ9_JAVA_OPTIONS,destroy"
