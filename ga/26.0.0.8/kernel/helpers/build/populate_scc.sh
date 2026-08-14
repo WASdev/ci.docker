@@ -14,6 +14,13 @@
 # limitations under the License.
 . /opt/ibm/helpers/build/internal/logger.sh
 
+# Use curl if available, otherwise use wget
+if command -v curl > /dev/null 2>&1; then
+  http_get() { curl --silent --output /dev/null --show-error --fail --max-time 5 "$1"; }
+else
+  http_get() { wget -q -O /dev/null -T 5 "$1"; }
+fi
+
 set -Eeo pipefail
 
 # 32-bit JVMs don't supported multi-layered SCCs.
@@ -133,11 +140,11 @@ then
 
   if [ ${WARM_ENDPOINT} == true ]
   then
-    wget -q -O /dev/null -T 5 ${WARM_ENDPOINT_URL} 2>&1 || echo "${WARM_ENDPOINT_URL} call failed, continuing"
+    http_get ${WARM_ENDPOINT_URL} 2>&1 || echo "${WARM_ENDPOINT_URL} call failed, continuing"
   fi
   if [ ${WARM_OPENAPI_ENDPOINT} == true ]
   then
-    wget -q -O /dev/null -T 5 ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
+    http_get ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
   fi
 
   /opt/ibm/wlp/bin/server stop
@@ -168,11 +175,11 @@ do
 
   if [ ${WARM_ENDPOINT} == true ]
   then
-    wget -q -O /dev/null -T 5 ${WARM_ENDPOINT_URL} 2>&1 || echo "${WARM_ENDPOINT_URL} call failed, continuing"
+    http_get ${WARM_ENDPOINT_URL} 2>&1 || echo "${WARM_ENDPOINT_URL} call failed, continuing"
   fi
   if [ ${WARM_OPENAPI_ENDPOINT} == true ]
   then
-    wget -q -O /dev/null -T 5 ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
+    http_get ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
   fi
 
   /opt/ibm/wlp/bin/server stop
