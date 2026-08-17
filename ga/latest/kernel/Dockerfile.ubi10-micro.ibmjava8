@@ -1,4 +1,4 @@
-# (C) Copyright IBM Corporation 2025, 2026.
+# (C) Copyright IBM Corporation 2026.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ ARG LIBERTY_SHA=b1e668e68b05987880ce8ea20ba8ced87ee69cc3
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
 
-RUN microdnf -y install shadow-utils unzip wget openssl \
+RUN microdnf -y install shadow-utils unzip wget findutils openssl \
     && mkdir -p /licenses \
 #   This is removed compared to the UBI8 dockerfile as the base
 #   java dockerfile already adds this user
