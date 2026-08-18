@@ -81,7 +81,7 @@ RUN set -eux; \
     echo "${DUMB_INIT_SHA256} */usr/bin/dumb-init" | sha256sum -c -; \
     chmod +x /usr/bin/dumb-init;
 
-FROM ibmjava:8-ubi10-micro
+FROM icr.io/appcafe/ibmjava:8-jre-ubi10-micro
 
 USER root
 
