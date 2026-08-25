@@ -27,7 +27,7 @@
     <!-- To allow access to this server from a remote client host="*" has been added to the following element -->
     <httpEndpoint id="defaultHttpEndpoint"
                   host="*"
-		  httpPort="-1"
+		  httpPort="9080"
                   httpsPort="9443" />
                   
     <!-- Automatically expand WAR files and EAR files -->

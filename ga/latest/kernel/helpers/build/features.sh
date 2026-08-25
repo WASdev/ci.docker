@@ -43,4 +43,9 @@ fi
 featureUtility installServerFeatures --acceptLicense defaultServer --noCache
 find /opt/ibm/wlp/lib /opt/ibm/wlp/bin ! -perm -g=rw -print0 | xargs -0 -r chmod g+rw
 
+# Validate the Liberty installation integrity after feature installation
+if [ "$SKIP_FEATURE_VALIDATE" != "true" ]; then
+  /opt/ibm/wlp/bin/productInfo validate
+fi
+
 echo "features.sh script has been run" > /logs/features.log
