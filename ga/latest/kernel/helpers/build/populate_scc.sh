@@ -14,6 +14,13 @@
 # limitations under the License.
 . /opt/ibm/helpers/build/internal/logger.sh
 
+# Use curl/wget to warm endpoints
+if command -v curl > /dev/null 2>&1; then
+  http_get() { curl --silent --output /dev/null --show-error --fail --max-time 5 "$1"; }
+else
+  http_get() { wget -q -O /dev/null -T 5 "$1"; }
+fi
+
 set -Eeo pipefail
 
 # 32-bit JVMs don't supported multi-layered SCCs.
@@ -97,10 +104,10 @@ do
   -s <size>       Size of the SCC in megabytes (m suffix required). (Default: $SCC_SIZE)
   -t              Trim the SCC to eliminate most of the free space, if any.
   -d              Don't trim the SCC.
-  -w              Use curl to warm an endpoint during SCC creation. (Default: $WARM_ENDPOINT)
+  -w              Use curl/wget to warm an endpoint during SCC creation. (Default: $WARM_ENDPOINT)
   -c              Do not warm an endpoint during SCC creation.
   -u              The URL endpoint to warm during SCC creation. (Default: $WARM_ENDPOINT_URL)
-  -m              Use curl to warm the openapi endpoint during SCC creation. (Default: $WARM_OPENAPI_ENDPOINT)
+  -m              Use curl/wget to warm the openapi endpoint during SCC creation. (Default: $WARM_OPENAPI_ENDPOINT)
   -l              Do not warm the openapi endpoint during SCC creation.
   -o              The Open API URL endpoint to warm during SCC creation. (Default: $WARM_ENDPOINT_OPENAPI_URL)
 
@@ -133,11 +140,11 @@ then
 
   if [ ${WARM_ENDPOINT} == true ]
   then
-    curl --silent --output /dev/null --show-error --fail --max-time 5 ${WARM_ENDPOINT_URL} 2>&1 || echo "${WARM_ENDPOINT_URL} call failed, continuing"
+    http_get ${WARM_ENDPOINT_URL} 2>&1 || echo "${WARM_ENDPOINT_URL} call failed, continuing"
   fi
   if [ ${WARM_OPENAPI_ENDPOINT} == true ]
   then
-    curl --silent --output /dev/null --show-error --fail --max-time 5 ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
+    http_get ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
   fi
 
   /opt/ibm/wlp/bin/server stop
@@ -168,11 +175,11 @@ do
 
   if [ ${WARM_ENDPOINT} == true ]
   then
-    curl --silent --output /dev/null --show-error --fail --max-time 5 ${WARM_ENDPOINT_URL} 2>&1 || echo "${WARM_ENDPOINT_URL} call failed, continuing"
+    http_get ${WARM_ENDPOINT_URL} 2>&1 || echo "${WARM_ENDPOINT_URL} call failed, continuing"
   fi
   if [ ${WARM_OPENAPI_ENDPOINT} == true ]
   then
-    curl --silent --output /dev/null --show-error --fail --max-time 5 ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
+    http_get ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
   fi
 
   /opt/ibm/wlp/bin/server stop
