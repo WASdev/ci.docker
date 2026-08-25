@@ -43,6 +43,17 @@ function main() {
   mkdir -p ${SNIPPETS_TARGET}
   mkdir -p ${SNIPPETS_TARGET_DEFAULTS}
 
+  # Disable automatic configuration file monitoring (security hardening).
+  if [ "$SKIP_UPDATE_TRIGGER_DISABLED" != "true" ]; then
+    cp $SNIPPETS_SOURCE/update-trigger-disabled.xml $SNIPPETS_TARGET_DEFAULTS/update-trigger-disabled.xml
+    chmod g+rw $SNIPPETS_TARGET_DEFAULTS/update-trigger-disabled.xml
+  fi
+
+  # HTTP port is disabled by default. Set ENABLE_HTTP_PORT=true to re-enable port 9080.
+  if [ "$ENABLE_HTTP_PORT" != "true" ]; then
+    cp $SNIPPETS_SOURCE/http-endpoint-disabled.xml $SNIPPETS_TARGET/http-endpoint.xml
+  fi
+
   # Check for each Liberty value-add functionality
   if [ "$FEATURES_INSTALLED" == "false" ]; then
     # HTTP Endpoint

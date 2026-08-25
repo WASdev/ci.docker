@@ -100,7 +100,8 @@ RUN apt-get update \
 # Set Path Shortcuts
 ENV LOG_DIR=/liberty/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
-    OPENJ9_SCC=$OPENJ9_SCC
+    OPENJ9_SCC=$OPENJ9_SCC \
+    ENABLE_HTTP_PORT=true
 
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
