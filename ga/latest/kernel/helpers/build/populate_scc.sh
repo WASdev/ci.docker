@@ -169,6 +169,7 @@ if [ $TRIM_SCC == yes ]
 then
   echo "Calculating SCC layer upper bound, starting with initial size $SCC_SIZE."
   # Populate the newly created class cache layer.
+  rm -f "$MESSAGES_LOG_FILE"
   /opt/ibm/wlp/bin/server start
   wait_for_port_open
 
@@ -205,6 +206,7 @@ fi
 # Server start/stop to populate the /output/workarea and make subsequent server starts faster.
 for ((i=0; i<$ITERATIONS; i++))
 do
+  rm -f "$MESSAGES_LOG_FILE"
   /opt/ibm/wlp/bin/server start
   wait_for_port_open
 
