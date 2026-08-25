@@ -160,7 +160,7 @@ This feature can be controlled via the following variables:
   * Description: (24.0.0.4+) The URL to access during SCC population if WARM_OPENAPI_ENDPOINT is true.
   * Default: `"https://localhost:9443/openapi"`. Like `WARM_ENDPOINT_URL`, this URL is derived from `HTTPS_PORT` (or `HTTP_PORT` when `ENABLE_HTTP_PORT` is `"true"`), so setting one of those variables will also update this default automatically.
 * `PORT_OPEN_TIMEOUT_SECONDS` (environment variable)
-  * Description: The timeout in seconds to wait for the Liberty server port to open (detected via message `CWWKO0219I` in the messages log) during SCC population before failing.
+  * Description: The timeout in seconds to wait for the Liberty server port to open (detected via message `CWWKO0219I` in the messages log) during SCC population before exiting populate_scc.
   * Default: `"30"`
 * `MESSAGES_LOG_FILE` (environment variable)
   * Description: The path to the Liberty server messages log file to check for port open during SCC population.

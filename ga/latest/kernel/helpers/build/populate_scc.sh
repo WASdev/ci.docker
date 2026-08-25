@@ -157,8 +157,8 @@ wait_for_port_open() {
     count=$((count + 1))
   done
 
-  echo "Exiting populate_scc because port didn't open after $timeout seconds (CWWKO0219I not found in $log_file)." >&2
-  exit 1
+  echo "Exiting populate_scc because port didn't open after $timeout seconds (CWWKO0219I not found in $log_file)."
+  exit 0
 }
 
 # Explicity create a class cache layer for this image layer here rather than allowing
