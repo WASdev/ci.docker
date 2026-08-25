@@ -51,7 +51,7 @@ function main() {
 
   # HTTP port is disabled by default. Set ENABLE_HTTP_PORT=true to re-enable port 9080.
   if [ "$ENABLE_HTTP_PORT" != "true" ]; then
-    cp $SNIPPETS_SOURCE/http-endpoint-disabled.xml $SNIPPETS_TARGET/http-endpoint.xml
+    cp $SNIPPETS_SOURCE/http-port-disabled.xml $SNIPPETS_TARGET/http-endpoint.xml
   fi
 
   # Check for each Liberty value-add functionality
