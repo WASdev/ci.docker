@@ -13,12 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Used in multi-stage Dockerfiles: --install stages package files + .so deps
-# into /staging (builder); --copy installs missing files into the micro image.
+# Used in multi-stage Dockerfiles: --install collects package files + .so deps
+# into /tmp/pkg-files (builder); --copy copies missing files into the micro image.
+
+if [ "${VERBOSE}" != "true" ]; then
+  exec >/dev/null 2>&1
+fi
 
 set -Eeo pipefail
 
-STAGING_DEFAULT="/staging"
+PKG_DIR="${PKG_DIR:-/tmp/pkg-files}"
 
 usage() {
   echo "Usage: $0 --install <pkg> [<pkg> ...]  |  --copy [<from-dir>]" >&2
@@ -29,8 +33,7 @@ usage() {
 
 MODE="$1"; shift
 
-## Normalise compat symlink prefixes so all paths land under /usr.
-## /lib64/... -> /usr/lib64/...  etc.
+# Normalise compat symlink prefixes so all paths land under /usr.
 normalise_path() {
   local p="$1"
   p="${p/#\/lib64\//\/usr\/lib64\/}"
@@ -40,10 +43,9 @@ normalise_path() {
   printf '%s' "$p"
 }
 
-## Run ldd and extract every resolved absolute library path.
+# Extract every resolved absolute library path from ldd output.
 collect_ldd_deps() {
-  local binary="$1"
-  ldd "$binary" 2>/dev/null \
+  ldd "$1" 2>/dev/null \
     | awk '
       /=>/ && $3 ~ /^\// { print $3; next }
       $1 ~ /^\/[^ ]/ && !/=>/ { print $1 }
@@ -51,35 +53,34 @@ collect_ldd_deps() {
     | grep -v '^$' || true
 }
 
-## Copy a path and every symlink hop in its chain into the staging dir.
-## Handles .so, .so.1, .so.1.2.3 — any versioned name — transparently.
-copy_to_staging() {
-  local staging="$1" current="$2"
+# Copy a file and every symlink hop in its chain into PKG_DIR.
+copy_to_pkg_dir() {
+  local pkg_dir="$1" current="$2"
 
-  [[ "$current" = /* ]] || { echo "WARNING: skipping non-absolute path: $current"; return; }
+  [[ "$current" = /* ]] || { echo "WARNING: skipping non-absolute path: $current" >&2; return; }
 
   local visited=()
   while true; do
     local v
     for v in "${visited[@]+"${visited[@]}"}"; do
       if [ "$v" = "$current" ]; then
-        echo "WARNING: symlink loop at $current, stopping"
+        echo "WARNING: symlink loop at $current, stopping" >&2
         return
       fi
     done
     visited+=("$current")
 
     if [ ! -e "$current" ] && [ ! -L "$current" ]; then
-      echo "WARNING: path not found, skipping: $current"
+      echo "WARNING: path not found, skipping: $current" >&2
       return
     fi
 
-    mkdir -p "${staging}$(dirname "$current")"
+    mkdir -p "${pkg_dir}$(dirname "$current")"
 
     if [ -L "$current" ]; then
       local link_target dest_link
       link_target="$(readlink "$current")"
-      dest_link="${staging}${current}"
+      dest_link="${pkg_dir}${current}"
       if [ ! -e "$dest_link" ] && [ ! -L "$dest_link" ]; then
         cp -P "$current" "$dest_link"
         echo "  symlink  $current -> $link_target"
@@ -87,16 +88,17 @@ copy_to_staging() {
       if [[ "$link_target" = /* ]]; then
         current="$link_target"
       else
-        current="$(dirname "$current")/$link_target"
+        current="$(realpath -m "$(dirname "$current")/$link_target")"
       fi
     elif [ -f "$current" ]; then
-      local dest_file="${staging}${current}"
+      local dest_file="${pkg_dir}${current}"
       if [ ! -e "$dest_file" ]; then
         cp -a "$current" "$dest_file"
         echo "  file     $current"
       fi
       break
     else
+      echo "WARNING: unexpected file type, skipping: $current" >&2
       break
     fi
   done
@@ -104,54 +106,54 @@ copy_to_staging() {
 
 cmd_install() {
   [ "$#" -eq 0 ] && { echo "ERROR: --install requires at least one package name" >&2; exit 1; }
+  echo "-- install-packages --install $*"
 
-  local staging="${STAGING_DEFAULT}"
-  local pre_install post_install diff_pkgs all_pkgs pkg f
+  local pkg_dir="${PKG_DIR}"
+  local pre_install post_install diff_pkgs all_pkgs pkg rpm_file
 
-  # Remove each package individually so a missing package doesn't skip the rest.
-  # Ensures all requested packages appear in the post-install diff even if
-  # already present in the builder image.
-  echo "Removing packages (if present) before snapshotting: $*"
+  echo "Updating image"
+  microdnf -y update
+  microdnf clean all
+
+  # Remove individually so a missing package doesn't skip the rest; ensures
+  # packages already in the builder image appear in the pre/post diff.
   for pkg in "$@"; do
-    microdnf -y remove "$pkg" 2>/dev/null || true
+    microdnf -y remove "$pkg" || true
   done
 
-  echo "Snapshotting pre-install package list"
   pre_install="$(rpm -qa --queryformat '%{NAME}\n' | sort)"
 
-  echo "Installing packages: $*"
+  echo "Installing: $*"
   microdnf -y install "$@"
   microdnf clean all
 
-  echo "Resolving newly installed packages"
   post_install="$(rpm -qa --queryformat '%{NAME}\n' | sort)"
-  diff_pkgs="$(comm -13 <(echo "$pre_install") <(echo "$post_install") || true)"
+  diff_pkgs="$(comm -13 <(echo "$pre_install") <(echo "$post_install") 2>&1)" || {
+    echo "WARNING: comm failed resolving package diff, auto-deps may be incomplete: ${diff_pkgs}" >&2
+    diff_pkgs=""
+  }
 
-  # Union: explicitly requested + any auto-pulled dependencies
-  all_pkgs="$(printf '%s\n' "$@" $diff_pkgs | sort -u)"
-  echo "Packages to stage: $(echo "$all_pkgs" | tr '\n' ' ')"
+  all_pkgs="$(printf '%s\n' "$@" "${diff_pkgs}" | sort -u)"
+  echo "Packages to collect: $(echo "$all_pkgs" | tr '\n' ' ')"
 
-  # Collect every bin/lib file owned by those packages via rpm -ql.
   declare -A SEEN
 
   for pkg in $all_pkgs; do
     if ! rpm -q "$pkg" &>/dev/null; then
-      echo "WARNING: package not found in RPM db, skipping: $pkg"
+      echo "WARNING: package not found in RPM db, skipping: $pkg" >&2
       continue
     fi
-    while IFS= read -r f; do
-      case "$f" in
+    while IFS= read -r rpm_file; do
+      case "$rpm_file" in
         /usr/bin/*|/usr/sbin/*|/usr/libexec/*)
-          [ -e "$f" ] && SEEN["$f"]=1 ;;
+          [[ "$rpm_file" == "/usr/sbin/init" ]] && continue
+          [ -e "$rpm_file" ] && SEEN["$rpm_file"]=1 ;;
         /usr/lib64/*.so*|/usr/lib/*.so*)
-          [ -e "$f" ] && SEEN["$f"]=1 ;;
+          [ -e "$rpm_file" ] && SEEN["$rpm_file"]=1 ;;
       esac
     done < <(rpm -ql "$pkg" 2>/dev/null || true) || true
   done
 
-  echo "RPM file list: ${#SEEN[@]} paths"
-
-  # Snapshot keys each iteration to avoid iterating a live-modified map
   echo "Resolving transitive .so dependencies via ldd"
   local changed=1 path lib keys
   while [ "$changed" -eq 1 ]; do
@@ -159,6 +161,7 @@ cmd_install() {
     keys=("${!SEEN[@]}")
     for path in "${keys[@]}"; do
       [ -f "$path" ] || continue
+      [[ "$(head -c 4 "$path" 2>/dev/null)" == $'\x7fELF' ]] || continue
       while IFS= read -r lib; do
         lib="$(normalise_path "$lib")"
         if [ -n "$lib" ] && [ -e "$lib" ] && [ -z "${SEEN[$lib]+x}" ]; then
@@ -169,28 +172,20 @@ cmd_install() {
     done
   done
 
-  echo "Total paths to stage after ldd expansion: ${#SEEN[@]}"
-  echo "Staging into ${staging}"
-  mkdir -p "${staging}"
+  echo "Total paths to collect: ${#SEEN[@]}"
+  [[ "${#SEEN[@]}" -eq 0 ]] && echo "WARNING: nothing to collect — check package names and filters" >&2 || true
 
+  mkdir -p "${pkg_dir}"
   for path in "${!SEEN[@]}"; do
-    copy_to_staging "$staging" "$path"
+    copy_to_pkg_dir "$pkg_dir" "$path"
   done
 
-  echo "Done. Staged files:"
-  find "${staging}/usr/bin" "${staging}/usr/sbin" "${staging}/usr/libexec" \
-    -type f 2>/dev/null | sed "s|${staging}||" | sort | while IFS= read -r f; do
-    echo "  bin  $f"
-  done || true
-  find "${staging}/usr/lib64" "${staging}/usr/lib" \
-    -type f -name '*.so*' 2>/dev/null | sed "s|${staging}||" | sort | while IFS= read -r f; do
-    echo "  lib  $f"
-  done || true
-  echo "Total staged file count: $(find "${staging}" -type f | wc -l)"
+  echo "Total files: $(find "${pkg_dir}" -type f | wc -l)"
 }
 
 cmd_copy() {
-  local from_dir="${1:-${STAGING_DEFAULT}}"
+  local from_dir="${1:-${PKG_DIR}}"
+
 
   if [ ! -d "$from_dir" ]; then
     echo "ERROR: source directory not found: $from_dir" >&2
@@ -199,11 +194,22 @@ cmd_copy() {
 
   echo "Copying missing files from ${from_dir} into /"
 
-  local copied=0 skipped=0
+  local copied=0 skipped=0 warned=0
   while IFS= read -r src; do
     local dest="${src#"${from_dir}"}"
-    if [ -z "$dest" ]; then
-      continue
+    [ -z "$dest" ] && continue
+
+    # Skip absolute-target symlinks whose target is absent from PKG_DIR.
+    if [ -L "$src" ]; then
+      local link_target
+      link_target="$(readlink "$src")"
+      if [[ "$link_target" = /* ]]; then
+        if [ ! -e "${from_dir}${link_target}" ] && [ ! -L "${from_dir}${link_target}" ]; then
+          echo "WARNING: symlink $dest -> $link_target has no target in PKG_DIR, skipping" >&2
+          (( warned++ )) || true
+          continue
+        fi
+      fi
     fi
 
     if [ ! -e "$dest" ] && [ ! -L "$dest" ]; then
@@ -216,7 +222,14 @@ cmd_copy() {
     fi
   done < <(find "$from_dir" \( -type f -o -type l \) | sort)
 
-  echo "Done. Copied: ${copied}, already present (skipped): ${skipped}"
+  echo "Done. Copied: ${copied}, skipped: ${skipped}, warned: ${warned}"
+
+  local dangling=0
+  while IFS= read -r link; do
+    echo "WARNING: dangling symlink in image: $link -> $(readlink "$link")" >&2
+    (( dangling++ )) || true
+  done < <(find / -xdev -type l ! -exec test -e {} \; -print 2>/dev/null || true)
+  [ "$dangling" -gt 0 ] && echo "WARNING: ${dangling} dangling symlink(s) found after copy" >&2 || true
 }
 
 case "$MODE" in
