@@ -182,7 +182,7 @@ then
     http_get ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
   fi
 
-  /opt/ibm/wlp/bin/server stop
+  /opt/ibm/wlp/bin/server stop || true
 
   # Find out how full it is.
   FULL=`( java $PRINT_LAYER_STATS || true ) 2>&1 | awk '/^Cache is [0-9.]*% .*full/ {print substr($3, 1, length($3)-1)}'`
@@ -219,7 +219,7 @@ do
     http_get ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
   fi
 
-  /opt/ibm/wlp/bin/server stop
+  /opt/ibm/wlp/bin/server stop || true
 done
 
 # restore umask
