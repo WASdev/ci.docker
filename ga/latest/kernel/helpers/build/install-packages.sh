@@ -229,6 +229,8 @@ cmd_copy() {
     (( dangling++ )) || true
   done < <(find / -xdev -type l ! -exec test -e {} \; -print 2>/dev/null || true)
   [ "$dangling" -gt 0 ] && echo "WARNING: ${dangling} dangling symlink(s) found after copy" >&2 || true
+
+  rm -rf "${from_dir}"
 }
 
 case "$MODE" in
