@@ -62,7 +62,7 @@ copy_to_pkg_dir() {
   local visited=()
   while true; do
     local v
-    for v in "${visited[@]+"${visited[@]}"}"; do
+    for v in "${visited[@]}"; do
       if [ "$v" = "$current" ]; then
         echo "WARNING: symlink loop at $current, stopping" >&2
         return
@@ -185,7 +185,6 @@ cmd_install() {
 
 cmd_copy() {
   local from_dir="${1:-${PKG_DIR}}"
-
 
   if [ ! -d "$from_dir" ]; then
     echo "ERROR: source directory not found: $from_dir" >&2

@@ -62,7 +62,7 @@ copy_to_pkg_dir() {
   local visited=()
   while true; do
     local v
-    for v in "${visited[@]+"${visited[@]}"}"; do
+    for v in "${visited[@]}"; do
       if [ "$v" = "$current" ]; then
         echo "WARNING: symlink loop at $current, stopping" >&2
         return
