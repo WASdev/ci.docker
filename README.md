@@ -77,10 +77,11 @@ This section describes the optional build variables that can be enabled via the 
   *  XML Snippet Location: [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml)
 * `SKIP_FEATURE_INSTALL`
   *  Description: Default setting is `false`. When set to `true`, Liberty features will not be installed using `installUtility` when `configure.sh` is run. This setting is not applicable when `features.sh` is run.
-* `SKIP_FEATURE_VALIDATE`
+* `SKIP_FEATURE_VALIDATE` (26.0.0.9+)
   *  Description: Default setting is `false`. When set to `true`, `productInfo validate` will be skipped after feature installation in `features.sh`. Validation is recommended and should only be skipped when necessary.
-* `SKIP_UPDATE_TRIGGER_DISABLED`
-  *  Description: Default setting is `false`. When set to `true`, the `update-trigger-disabled.xml` snippet will not be copied into `configDropins/defaults`, re-enabling automatic configuration file monitoring. Disabling monitoring is recommended for production.
+* `SERVER_CONFIG_UPDATE_TRIGGER_DISABLED` (26.0.0.9+)
+  *  Description: Controls whether to disable the update trigger for server configuration. When set to `true` and `configure.sh` is run, the corresponding server config will be copied into `configDropins/defaults` to disable automatic server configuration file monitoring and configuration changes will not be applied while the server is running. Set to `false` to skip adding the configuration to disable update monitoring.
+  *  Default: `"true"` for all Liberty base image tags ending in `-ubi-micro`; `"false"` for all images except `-ubi-micro`.
 * `TLS` (`SSL` is deprecated)
   *  Description: Enable Transport Security in Liberty by adding the `transportSecurity-1.0` feature (includes support for SSL).
   *  XML Snippet Location:  [keystore.xml](ga/latest/kernel/helpers/build/configuration_snippets/keystore.xml).
@@ -90,9 +91,9 @@ This section describes the optional build variables that can be enabled via the 
   * Description: Automatically generates a secure random password for LTPA keys and exports it as the `ltpa_keys_password` environment variable. This prevents the LTPA service from failing with error `CWWKS4118E` when no LTPA keys password is configured.
   * Default: `"true"`.
   * Note: If `ltpa_keys_password` is already set, automatic generation is skipped. Set to `"false"` to disable.
-* `ENABLE_HTTP_PORT`
-  * Description: Controls whether the HTTP port (9080) is enabled. Starting with `ubi10-micro` images, the HTTP port is disabled by default and HTTPS (9443) remains enabled. Set to `true` to re-enable plain HTTP.
-  * Default: `"true"` (all images except `ubi10-micro`), `"false"` (`ubi10-micro`).
+* `ENABLE_HTTP_PORT` (26.0.0.9+)
+  * Description: Controls whether the HTTP port (9080) is enabled. The HTTP port is disabled by default for UBI Micro based Liberty images. The HTTPS port (9443) remains enabled. Set to `true` to enable the HTTP port.
+  * Default: `"false"` for all Liberty base image tags ending in `-ubi-micro`; `"true"` for all images except `-ubi-micro`.
 
 ### Deprecated Build Variables
 
