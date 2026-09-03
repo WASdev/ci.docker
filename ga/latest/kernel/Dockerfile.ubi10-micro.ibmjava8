@@ -143,7 +143,7 @@ COPY --from=builder /licenses /licenses
 ENV LOG_DIR=/liberty/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
     OPENJ9_SCC=$OPENJ9_SCC \
-    SERVER_CONFIG_UPDATE_TRIGGER_DISABLED=true
+    DISABLE_SERVER_CONFIG_UPDATE_TRIGGER=true
 
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \

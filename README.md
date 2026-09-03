@@ -79,7 +79,7 @@ This section describes the optional build variables that can be enabled via the 
   *  Description: Default setting is `false`. When set to `true`, Liberty features will not be installed using `installUtility` when `configure.sh` is run. This setting is not applicable when `features.sh` is run.
 * `SKIP_FEATURE_VALIDATE` (26.0.0.9+)
   *  Description: Default setting is `false`. When set to `true`, `productInfo validate` will be skipped after feature installation in `features.sh`. Validation is recommended and should only be skipped when necessary.
-* `SERVER_CONFIG_UPDATE_TRIGGER_DISABLED` (26.0.0.9+)
+* `DISABLE_SERVER_CONFIG_UPDATE_TRIGGER` (26.0.0.9+)
   *  Description: Controls whether to disable the update trigger for server configuration. When set to `true` and `configure.sh` is run, the corresponding server config will be copied into `configDropins/defaults` to disable automatic server configuration file monitoring and configuration changes will not be applied while the server is running. Set to `false` to skip adding the configuration to disable update monitoring.
   *  Default: `"true"` for all Liberty base image tags ending in `-ubi-micro`; `"false"` for all images except `-ubi-micro`.
 * `TLS` (`SSL` is deprecated)
