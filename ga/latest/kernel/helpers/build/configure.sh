@@ -44,7 +44,7 @@ function main() {
   mkdir -p ${SNIPPETS_TARGET_DEFAULTS}
 
   # Disable automatic configuration file monitoring (security hardening).
-  if [ "$SKIP_UPDATE_TRIGGER_DISABLED" != "true" ]; then
+  if [ "$SERVER_CONFIG_UPDATE_TRIGGER_DISABLED" == "true" ]; then
     cp $SNIPPETS_SOURCE/update-trigger-disabled.xml $SNIPPETS_TARGET_DEFAULTS/update-trigger-disabled.xml
     chmod g+rw $SNIPPETS_TARGET_DEFAULTS/update-trigger-disabled.xml
   fi
