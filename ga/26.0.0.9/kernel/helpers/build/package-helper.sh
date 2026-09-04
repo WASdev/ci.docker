@@ -149,6 +149,7 @@ cmd_install() {
           [[ "$rpm_file" == "/usr/sbin/init" ]] && continue
           [ -e "$rpm_file" ] && SEEN["$rpm_file"]=1 ;;
         /usr/lib64/*.so*|/usr/lib/*.so*)
+          [[ "$rpm_file" == *.socket ]] && continue
           [ -e "$rpm_file" ] && SEEN["$rpm_file"]=1 ;;
       esac
     done < <(rpm -ql "$pkg" 2>/dev/null || true) || true
@@ -227,7 +228,8 @@ cmd_copy() {
   while IFS= read -r link; do
     echo "WARNING: dangling symlink in image: $link -> $(readlink "$link")" >&2
     (( dangling++ )) || true
-  done < <(find / -xdev -type l ! -exec test -e {} \; -print 2>/dev/null || true)
+  done < <(find /usr/bin /usr/sbin /usr/lib /usr/lib64 /usr/libexec \
+               -type l ! -exec test -e {} \; -print 2>/dev/null || true)
   [ "$dangling" -gt 0 ] && echo "WARNING: ${dangling} dangling symlink(s) found after copy" >&2 || true
 
   rm -rf "${from_dir}"
