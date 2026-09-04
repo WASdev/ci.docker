@@ -46,7 +46,7 @@ FROM icr.io/appcafe/websphere-liberty:kernel-java25-openj9-ubi-micro AS helper
 
 FROM registry.access.redhat.com/ubi10/ubi-minimal:latest AS builder
 
-# Set to `true` to enable output
+# Set to true to enable output
 # ARG VERBOSE=true
 
 # Copy helper script to minimal builder
@@ -56,8 +56,9 @@ RUN /tmp/package-helper.sh --install procps-ng net-tools ncurses hostname
 
 FROM icr.io/appcafe/websphere-liberty:kernel-java25-openj9-ubi-micro
 
-# Set to `true` to enable output
+# Set to true to enable output
 # ARG VERBOSE=true
+
 ...
 
 # Copy packages from UBI Minimal builder
@@ -65,6 +66,8 @@ COPY --from=builder /tmp/pkg-files /tmp/pkg-files
 USER 0
 RUN /liberty/helpers/build/package-helper.sh --copy
 USER 1001
+
+...
 ```
 
 ## Example Dockerfile with custom staging directory and VERBOSE enabled (using `kernel-java17-openj9-ubi-micro`)
@@ -86,6 +89,7 @@ FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi-micro
 
 # Enabled output
 ARG VERBOSE=true
+
 ...
 
 # Copy packages from UBI Minimal builder using custom staging directory
@@ -93,4 +97,6 @@ COPY --from=builder /tmp/my-pkg-files /tmp/my-pkg-files
 USER 0
 RUN /liberty/helpers/build/package-helper.sh --copy /tmp/my-pkg-files
 USER 1001
+
+...
 ```
