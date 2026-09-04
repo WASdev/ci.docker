@@ -39,6 +39,8 @@ else
   WARM_ENDPOINT_URL="https://localhost:${HTTPS_PORT:-9443}/"
 fi
 WARM_OPENAPI_ENDPOINT_URL="${WARM_ENDPOINT_URL}openapi"
+PORT_OPEN_TIMEOUT_SECONDS=${PORT_OPEN_TIMEOUT_SECONDS:-30} # Default timeout in seconds to wait for port to open.
+MESSAGES_LOG_FILE=${MESSAGES_LOG_FILE:-/logs/messages.log} # Default log file location to check for port open.
 
 # If this directory exists and has at least ug=rwx permissions, assume the base image includes an SCC called 'openj9_system_scc' and build on it.
 # If not, build on our own SCC.
@@ -69,7 +71,7 @@ CREATE_LAYER="$OPENJ9_JAVA_OPTIONS,createLayer,groupAccess"
 DESTROY_LAYER="$OPENJ9_JAVA_OPTIONS,destroy"
 PRINT_LAYER_STATS="$OPENJ9_JAVA_OPTIONS,printTopLayerStats"
 
-while getopts ":i:s:u:o:tdhwcml" OPT
+while getopts ":i:s:u:o:r:f:tdhwcml" OPT
 do
   case "$OPT" in
     i)
@@ -103,9 +105,15 @@ do
     o)
       WARM_OPENAPI_ENDPOINT_URL="${OPTARG}"
       ;;
+    r)
+      PORT_OPEN_TIMEOUT_SECONDS="${OPTARG}"
+      ;;
+    f)
+      MESSAGES_LOG_FILE="${OPTARG}"
+      ;;
     h)
       echo \
-"Usage: $0 [-i iterations] [-s size] [-t] [-d] [-w] [-c] [-u url] [-m] [-l] [-o url]
+"Usage: $0 [-i iterations] [-s size] [-t] [-d] [-w] [-c] [-u url] [-m] [-l] [-o url] [-r timeout_seconds] [-f log_file]
   -i <iterations> Number of iterations to run to populate the SCC. (Default: $ITERATIONS)
   -s <size>       Size of the SCC in megabytes (m suffix required). (Default: $SCC_SIZE)
   -t              Trim the SCC to eliminate most of the free space, if any.
@@ -116,6 +124,8 @@ do
   -m              Use curl/wget to warm the openapi endpoint during SCC creation. (Default: $WARM_OPENAPI_ENDPOINT)
   -l              Do not warm the openapi endpoint during SCC creation.
   -o              The Open API URL endpoint to warm during SCC creation. (Default: $WARM_ENDPOINT_OPENAPI_URL)
+  -r              Timeout in seconds to wait for port to open. (Default: $PORT_OPEN_TIMEOUT_SECONDS)
+  -f              Log file location to check for port open. (Default: $MESSAGES_LOG_FILE)
 
   Trimming enabled=$TRIM_SCC"
       exit 1
@@ -134,6 +144,23 @@ done
 OLD_UMASK=`umask`
 umask 002 # 002 is required to provide group rw permission to the cache when `-Xshareclasses:groupAccess` options is used
 
+wait_for_port_open() {
+  local log_file="${MESSAGES_LOG_FILE}"
+  local timeout=${PORT_OPEN_TIMEOUT_SECONDS}
+  local count=0
+
+  while [ $count -lt $timeout ]; do
+    if [ -f "$log_file" ] && grep -q "CWWKO0219I" "$log_file"; then
+      return 0
+    fi
+    sleep 1
+    count=$((count + 1))
+  done
+
+  echo "Exiting populate_scc because port didn't open after $timeout seconds (CWWKO0219I not found in $log_file)."
+  exit 0
+}
+
 # Explicity create a class cache layer for this image layer here rather than allowing
 # `server start` to do it, which will lead to problems because multiple JVMs will be started.
 java $CREATE_LAYER -Xscmx$SCC_SIZE -version
@@ -142,7 +169,9 @@ if [ $TRIM_SCC == yes ]
 then
   echo "Calculating SCC layer upper bound, starting with initial size $SCC_SIZE."
   # Populate the newly created class cache layer.
+  rm -f "$MESSAGES_LOG_FILE"
   /opt/ibm/wlp/bin/server start
+  wait_for_port_open
 
   if [ ${WARM_ENDPOINT} == true ]
   then
@@ -153,7 +182,7 @@ then
     http_get ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
   fi
 
-  /opt/ibm/wlp/bin/server stop
+  /opt/ibm/wlp/bin/server stop || true
 
   # Find out how full it is.
   FULL=`( java $PRINT_LAYER_STATS || true ) 2>&1 | awk '/^Cache is [0-9.]*% .*full/ {print substr($3, 1, length($3)-1)}'`
@@ -177,7 +206,9 @@ fi
 # Server start/stop to populate the /output/workarea and make subsequent server starts faster.
 for ((i=0; i<$ITERATIONS; i++))
 do
+  rm -f "$MESSAGES_LOG_FILE"
   /opt/ibm/wlp/bin/server start
+  wait_for_port_open
 
   if [ ${WARM_ENDPOINT} == true ]
   then
@@ -188,7 +219,7 @@ do
     http_get ${WARM_OPENAPI_ENDPOINT_URL} 2>&1 || echo "${WARM_OPENAPI_ENDPOINT_URL} call failed, continuing"
   fi
 
-  /opt/ibm/wlp/bin/server stop
+  /opt/ibm/wlp/bin/server stop || true
 done
 
 # restore umask
