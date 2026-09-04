@@ -142,7 +142,8 @@ COPY --from=builder /licenses /licenses
 # Set Path Shortcuts
 ENV LOG_DIR=/liberty/logs \
     WLP_OUTPUT_DIR=/opt/ibm/wlp/output \
-    OPENJ9_SCC=$OPENJ9_SCC
+    OPENJ9_SCC=$OPENJ9_SCC \
+    DISABLE_SERVER_CONFIG_UPDATE_TRIGGER=true
 
 # Configure WebSphere Liberty
 RUN /opt/ibm/wlp/bin/server create \
@@ -201,7 +202,7 @@ ENV RANDFILE=/tmp/.rnd \
 
 USER 1001
 
-EXPOSE 9080 9443
+EXPOSE 9443
 
 ENTRYPOINT ["/opt/ibm/helpers/runtime/docker-server.sh"]
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
