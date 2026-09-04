@@ -168,6 +168,7 @@ RUN mkdir /logs \
     && ln -s /opt/ibm/wlp/usr/servers/defaultServer /config \
     && ln -s /opt/ibm/wlp /liberty \
     && ln -s /opt/ibm/fixes /fixes \
+    && ln -s /opt/ibm/helpers /helpers \
     && ln -s /opt/ibm/wlp/usr/shared/resources/lib.index.cache /lib.index.cache \
     && mkdir -p /config/configDropins/defaults \
     && mkdir -p /config/configDropins/overrides \
