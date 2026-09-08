@@ -12,7 +12,7 @@ Available image tags are listed below. The tags use the following naming convent
 
 WebSphere Liberty images are available with three Red Hat Universal Base (UBI) image variants: UBI Micro (starting with 26.0.0.9+), UBI Minimal, and UBI Standard. For best results, use images based on UBI Micro whenever possible.
 
-UBI Micro is the smallest possible UBI image, designed without a package manager or its dependencies to minimize the attack surface and enhance security. Liberty images use UBI 10 Micro for this variant starting with version 26.0.0.9. Image tags based on UBI Micro end with `-ubi-micro`. If your application requires packages beyond what is included with the UBI Micro based Liberty container image, follow the instructions at https://ibm.biz/wl-container-image-package-helper to add the additional packages.
+UBI Micro is the smallest possible UBI image, designed without a package manager or its dependencies to minimize the attack surface and enhance security. WebSphere Liberty images use UBI 10 Micro for this variant starting with version 26.0.0.9. Image tags based on UBI Micro end with `-ubi-micro`. If your application requires packages beyond what is included with the UBI Micro based Liberty container image, follow the instructions at https://ibm.biz/wl-container-image-package-helper to add the additional packages.
 
 UBI Minimal provides a minimized preinstalled content set and includes the microdnf package manager for installing additional packages. Liberty images use UBI 10 Minimal starting with version 26.0.0.7, and UBI 9 Minimal for version 26.0.0.6 and earlier. Image tags based on UBI Minimal end with `-ubi-minimal`.
 
@@ -20,7 +20,7 @@ WebSphere Liberty images based on Universal Base Image (UBI) Micro and Minimal i
 
 UBI Standard includes access to yum repositories and utilities such as python, tar, and gzip. Liberty images use UBI 8 Standard for this variant. Image tags based on UBI Standard end with `-ubi`. Liberty images based on UBI Standard include Java 17, 11 or 8. The `openj9` type includes IBM Semeru Runtime for the respective Java version with the JDK. Java 8 images with the `ibmjava` type and based on UBI 8 standard include IBM Java 8 JRE. The final Liberty release that will publish container images built on UBI Standard will be 26.0.0.12. Avoid trouble by using a UBI Micro or UBI Minimal based image instead of UBI Standard. See announcement at https://www.ibm.com/support/pages/node/7268632 for more information.
 
-The `latest` tag simplifies pulling the full latest Open Liberty release with the latest Java JRE. It is an alias for the `full-java25-openj9-ubi-micro` tag. If you do not specify a tag value, `latest` is used by default.
+The `latest` tag simplifies pulling the full latest WebSphere Liberty release with the latest Java JRE. It is an alias for the `full-java25-openj9-ubi-micro` tag. If you do not specify a tag value, `latest` is used by default.
 
 Append a tag to `icr.io/appcafe/websphere-liberty` to pull a specific image. For example, 
 ```
