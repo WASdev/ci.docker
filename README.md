@@ -77,6 +77,11 @@ This section describes the optional build variables that can be enabled via the 
   *  XML Snippet Location: [hazelcast-sessioncache.xml](ga/latest/kernel/helpers/build/configuration_snippets/hazelcast-sessioncache.xml)
 * `SKIP_FEATURE_INSTALL`
   *  Description: Default setting is `false`. When set to `true`, Liberty features will not be installed using `installUtility` when `configure.sh` is run. This setting is not applicable when `features.sh` is run.
+* `SKIP_FEATURE_VALIDATE` (26.0.0.9+)
+  *  Description: Default setting is `false`. When set to `true`, `productInfo validate` will be skipped after feature installation in `features.sh`. Validation is recommended and should only be skipped when necessary.
+* `DISABLE_SERVER_CONFIG_UPDATE_TRIGGER` (26.0.0.9+)
+  *  Description: Controls whether to disable the update trigger for server configuration. When set to `true` and `configure.sh` is run, the corresponding server config will be copied into `configDropins/defaults` to disable automatic server configuration file monitoring and configuration changes will not be applied while the server is running. Set to `false` to skip adding the configuration to disable update monitoring.
+  *  Default: `"true"` for all Liberty base image tags ending in `-ubi-micro`; `"false"` for all images except `-ubi-micro`.
 * `TLS` (`SSL` is deprecated)
   *  Description: Enable Transport Security in Liberty by adding the `transportSecurity-1.0` feature (includes support for SSL).
   *  XML Snippet Location:  [keystore.xml](ga/latest/kernel/helpers/build/configuration_snippets/keystore.xml).
@@ -86,7 +91,9 @@ This section describes the optional build variables that can be enabled via the 
   * Description: Automatically generates a secure random password for LTPA keys and exports it as the `ltpa_keys_password` environment variable. This prevents the LTPA service from failing with error `CWWKS4118E` when no LTPA keys password is configured.
   * Default: `"true"`.
   * Note: If `ltpa_keys_password` is already set, automatic generation is skipped. Set to `"false"` to disable.
-
+* `ENABLE_HTTP_PORT` (26.0.0.9+)
+  * Description: Controls whether the HTTP port (9080) is enabled. The HTTP port is disabled by default for UBI Micro based Liberty images. The HTTPS port (9443) remains enabled. Set to `true` to enable the HTTP port.
+  * Default: `"false"` for all Liberty base image tags ending in `-ubi-micro`; `"true"` for all images except `-ubi-micro`.
 
 ### Deprecated Build Variables
 
@@ -146,13 +153,13 @@ This feature can be controlled via the following variables:
   * Default: `"true"`.
 * `WARM_ENDPOINT_URL` (enviornment variable)
   * Description: The URL to access during SCC population if WARM_ENDPOINT is true.
-  * Default: `"localhost:9080/"`.
+  * Default: `"https://localhost:9443/"`. The port in the default URL is derived from the `HTTPS_PORT` environment variable (falling back to `9443`). If `ENABLE_HTTP_PORT` is set to `"true"`, the default switches to `http://localhost:${HTTP_PORT:-9080}/`. Set `HTTP_PORT` or `HTTPS_PORT` at build time to override the port used here without having to set `WARM_ENDPOINT_URL` explicitly.
 * `WARM_OPENAPI_ENDPOINT` (environment variable)
   * Description: (24.0.0.4+) If `"true"`, curl will be used to access the WARM_OPENAPI_ENDPOINT_URL (see below) during the population of the SCC. This will increase the amount of information in the SCC and improve first request time in subsequent starts of the image.
   * Default: `"true"`
 * `WARM_OPENAPI_ENDPOINT_URL` (enviornment variable)
   * Description: (24.0.0.4+) The URL to access during SCC population if WARM_OPENAPI_ENDPOINT is true.
-  * Default: `"localhost:9080/openapi"`
+  * Default: `"https://localhost:9443/openapi"`. Like `WARM_ENDPOINT_URL`, this URL is derived from `HTTPS_PORT` (or `HTTP_PORT` when `ENABLE_HTTP_PORT` is `"true"`), so setting one of those variables will also update this default automatically.
 
 ## Logging
 
