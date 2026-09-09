@@ -209,6 +209,12 @@ function main() {
     if [ ! "$WARM_OPENAPI_ENDPOINT_URL" = "" ]; then
       cmd+=" -o $WARM_OPENAPI_ENDPOINT_URL"
     fi
+    if [ ! "$PORT_OPEN_TIMEOUT_SECONDS" = "" ]; then
+      cmd+=" -r $PORT_OPEN_TIMEOUT_SECONDS"
+    fi
+    if [ ! "$MESSAGES_LOG_FILE" = "" ]; then
+      cmd+=" -f $MESSAGES_LOG_FILE"
+    fi
     eval $cmd
   fi
 }
