@@ -29,7 +29,7 @@ According to best practices for container images, you should create a new image 
 Your application image template should follow a pattern similar to:
 
 ```dockerfile
-FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi-micro
 
 # Default setting for the verbose option. Set it to true to debug the application container image build failures
 ARG VERBOSE=false
@@ -202,14 +202,14 @@ The Liberty session caching feature builds on top of an existing technology call
 
     ```dockerfile
     ### Infinispan Session Caching ###
-    FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi AS infinispan-client
+    FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi-micro AS infinispan-client
 
     # Install Infinispan client jars
     USER root
     RUN infinispan-client-setup.sh
     USER 1001
 
-    FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi AS open-liberty-infinispan
+    FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi-micro AS open-liberty-infinispan
 
     # Copy Infinispan client jars to Open Liberty shared resources
     COPY --chown=1001:0 --from=infinispan-client /opt/ibm/wlp/usr/shared/resources/infinispan /opt/ibm/wlp/usr/shared/resources/infinispan
@@ -321,7 +321,7 @@ containing all the features. You will also need to make sure to call `RUN config
 You can also set it through Dockerfile
 
 ```dockerfile
-FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi-micro
 ARG FEATURE_REPO_URL=http://wlprepos:8080/19.0.0.x/repo.zip
 ARG VERBOSE=false
 RUN configure.sh
@@ -331,7 +331,7 @@ Note: This feature requires a `curl` command to be in the container image.
 Some base images do not provide `curl`. You can add it before calling `confiure.sh` this way:
 
 ```dockerfile
-FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi
+FROM icr.io/appcafe/websphere-liberty:kernel-java17-openj9-ubi-micro
 USER root
 RUN apt-get update && apt-get install -y curl
 USER 1001
