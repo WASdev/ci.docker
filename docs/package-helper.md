@@ -1,9 +1,9 @@
 
-# package-helper.sh
+# package-helper.sh 
 
-`package-helper.sh` is a build-time helper script used in multi-stage Dockerfiles to install RPM packages in a UBI Minimal builder image and selectively copy only the resulting binaries and shared libraries into a target WebSphere Liberty image on UBI Micro.
+`package-helper.sh` (26.0.0.9+) is a build-time helper script used in multi-stage Dockerfiles to install RPM packages in a UBI Minimal builder image and selectively copy only the resulting binaries and shared libraries into a target WebSphere Liberty image on UBI Micro.
 
-It is located at `/liberty/helpers/build/package-helper.sh` inside the WebSphere Liberty image and is intended to be run at build time.
+It is located at `/liberty/helpers/build/package-helper.sh` inside the UBI-based WebSphere Liberty images and is intended to be run at build time.
 
 ## Usage
 

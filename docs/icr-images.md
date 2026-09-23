@@ -10,15 +10,21 @@ Available image tags are listed below. The tags use the following naming convent
 <optional fix pack version-><liberty image type>-<java version>-<java type>-<base image type>
 ```
 
-Liberty images based on Universal Base Image (UBI) Minimal end with `-ubi-minimal` and include the JRE of IBM Semeru Runtime 25, 21, 17, 11 or 8 or IBM Java 8. We recommend using this combination as it offers a compact and effective Java runtime. Liberty images with Java 21 and higher are only available on UBI Minimal. The version of UBI Minimal for 26.0.0.7+ is UBI 10 Minimal. The version of UBI Minimal for 26.0.0.6 and prior releases is UBI 9 Minimal.
+WebSphere Liberty images are available with three Red Hat Universal Base (UBI) image variants: UBI Micro (starting with 26.0.0.9+), UBI Minimal, and UBI Standard. For best results, use images based on UBI Micro whenever possible.
 
-Liberty images based on UBI 8 Standard end with `-ubi` and include Java 17, 11 or 8. The `openj9` type includes IBM Semeru Runtime for the respective Java version with the JDK. Java 8 images with the `ibmjava` type and based on UBI 8 standard include IBM Java 8 JRE. The final Liberty release that will publish container images built on UBI Standard will be 26.0.0.12. Avoid trouble by using a UBI Minimal based image instead of UBI Standard. See announcement at https://www.ibm.com/support/pages/node/7268632 for more information.
+UBI Micro is the smallest possible UBI image, designed without a package manager or its dependencies to minimize the attack surface and enhance security. WebSphere Liberty images use UBI 10 Micro for this variant starting with version 26.0.0.9. Image tags based on UBI Micro end with `-ubi-micro`. If your application requires packages beyond what is included with the UBI Micro based Liberty container image, follow the instructions at https://ibm.biz/wl-container-image-package-helper to add the additional packages.
 
-The `latest` tag simplifies pulling the full latest Open Liberty release with the latest Java JRE. It is an alias for the `full-java25-openj9-ubi-minimal` tag. If you do not specify a tag value, `latest` is used by default.
+UBI Minimal provides a minimized preinstalled content set and includes the microdnf package manager for installing additional packages. Liberty images use UBI 10 Minimal starting with version 26.0.0.7, and UBI 9 Minimal for version 26.0.0.6 and earlier. Image tags based on UBI Minimal end with `-ubi-minimal`.
+
+WebSphere Liberty images based on Universal Base Image (UBI) Micro and Minimal include the JRE of IBM Semeru Runtime 25, 21, 17, 11 or 8 or IBM Java 8. We recommend using this combination as it offers a compact and effective Java runtime. Liberty images with Java 21 and higher are only available on UBI Micro and UBI Minimal. 
+
+UBI Standard includes access to yum repositories and utilities such as python, tar, and gzip. Liberty images use UBI 8 Standard for this variant. Image tags based on UBI Standard end with `-ubi`. Liberty images based on UBI Standard include Java 17, 11 or 8. The `openj9` type includes IBM Semeru Runtime for the respective Java version with the JDK. Java 8 images with the `ibmjava` type and based on UBI 8 standard include IBM Java 8 JRE. The final Liberty release that will publish container images built on UBI Standard will be 26.0.0.12. Avoid trouble by using a UBI Micro or UBI Minimal based image instead of UBI Standard. See announcement at https://www.ibm.com/support/pages/node/7268632 for more information.
+
+The `latest` tag simplifies pulling the full latest WebSphere Liberty release with the latest Java JRE. It is an alias for the `full-java25-openj9-ubi-micro` tag. If you do not specify a tag value, `latest` is used by default.
 
 Append a tag to `icr.io/appcafe/websphere-liberty` to pull a specific image. For example, 
 ```
-icr.io/appcafe/websphere-liberty:26.0.0.3-kernel-java25-openj9-ubi-minimal
+icr.io/appcafe/websphere-liberty:26.0.0.9-kernel-java25-openj9-ubi-micro
 ```
 
 Available images can be listed using [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started). Log in with your IBMid prior to running the following commands. Note that authentication is only required to list the images. **Images can be pulled from ICR without authentication** : 
@@ -30,9 +36,16 @@ ibmcloud cr images --restrict appcafe/websphere-liberty
 
 ## Latest version
 
-The following tags include the most recent WebSphere Liberty version: `26.0.0.6` 
+The following tags include the most recent WebSphere Liberty version: `26.0.0.9`
 
 ```
+kernel-java25-openj9-ubi-micro
+kernel-java21-openj9-ubi-micro
+kernel-java17-openj9-ubi-micro
+kernel-java11-openj9-ubi-micro
+kernel-java8-openj9-ubi-micro
+kernel-java8-ibmjava-ubi-micro
+
 kernel-java25-openj9-ubi-minimal
 kernel-java21-openj9-ubi-minimal
 kernel-java17-openj9-ubi-minimal
@@ -44,6 +57,13 @@ kernel-java17-openj9-ubi
 kernel-java11-openj9-ubi
 kernel-java8-openj9-ubi
 kernel-java8-ibmjava-ubi
+
+full-java25-openj9-ubi-micro
+full-java21-openj9-ubi-micro
+full-java17-openj9-ubi-micro
+full-java11-openj9-ubi-micro
+full-java8-openj9-ubi-micro
+full-java8-ibmjava-ubi-micro
 
 full-java25-openj9-ubi-minimal
 full-java21-openj9-ubi-minimal
@@ -58,6 +78,48 @@ full-java8-openj9-ubi
 full-java8-ibmjava-ubi
 
 latest
+```
+
+## 26.0.0.9
+
+```
+26.0.0.9-kernel-java25-openj9-ubi-micro
+26.0.0.9-kernel-java21-openj9-ubi-micro
+26.0.0.9-kernel-java17-openj9-ubi-micro
+26.0.0.9-kernel-java11-openj9-ubi-micro
+26.0.0.9-kernel-java8-openj9-ubi-micro
+26.0.0.9-kernel-java8-ibmjava-ubi-micro
+
+26.0.0.9-kernel-java25-openj9-ubi-minimal
+26.0.0.9-kernel-java21-openj9-ubi-minimal
+26.0.0.9-kernel-java17-openj9-ubi-minimal
+26.0.0.9-kernel-java11-openj9-ubi-minimal
+26.0.0.9-kernel-java8-openj9-ubi-minimal
+26.0.0.9-kernel-java8-ibmjava-ubi-minimal
+
+26.0.0.9-kernel-java17-openj9-ubi
+26.0.0.9-kernel-java11-openj9-ubi
+26.0.0.9-kernel-java8-openj9-ubi
+26.0.0.9-kernel-java8-ibmjava-ubi
+
+26.0.0.9-full-java25-openj9-ubi-micro
+26.0.0.9-full-java21-openj9-ubi-micro
+26.0.0.9-full-java17-openj9-ubi-micro
+26.0.0.9-full-java11-openj9-ubi-micro
+26.0.0.9-full-java8-openj9-ubi-micro
+26.0.0.9-full-java8-ibmjava-ubi-micro
+
+26.0.0.9-full-java25-openj9-ubi-minimal
+26.0.0.9-full-java21-openj9-ubi-minimal
+26.0.0.9-full-java17-openj9-ubi-minimal
+26.0.0.9-full-java11-openj9-ubi-minimal
+26.0.0.9-full-java8-openj9-ubi-minimal
+26.0.0.9-full-java8-ibmjava-ubi-minimal
+
+26.0.0.9-full-java17-openj9-ubi
+26.0.0.9-full-java11-openj9-ubi
+26.0.0.9-full-java8-openj9-ubi
+26.0.0.9-full-java8-ibmjava-ubi
 ```
 
 ## 26.0.0.6
@@ -114,32 +176,4 @@ latest
 26.0.0.3-full-java11-openj9-ubi
 26.0.0.3-full-java8-openj9-ubi
 26.0.0.3-full-java8-ibmjava-ubi
-```
-
-## 25.0.0.12
-
-```
-25.0.0.12-kernel-java25-openj9-ubi-minimal
-25.0.0.12-kernel-java21-openj9-ubi-minimal
-25.0.0.12-kernel-java17-openj9-ubi-minimal
-25.0.0.12-kernel-java11-openj9-ubi-minimal
-25.0.0.12-kernel-java8-openj9-ubi-minimal
-25.0.0.12-kernel-java8-ibmjava-ubi-minimal
-
-25.0.0.12-kernel-java17-openj9-ubi
-25.0.0.12-kernel-java11-openj9-ubi
-25.0.0.12-kernel-java8-openj9-ubi
-25.0.0.12-kernel-java8-ibmjava-ubi
-
-25.0.0.12-full-java25-openj9-ubi-minimal
-25.0.0.12-full-java21-openj9-ubi-minimal
-25.0.0.12-full-java17-openj9-ubi-minimal
-25.0.0.12-full-java11-openj9-ubi-minimal
-25.0.0.12-full-java8-openj9-ubi-minimal
-25.0.0.12-full-java8-ibmjava-ubi-minimal
-
-25.0.0.12-full-java17-openj9-ubi
-25.0.0.12-full-java11-openj9-ubi
-25.0.0.12-full-java8-openj9-ubi
-25.0.0.12-full-java8-ibmjava-ubi
 ```
