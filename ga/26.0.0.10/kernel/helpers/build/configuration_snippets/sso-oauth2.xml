@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+       
+    <!-- defaults from the server metatype.xml are declared as variables here
+         If nothing is passed in elsewhere, the defaults will prevail.
+         Required parameters have no defaults, so are not defined here.
+         The required parameters are 
+           clientId, clientSecret, 
+           tokenEndpoint, authorizationEndpoint
+    -->
+    <variable name="SEC_SSO_REDIRECTTORPHOSTANDPORT" defaultValue="" /> 
+    <variable name="SEC_SSO_MAPTOUSERREGISTRY" defaultValue="false"/>
+    <variable name="SEC_SSO_OAUTH2_GROUPNAMEATTRIBUTE" defaultValue=""/>
+    <variable name="SEC_SSO_OAUTH2_USERNAMEATTRIBUTE" defaultValue="email"/>
+    <variable name="SEC_SSO_OAUTH2_DISPLAYNAME" defaultValue="oauth2Login"/>
+    <variable name="SEC_SSO_OAUTH2_USERAPI" defaultValue=""/>    
+    <variable name="SEC_SSO_OAUTH2_REALMNAMEATTRIBUTE" defaultValue=""/>
+    <variable name="SEC_SSO_OAUTH2_REALMNAME" defaultValue=""/>
+    <variable name="SEC_SSO_OAUTH2_SCOPE" defaultValue=""/>
+    <variable name="SEC_SSO_OAUTH2_TOKENENDPOINTAUTHMETHOD" defaultValue="client_secret_post"/>
+    <variable name="SEC_SSO_OAUTH2_ACCESSTOKENHEADERNAME" defaultValue=""/>
+    <variable name="SEC_SSO_OAUTH2_ACCESSTOKENREQUIRED" defaultValue="false"/>
+    <variable name="SEC_SSO_OAUTH2_ACCESSTOKENSUPPORTED" defaultValue="false"/>
+    <variable name="SEC_SSO_OAUTH2_USERAPITYPE" defaultValue="basic" />
+    <variable name="SEC_SSO_OAUTH2_USERAPI" defaultValue="" />
+    <variable name="SEC_SSO_OAUTH2_USERAPITOKEN" defaultValue="" />
+
+    <!-- the id attribute will not be substituted  -->    
+	<oauth2Login
+		id="oauth2"		
+        clientId="${SEC_SSO_OAUTH2_CLIENTID}"
+        clientSecret="${SEC_SSO_OAUTH2_CLIENTSECRET}"
+        redirectToRPHostAndPort="${SEC_SSO_REDIRECTTORPHOSTANDPORT}"
+        tokenEndpoint="${SEC_SSO_OAUTH2_TOKENENDPOINT}"
+        authorizationEndpoint="${SEC_SSO_OAUTH2_AUTHORIZATIONENDPOINT}"
+        groupNameAttribute="${SEC_SSO_OAUTH2_GROUPNAMEATTRIBUTE}"
+        userNameAttribute="${SEC_SSO_OAUTH2_USERNAMEATTRIBUTE}"
+        displayName="${SEC_SSO_OAUTH2_DISPLAYNAME}"        
+        mapToUserRegistry="${SEC_SSO_MAPTOUSERREGISTRY}"
+        realmNameAttribute="${SEC_SSO_OAUTH2_REALMNAMEATTRIBUTE}"
+        realmName="${SEC_SSO_OAUTH2_REALMNAME}"
+        scope="${SEC_SSO_OAUTH2_SCOPE}"
+        tokenEndpointAuthMethod="${SEC_SSO_OAUTH2_TOKENENDPOINTAUTHMETHOD}"
+        accessTokenHeaderName="${SEC_SSO_OAUTH2_ACCESSTOKENHEADERNAME}"
+        accessTokenRequired="${SEC_SSO_OAUTH2_ACCESSTOKENREQUIRED}"
+        accessTokenSupported="${SEC_SSO_OAUTH2_ACCESSTOKENSUPPORTED}"
+        userApiType="${SEC_SSO_OAUTH2_USERAPITYPE}"
+        userApiToken="${SEC_SSO_OAUTH2_USERAPITOKEN}"
+        userApi="${SEC_SSO_OAUTH2_USERAPI}"
+	></oauth2Login>
+</server>
