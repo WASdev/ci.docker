@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+    <!-- Disable automatic configuration file monitoring.
+         The server will not reload config after startup; a restart is required to apply changes. -->
+    <config updateTrigger="disabled" />
+</server>
