@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Use curl/wget to warm endpoints
+# Use curl/wget for download
 if command -v curl > /dev/null 2>&1; then
-  http_download() { curl -sS --insecure -o "$1" "$2"; }
+  http_download() { curl -fsS --insecure -o "$1" "$2"; }
 else
   http_download() { wget -q --no-check-certificate -O "$1" "$2"; }
 fi
@@ -49,7 +49,7 @@ function main() {
     chmod g+rw $SNIPPETS_TARGET_DEFAULTS/update-trigger-disabled.xml
   fi
 
-  # HTTP port is disabled by default. Set ENABLE_HTTP_PORT=true to re-enable port 9080.
+  # Disable HTTP port unless ENABLE_HTTP_PORT=true is set
   if [ "$ENABLE_HTTP_PORT" != "true" ]; then
     cp $SNIPPETS_SOURCE/http-port-disabled.xml $SNIPPETS_TARGET_DEFAULTS/http-port-disabled.xml
   fi
