@@ -1,0 +1,19 @@
+<server>
+  <featureManager>
+    <feature>sessionCache-1.0</feature>
+  </featureManager>
+  <httpSessionCache libraryRef="InfinispanLib">
+    <properties infinispan.client.hotrod.server_list="${INFINISPAN_HOST}:${INFINISPAN_PORT}"/>
+    <properties infinispan.client.hotrod.marshaller="org.infinispan.commons.marshall.JavaSerializationMarshaller"/>
+    <properties infinispan.client.hotrod.java_serial_whitelist=".*"/>
+    <properties infinispan.client.hotrod.auth_username="${INFINISPAN_USER}"/>
+    <properties infinispan.client.hotrod.auth_password="${INFINISPAN_PASS}"/>
+    <properties infinispan.client.hotrod.auth_realm="default"/>
+    <properties infinispan.client.hotrod.sasl_mechanism="DIGEST-MD5"/>
+    <properties infinispan.client.hotrod.auth_server_name="infinispan"/>
+  </httpSessionCache>
+  <httpSessionCache enableBetaSupportForInfinispan="true"/> <!-- TODO remove once no longer gated -->
+  <library id="InfinispanLib">
+    <fileset dir="${shared.resource.dir}/infinispan" includes="*.jar"/>
+  </library>
+</server>

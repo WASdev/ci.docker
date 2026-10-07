@@ -1,0 +1,143 @@
+<server>   
+     <httpEndpoint id="defaultHttpEndpoint" host="*" httpsPort="9443" httpPort="9080" />
+   
+    <featureManager>      
+      <feature>openidConnectServer-1.0</feature>      
+      <feature>ldapRegistry-3.0</feature>
+      <!-- if this server will delegate authentication to another
+           provider that is not LDAP, then one of these features
+           could be needed:
+      -->
+      <!-- <feature>socialLogin-1.0</feature>-->
+      <!-- <feature>openidConectClient-1.0</feature> -->
+      <!-- <feature>samlWeb-2.0</feature> -->
+    </featureManager>
+
+    <!-- Basic registry for test / development use.  
+         Comment this out if using LDAP or delegating to another 
+         Oauth or SAML provider. 
+         
+    -->   
+    <basicRegistry id="basic" realm="customRealm">
+        <user
+          name="${env.OIDCP_TEST_USER}"
+          password="${env.OIDCP_TEST_USER_PASSWORD}" />
+        <user
+          name="${env.OIDCP_TEST_USER2}"
+          password="${env.OIDCP_TEST_USER2_PASSWORD}" />
+    </basicRegistry>
+
+    <!-- LDAP example.  Customize and uncomment to use LDAP user authentication.
+         Comment out basic registry. 
+    -->
+    <!--
+    <ldapRegistry
+      id="ldap"
+      realm="SampleLdapIDSRealm"
+      host="oidcldap1.some.where.ibm.com"
+      port="389"
+      ignoreCase="true"
+      baseDN="o=ibm,c=us"
+      bindDN="cn=root"
+      bindPassword="rootpwd"
+      ldapType="IBM Tivoli Directory Server"
+      searchTimeout="8m" >
+      <idsFilters groupFilter="(&amp;(cn=%v)(|(objectclass=groupOfNames)(objectclass=groupOfUniqueNames)))"
+        groupIdMap="*:cn"
+        groupMemberIdMap="ibm-allGroups:member;ibm-allGroups:uniqueMember;groupOfNames:member;groupOfUniqueNames:uniqueMember"
+        id="TestLdap"
+        userFilter="(&amp;(uid=%v)(objectclass=ePerson))"
+        userIdMap="*:mail"/>
+      <failoverServers name="failoverLdapServers">
+        <server
+          host="nc049244.some.where.ibm.com"
+          port="389" />
+      </failoverServers>
+    </ldapRegistry>
+    -->   
+    
+    <openidConnectProvider id="OIDC" 
+        oauthProviderRef="OAuth" 
+        signatureAlgorithm="RS256" keyStoreRef="defaultKeyStore" 
+        customClaims="phone, email, preferredName" jwkEnabled="true" 
+        issuerIdentifier="https://${env.OIDCP_INGRESS_HOST}/oidc/endpoint/OIDC"
+        >
+        <claimToUserRegistryMap email="mail"/>
+        <claimToUserRegistryMap phone="mobile"/> 
+        <claimToUserRegistryMap preferredName="givenName"/>
+    </openidConnectProvider>
+    
+    <oauthProvider id="OAuth" tokenFormat="mpjwt">
+         <!-- localStore for test / development use. 
+         When localStore is used, all client data and token status is held
+         in memory.  This container can only be a singleton when this is
+         used.
+         Comment out localStore when using a database.
+         --> 
+        <localStore>
+          <!-- When using a database, clients are not specified in server.xml.
+               Instead they are added to the database through the registration endpoint.
+          -->
+          <client displayname="clusterConfig" enabled="true"
+                name="${env.OIDCP_CLIENT_ID}" secret="${env.OIDCP_CLIENT_SECRET}" 
+                scope="openid profile scope1 email phone address"
+                allowRegexpRedirects="true" >
+                <redirect>regexp:https://${env.OIDCP_INGRESS_HOST_REGEX}:3!d!d!d!d/oidcclient/redirect/rp</redirect>
+                <redirect>https://${env.OIDCP_INGRESS_HOST}/oidcclient/redirect/rp</redirect>
+          </client>
+    
+          <client displayname="customClient" enabled="true"
+                name="${env.OIDCP_CUSTOM_CLIENT_ID}" secret="${env.OIDCP_CUSTOM_CLIENT_SECRET}" 
+                scope="openid profile scope1 email phone address"
+                allowRegexpRedirects="false" >
+                <redirect>${env.OIDCP_CUSTOM_CLIENT_REDIRECT}</redirect>
+          </client>
+        </localStore>
+    <!-- uncomment below line when using a database -->
+    <!-- <databaseStore dataSourceRef="OIDC_DBDS4" /> -->
+    </oauthProvider>
+     
+    <!-- Users in the clientManager role can add/modify clients when using a
+         database by accessing the registration endpoint. 
+         When using a localStore, clients are added by editing server.xml,
+         and this can be commented out.
+    -->      
+    <oauth-roles>
+        <authenticated>
+            <special-subject type="ALL_AUTHENTICATED_USERS" />  
+        </authenticated>
+        <!--        
+        <clientManager>            
+            <user name="testuser" />
+            <group name="oidcadmin" />            
+        </clientManager>  
+        -->       
+    </oauth-roles>
+   
+   
+
+
+    <!-- sample database configuration -->
+    <!--
+    <dataSource id="OIDC_DBDS4" jdbcDriverRef="db2Driver" jndiName="jdbc/oauthProvider" containerAuthDataRef="OIDC_DBAuth4" >
+        <properties databaseName="oidcdb4" driverType="4" portNumber="60006" serverName="somedb.somedomain.ibm.com" />
+        <connectionManager maxPoolSize="250" minPoolSize="10" connectionTimeout="60s" />
+    </dataSource>
+
+    <jdbcDriver id="db2Driver">
+       <library>
+       <fileset dir="${wlp.user.dir}/shared/resources/db2jars/" includes="db2jcc4.jar db2jcc_license_cu.jar"/>
+       </library>
+    </jdbcDriver>
+
+    <authData id="OIDC_DBAuth4" user="dbuser" password="dbpassword" />
+    -->
+   
+ 
+    
+     
+    <!-- Error messages are produced for failed logins, this trace spec provides a record of successful logins. -->
+    <logging  traceSpecification="com.ibm.ws.security.oauth20.internal.LibertyOAuth20Provider=all:com.ibm.ws.security.mp.jwt.proxy.MpJwtHelper=all"
+      traceFileName="trace.log" maxFileSize="20" maxFiles="10" />
+
+</server>

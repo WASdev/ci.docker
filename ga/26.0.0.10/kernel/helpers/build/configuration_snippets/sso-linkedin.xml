@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>    
+   
+   <!-- defaults from the server metatype.xml are declared as variables here
+         If nothing is passed in elsewhere, the defaults will prevail.
+         Required parameters have no defaults, so are not defined here.
+         The required parameters are 
+           clientId, clientSecret
+    -->
+    <variable name="SEC_SSO_MAPTOUSERREGISTRY" defaultValue="false"/> 
+    <variable name="SEC_SSO_REDIRECTTORPHOSTANDPORT" defaultValue="" />       
+ 
+    <linkedinLogin
+        clientId="${SEC_SSO_LINKEDIN_CLIENTID}"
+        clientSecret="${SEC_SSO_LINKEDIN_CLIENTSECRET}"
+        redirectToRPHostAndPort="${SEC_SSO_REDIRECTTORPHOSTANDPORT}"  
+        mapToUserRegistry="${SEC_SSO_MAPTOUSERREGISTRY}"       
+    ></linkedinLogin>
+</server>

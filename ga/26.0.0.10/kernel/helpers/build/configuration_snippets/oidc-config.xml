@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+    <openidConnectClient id="${env.OIDC_CLIENT_ID}"
+         clientId="${env.OIDC_CLIENT_ID}"
+         clientSecret="${env.OIDC_CLIENT_SECRET}"         
+         discoveryEndpointUrl="${env.OIDC_DISCOVERY_URL}">
+    </openidConnectClient>
+</server>
