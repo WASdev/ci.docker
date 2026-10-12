@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+    <variable name="HTTP_PORT" defaultValue="9080" />
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="${HTTP_PORT}"/>
+</server>

@@ -19,10 +19,10 @@ USER root
 ARG VERBOSE=false
 
 # Install WebSphere Liberty
-ARG LIBERTY_VERSION=26.0.0.9
+ARG LIBERTY_VERSION=26.0.0.10
 ARG LIBERTY_URL
 ARG DOWNLOAD_OPTIONS=""
-ARG LIBERTY_SHA=6b99d937db2fc57cf21c80aae4f3fec022247a08
+ARG LIBERTY_SHA=3d2b156274415eb1d0f72416de863c36d9da8637
 
 # If there is a local copy of the image use that instead
 COPY resources/ /tmp/
@@ -47,8 +47,8 @@ USER root
 ARG VERBOSE=false
 ARG OPENJ9_SCC=true
 
-ARG LIBERTY_VERSION=26.0.0.9
-ARG LIBERTY_BUILD_LABEL=cl260920260824-0859
+ARG LIBERTY_VERSION=26.0.0.10
+ARG LIBERTY_BUILD_LABEL=cl261020260922-1910
 
 LABEL org.opencontainers.image.authors="Leo Christy Jesuraj, Iain Lewis, Melissa Lee, Kirby Chin" \
       org.opencontainers.image.vendor="IBM" \

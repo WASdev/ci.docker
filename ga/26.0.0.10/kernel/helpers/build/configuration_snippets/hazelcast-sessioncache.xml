@@ -1,0 +1,11 @@
+<server>
+  <featureManager>
+    <feature>sessionCache-1.0</feature>
+  </featureManager>
+  <httpSessionCache libraryRef="HazelcastLib">
+    <properties hazelcast.config.location="file:${shared.config.dir}/hazelcast/hazelcast.xml"/>
+  </httpSessionCache>
+  <library id="HazelcastLib">
+    <fileset dir="${shared.resource.dir}/hazelcast"/>
+  </library>
+</server>
