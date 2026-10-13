@@ -111,10 +111,6 @@ cmd_install() {
   local pkg_dir="${PKG_DIR}"
   local pre_install post_install diff_pkgs all_pkgs pkg rpm_file
 
-  echo "Updating image"
-  microdnf -y update
-  microdnf clean all
-
   # Remove individually so a missing package doesn't skip the rest; ensures
   # packages already in the builder image appear in the pre/post diff.
   for pkg in "$@"; do

@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.7
-
 # (C) Copyright IBM Corporation 2023, 2026
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,7 +109,7 @@ RUN /opt/ibm/wlp/bin/server create \
     && rm -rf /opt/ibm/wlp/usr/servers/defaultServer/server.env
 
 COPY NOTICES /opt/ibm/NOTICES
-COPY --exclude=**/package-helper.sh helpers/ /opt/ibm/helpers/
+COPY helpers-common/ /opt/ibm/helpers/
 COPY fixes/ /opt/ibm/fixes/
 
 # Create symlinks && set permissions for non-root user
