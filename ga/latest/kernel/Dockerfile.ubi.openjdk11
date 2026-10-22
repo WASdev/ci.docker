@@ -129,7 +129,7 @@ RUN /opt/ibm/wlp/bin/server create \
     && rm -rf /opt/ibm/wlp/usr/servers/defaultServer/server.env
 
 COPY NOTICES /opt/ibm/NOTICES
-COPY helpers/ /opt/ibm/helpers/
+COPY helpers-common/ helpers-redhat/ /opt/ibm/helpers/
 COPY fixes/ /opt/ibm/fixes/
 
 # Create symlinks && set permissions for non-root user
