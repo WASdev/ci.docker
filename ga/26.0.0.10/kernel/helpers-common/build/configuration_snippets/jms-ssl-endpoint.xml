@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<server>
-    <variable name="JMSS_PORT" defaultValue="7286" />
-    <wasJmsEndpoint id="InboundJmsEndpoint" host="*" wasJmsSSLPort="${JMSS_PORT}" />
-</server>
